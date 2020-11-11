@@ -1,7 +1,9 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ingress-wildcard-host
+  name: ingress-resource
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
     - host: "dashboard.k8s.mouse.center"
