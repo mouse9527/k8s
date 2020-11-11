@@ -5,7 +5,7 @@ metadata:
 spec:
   rules:
     - host: "dashboard.k8s.mouse.center"
-      https:
+      http:
         paths:
           - pathType: Prefix
             path: "/"
