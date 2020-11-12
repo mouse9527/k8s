@@ -193,11 +193,7 @@ spec:
             - containerPort: 8443
               protocol: TCP
           args:
-#            - --auto-generate-certificates
-            - --namespace=kubernetes-dashboard
-            - --tls-key-file=/root/cert/mouse.center.key
-            - --tls-cert-file=/root/cert/mouse.center.crt
-            - --token-ttl=3600
+            - --auto-generate-certificates
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.
