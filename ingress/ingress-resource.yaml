@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-wildcard-host
+  name: ingress-resource
 spec:
   rules:
-    - host: "dashboard.k8s.mouse.center"
+    - host: dashboard.k8s.mouse.center
       http:
         paths:
           - pathType: Prefix
@@ -13,4 +13,4 @@ spec:
               service:
                 name: kubernetes-dashboard
                 port:
-                  number: 80
+                  number: 443
