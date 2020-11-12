@@ -13,3 +13,9 @@ spec:
     kubeSchedulerContainer: "k8s.gcr.io/kube-scheduler:v1.18.8"
   kvBackend:
     address: 'storageos-etcd-client.storageos-etcd:2379' # Example address, change for your etcd endpoint
+  nodeSelectorTerms:
+    - matchExpressions:
+        - key: "node-role.kubernetes.io/worker"
+          operator: In
+          values:
+            - "true"
