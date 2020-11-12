@@ -20,3 +20,9 @@ spec:
       enableControllerPublishCreds: true
       enableNodePublishCreds: true
       enableControllerExpandCreds: true
+  nodeSelectorTerms:
+    - matchExpressions:
+        - key: "node-role.kubernetes.io/worker"
+          operator: In
+          values:
+            - "true"
