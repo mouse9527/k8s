@@ -195,8 +195,8 @@ spec:
           args:
 #            - --auto-generate-certificates
             - --namespace=kubernetes-dashboard
-            - --tls-key-file=mouse.center.key
-            - --tls-cert-file=mouse.center.crt
+            - --tls-key-file=/root/cert/mouse.center.key
+            - --tls-cert-file=/root/cert/mouse.center.crt
             - --token-ttl=3600
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
