@@ -17,3 +17,6 @@ spec:
                 name: kubernetes-dashboard
                 port:
                   number: 443
+  tls:
+    - hosts:
+        - dashboard.k8s.mouse.center
