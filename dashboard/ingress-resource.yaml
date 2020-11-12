@@ -20,3 +20,4 @@ spec:
   tls:
     - hosts:
         - dashboard.k8s.mouse.center
+      secretName: kubernetes-dashboard-certs
