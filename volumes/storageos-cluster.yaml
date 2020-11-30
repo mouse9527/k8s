@@ -11,7 +11,7 @@ spec:
   images:
     nodeContainer: "storageos/node:v2.3.2" # StorageOS version
   kvBackend:
-    address: 'storageos-etcd-client.storageos-etcd:2379'
+    address: 'etcd-cluster-client.etcd:2379'
   csi:
     enable: true
     deploymentStrategy: "deployment"
