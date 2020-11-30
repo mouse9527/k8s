@@ -14,8 +14,6 @@ spec:
   kvBackend:
     address: '192.168.20.10:2379' # Example address, change for your etcd endpoint
     backend: 'etcd'
-  tlsEtcdSecretRefName: "storageos-api"
-  tlsEtcdSecretRefNamespace: "etcd"
   csi:
     enable: true
     deploymentStrategy: "deployment"
@@ -26,5 +24,3 @@ spec:
     - matchExpressions:
         - key: "node-role.kubernetes.io/worker"
           operator: In
-          values:
-            - "worker"
