@@ -1,7 +1,7 @@
 apiVersion: "storageos.com/v1"
 kind: StorageOSCluster
 metadata:
-  name: "storageos-cluster"
+  name: "example-storageos"
   namespace: "storageos-operator"
 spec:
   # StorageOS Pods are in kube-system by default
@@ -9,11 +9,9 @@ spec:
   secretRefNamespace: "storageos-operator"  # Namespace of the Secret
   k8sDistro: "upstream"
   images:
-    nodeContainer: "storageos/node:v2.3.0" # StorageOS version
-    kubeSchedulerContainer: "k8s.gcr.io/kube-scheduler:v1.18.8"
+    nodeContainer: "storageos/node:v2.3.2" # StorageOS version
   kvBackend:
-    address: '192.168.20.10:2379' # Example address, change for your etcd endpoint
-    backend: 'etcd'
+    address: 'storageos-etcd-client.storageos-etcd:2379'
   csi:
     enable: true
     deploymentStrategy: "deployment"
