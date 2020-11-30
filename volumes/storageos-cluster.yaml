@@ -23,4 +23,4 @@ spec:
         - key: "node-role.kubernetes.io/worker"
           operator: In
           values:
-            - "worker"
+            - "true"
