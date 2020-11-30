@@ -45,5 +45,5 @@ spec:
                   - key: etcd_cluster
                     operator: In
                     values:
-                      - storageos-etcd
+                      - etcd-cluster
               topologyKey: kubernetes.io/hostname
