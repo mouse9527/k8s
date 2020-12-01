@@ -6,7 +6,7 @@ metadata:
   labels:
     storageos.com/replicas: "1"
 spec:
-  storageClassName: "storageos-sc"
+  storageClassName: "fast"
   accessModes:
     - ReadWriteMany
   resources:
