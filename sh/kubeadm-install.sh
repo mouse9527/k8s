@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
