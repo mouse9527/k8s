@@ -63,9 +63,6 @@ metadata:
     k8s-app: nexus3
 spec:
   ports:
-    - port: 80
-      name: http
-      targetPort: 8081
     - port: 443
       name: https
       targetPort: 8443
