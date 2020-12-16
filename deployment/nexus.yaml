@@ -1,46 +1,72 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: nexus
+  name: nexus3
   namespace: builder
+  labels:
+    k8s-app: nexus3
 spec:
-  serviceAccountName: nexus3
-  containers:
-    - name: nexus3
-      image: sonatype/nexus3
-      imagePullPolicy: IfNotPresent
-      ports:
-        - containerPort: 8081
-          name: web
-          protocol: TCP
-      livenessProbe:
-        httpGet:
-          path: /
-          port: 8081
-        initialDelaySeconds: 540
-        periodSeconds: 30
-        failureThreshold: 6
-      readinessProbe:
-        httpGet:
-          path: /
-          port: 8081
-        initialDelaySeconds: 540
-        periodSeconds: 30
-        failureThreshold: 6
-      resources:
-        limits:
-          cpu: 1000m
-          memory: 2Gi
-        requests:
-          cpu: 500m
-          memory: 512Mi
-      volumeMounts:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: nexus3
+  template:
+    metadata:
+      labels:
+        k8s-app: nexus3
+      namespace: builder
+      name: nexus3
+    spec:
+      containers:
+        - name: nexus3
+          image: sonatype/nexus3
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8081
+              name: web
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 540
+            periodSeconds: 30
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8081
+            initialDelaySeconds: 540
+            periodSeconds: 30
+            failureThreshold: 6
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: nexus-data
+              mountPath: /nexus-data
+      volumes:
         - name: nexus-data
-          mountPath: /nexus-data
-  volumes:
-    - name: nexus-data
-      persistentVolumeClaim:
-        claimName: nexus-pvc
+          persistentVolumeClaim:
+            claimName: nexus-pvc
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nexus-pvc
+  namespace: builder
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "nfs-sc"
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
 ---
 apiVersion: v1
 kind: Service
@@ -52,6 +78,8 @@ metadata:
 spec:
   ports:
     - port: 80
+      name: web
+      protocol: TCP
       targetPort: 8081
   selector:
     k8s-app: nexus3
