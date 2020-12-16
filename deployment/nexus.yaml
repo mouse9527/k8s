@@ -64,9 +64,10 @@ metadata:
 spec:
   ports:
     - port: 80
-      name: web
+      name: http
       targetPort: 8081
     - port: 443
+      name: https
       targetPort: 8443
   selector:
     k8s-app: nexus3
