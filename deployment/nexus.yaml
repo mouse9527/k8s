@@ -4,6 +4,7 @@ metadata:
   name: nexus
   namespace: builder
 spec:
+  serviceAccountName: nexus3
   containers:
     - name: nexus3
       image: sonatype/nexus3
@@ -74,4 +75,4 @@ spec:
               service:
                 name: nexus3
                 port:
-                  number: 80
+                  number: 8081
