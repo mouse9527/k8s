@@ -2,10 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nfs-client-provisioner
+  labels:
+    app: nfs-client-provisioner
+  namespace: nfs-voumes
 spec:
-  replicas: 3
+  replicas: 1
   strategy:
     type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
   template:
     metadata:
       labels:
@@ -20,7 +26,7 @@ spec:
               mountPath: /persistentvolumes
           env:
             - name: PROVISIONER_NAME
-              value: fuseim.pri/ifs
+              value: nfs-storage
             - name: NFS_SERVER
               value: 192.168.20.5
             - name: NFS_PATH
