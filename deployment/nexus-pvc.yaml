@@ -1,0 +1,13 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nexus-pvc
+  namespace: builder
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "nfs-sc"
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
