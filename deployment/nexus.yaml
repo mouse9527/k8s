@@ -22,20 +22,20 @@ spec:
           image: sonatype/nexus3
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8443
+            - containerPort: 8081
               name: web
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: 8443
+              port: 8081
             initialDelaySeconds: 540
             periodSeconds: 30
             failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /
-              port: 8443
+              port: 8081
             initialDelaySeconds: 540
             periodSeconds: 30
             failureThreshold: 6
@@ -63,9 +63,9 @@ metadata:
     k8s-app: nexus3
 spec:
   ports:
-    - port: 443
+    - port: 80
       name: https
-      targetPort: 8443
+      targetPort: 8081
   selector:
     k8s-app: nexus3
 ---
@@ -76,7 +76,7 @@ metadata:
   namespace: builder
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   rules:
     - host: nexus.k8s.mouse.center
@@ -88,4 +88,4 @@ spec:
               service:
                 name: nexus3
                 port:
-                  number: 443
+                  number: 80
