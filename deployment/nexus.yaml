@@ -22,20 +22,20 @@ spec:
           image: sonatype/nexus3
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8081
+            - containerPort: 8443
               name: web
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: 8081
+              port: 8443
             initialDelaySeconds: 540
             periodSeconds: 30
             failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /
-              port: 8081
+              port: 8443
             initialDelaySeconds: 540
             periodSeconds: 30
             failureThreshold: 6
