@@ -70,7 +70,7 @@ spec:
       name: http
       targetPort: 8081
     - port: 81
-      name: docker-proxy
+      name: docker-repository
       targetPort: 5000
   selector:
     k8s-app: nexus3
@@ -96,7 +96,7 @@ spec:
                 name: nexus3
                 port:
                   number: 80
-    - host: docker-proxy.k8s.mouse.center
+    - host: docker-repository.k8s.mouse.center
       http:
         paths:
           - backend:
