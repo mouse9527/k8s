@@ -164,8 +164,6 @@ spec:
       - operator: Exists
         effect: NoSchedule
       serviceAccountName: flannel
-      imagePullSecrets:
-        - name: docker-secret
       initContainers:
       - name: install-cni
         image: docker-repository.k8s.mouse.center:1443/coreos/flannel:v0.13.0
@@ -183,6 +181,7 @@ spec:
       containers:
       - name: kube-flannel
         image: docker-repository.k8s.mouse.center:1443/coreos/flannel:v0.13.0
+        imagePullPolicy: IfNotPresent
         command:
         - /opt/bin/flanneld
         args:
@@ -213,6 +212,8 @@ spec:
           mountPath: /run/flannel
         - name: flannel-cfg
           mountPath: /etc/kube-flannel/
+      imagePullSecrets:
+        - name: docker-secret
       volumes:
       - name: run
         hostPath:
