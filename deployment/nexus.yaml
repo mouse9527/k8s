@@ -25,6 +25,9 @@ spec:
             - containerPort: 8081
               name: web
               protocol: TCP
+            - containerPort: 5000
+              name: docker-proxy
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
@@ -62,12 +65,13 @@ metadata:
   labels:
     k8s-app: nexus3
 spec:
-  type: NodePort
   ports:
     - port: 80
       name: http
       targetPort: 8081
-      nodePort: 30081
+    - port: 81
+      name: docker-proxy
+      targetPort: 5000
   selector:
     k8s-app: nexus3
 ---
@@ -92,3 +96,13 @@ spec:
                 name: nexus3
                 port:
                   number: 80
+    - host: docker-proxy.k8s.mouse.center
+      http:
+        paths:
+          - backend:
+              service:
+                name: nexus3
+                port:
+                  number: 81
+            path: /
+            pathType: Prefix
