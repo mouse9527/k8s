@@ -17,9 +17,11 @@ spec:
       namespace: builder
       name: nexus3
     spec:
+      imagePullSecrets:
+        - name: docker-secret
       containers:
         - name: nexus3
-          image: sonatype/nexus3
+          image: docker-repository.k8s.mouse.center:1443/sonatype/nexus3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081
