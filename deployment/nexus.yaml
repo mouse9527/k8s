@@ -25,19 +25,22 @@ spec:
             - containerPort: 8081
               name: web
               protocol: TCP
+            - containerPort: 8443
+              name: https
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: 8081
-            initialDelaySeconds: 540
-            periodSeconds: 30
+              port: 8443
+            initialDelaySeconds: 120
+            periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /
-              port: 8081
-            initialDelaySeconds: 540
-            periodSeconds: 30
+              port: 8443
+            initialDelaySeconds: 120
+            periodSeconds: 10
             failureThreshold: 6
           resources:
             limits:
@@ -64,8 +67,11 @@ metadata:
 spec:
   ports:
     - port: 80
-      name: https
+      name: http
       targetPort: 8081
+    - port: 443
+      name: https
+      targetPort: 8443
   selector:
     k8s-app: nexus3
 ---
@@ -88,4 +94,4 @@ spec:
               service:
                 name: nexus3
                 port:
-                  number: 80
+                  number: 443
