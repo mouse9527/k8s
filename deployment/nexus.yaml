@@ -67,7 +67,7 @@ spec:
     - port: 80
       name: http
       targetPort: 8081
-      nodePort: 18080
+      nodePort: 38080
   selector:
     k8s-app: nexus3
 ---
