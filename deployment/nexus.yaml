@@ -54,8 +54,8 @@ spec:
               mountPath: /nexus-data
       volumes:
         - name: nexus-data
-          portworxVolume:
-            volumeID: nexus-pv
+          persistentVolumeClaim:
+            claimName: nexus-pv
 ---
 apiVersion: v1
 kind: Service
