@@ -81,7 +81,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       more_clear_headers 'X-Forwarded-Proto';
-      more_set_headers 'X-Forwarded-Proto' https;
+      more_set_headers 'X-Forwarded-Proto: https';
 spec:
   rules:
     - host: nexus.k8s.mouse.center
