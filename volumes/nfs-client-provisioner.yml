@@ -19,7 +19,7 @@ spec:
     spec:
       serviceAccountName: nfs-client-provisioner
       imagePullSecrets:
-        - name: docker-secret
+        - name: kube-system:docker-secret
       containers:
         - name: nfs-client-provisioner
           image: docker-repository.k8s.mouse.center:1443/external_storage/nfs-client-provisioner:latest

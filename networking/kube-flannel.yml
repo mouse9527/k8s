@@ -213,7 +213,7 @@ spec:
         - name: flannel-cfg
           mountPath: /etc/kube-flannel/
       imagePullSecrets:
-        - name: docker-secret
+        - name: kube-system:docker-secret
       volumes:
       - name: run
         hostPath:
