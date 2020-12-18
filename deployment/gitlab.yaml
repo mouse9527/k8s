@@ -108,9 +108,6 @@ spec:
             initialDelaySeconds: 120
             periodSeconds: 10
             failureThreshold: 6
-          env:
-            - name: GITLAB_OMNIBUS_CONFIG
-              value: "external_url 'https://scm.k8s.mouse.center'"
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
