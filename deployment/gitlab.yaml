@@ -26,6 +26,8 @@ spec:
   selector:
     matchLabels:
       pv: gitlab-config-pv
+  accessModes:
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
