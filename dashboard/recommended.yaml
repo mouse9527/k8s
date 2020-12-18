@@ -185,8 +185,6 @@ spec:
       labels:
         k8s-app: kubernetes-dashboard
     spec:
-      imagePullSecrets:
-        - name: kube-system:docker-secret
       containers:
         - name: kubernetes-dashboard
           image: docker-repository.k8s.mouse.center:1443/kubernetesui/dashboard:v2.0.0
@@ -271,8 +269,7 @@ spec:
       annotations:
         seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
     spec:
-      imagePullSecrets:
-        - name: kube-system:docker-secret
+
       containers:
         - name: dashboard-metrics-scraper
           image: docker-repository.k8s.mouse.center:1443/kubernetesui/metrics-scraper:v1.0.4
