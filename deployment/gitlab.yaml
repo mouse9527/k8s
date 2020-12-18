@@ -78,9 +78,9 @@ spec:
   template:
     metadata:
       labels:
-        k8s-app: nexus3
+        k8s-app: gitlab
       namespace: builder
-      name: nexus3
+      name: gitlab
     spec:
       containers:
         - name: gitlab
@@ -106,6 +106,9 @@ spec:
             initialDelaySeconds: 120
             periodSeconds: 10
             failureThreshold: 6
+          env:
+            - name: GITLAB_OMNIBUS_CONFIG
+              value: "external_url 'https://scm.k8s.mouse.center'"
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
