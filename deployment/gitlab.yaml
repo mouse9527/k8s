@@ -97,15 +97,13 @@ spec:
               name: ssh
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: 80
             initialDelaySeconds: 120
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
-            httpGet:
-              path: /
+            tcpSocket:
               port: 80
             initialDelaySeconds: 120
             periodSeconds: 10
