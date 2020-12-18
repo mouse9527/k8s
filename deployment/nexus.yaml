@@ -1,3 +1,35 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nexus-pv
+  namespace: builder
+  labels:
+    pv: nexus-pv
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/nexus3
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: builder
+  name: nexus-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Gi
+  selector:
+    matchLabels:
+      pv: nexus-pv
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
