@@ -167,6 +167,7 @@ spec:
       initContainers:
       - name: install-cni
         image: docker-repository.k8s.mouse.center:1443/coreos/flannel:v0.13.0
+        imagePullPolicy: Always
         command:
         - cp
         args:
@@ -181,7 +182,7 @@ spec:
       containers:
       - name: kube-flannel
         image: docker-repository.k8s.mouse.center:1443/coreos/flannel:v0.13.0
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         command:
         - /opt/bin/flanneld
         args:
@@ -222,3 +223,5 @@ spec:
       - name: flannel-cfg
         configMap:
           name: kube-flannel-cfg
+      imagePullSecrets:
+        - name: docker-secret
