@@ -69,7 +69,7 @@ metadata:
   name: gitlab
   namespace: builder
   labels:
-    k8s-app: nexus3
+    k8s-app: gitlab
 spec:
   selector:
     matchLabels:

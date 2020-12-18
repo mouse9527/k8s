@@ -2,6 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: log-pvc
+  namespace: builder
   annotations:
     volume.beta.kubernetes.io/storage-class: "nfs-sc"
 spec:
