@@ -108,6 +108,9 @@ spec:
             initialDelaySeconds: 120
             periodSeconds: 10
             failureThreshold: 6
+          env:
+            - name: GITLAB_OMNIBUS_CONFIG
+              value: "gitlab_rails['gitlab_default_projects_features_builds'] = false"
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
