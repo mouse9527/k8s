@@ -195,7 +195,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: docker-repository.k8s.mouse.center:1443/kubernetesui/dashboard:v2.0.0
+          image: docker-repository.mouse.center:1443/kubernetesui/dashboard:v2.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8443
@@ -280,7 +280,7 @@ spec:
 
       containers:
         - name: dashboard-metrics-scraper
-          image: docker-repository.k8s.mouse.center:1443/kubernetesui/metrics-scraper:v1.0.4
+          image: docker-repository.mouse.center:1443/kubernetesui/metrics-scraper:v1.0.4
           ports:
             - containerPort: 8000
               protocol: TCP
@@ -320,7 +320,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
-    - host: dashboard.k8s.mouse.center
+    - host: dashboard.mouse.center
       http:
         paths:
           - path: /
@@ -332,5 +332,5 @@ spec:
                   number: 443
   tls:
     - hosts:
-        - dashboard.k8s.mouse.center
+        - dashboard.mouse.center
       secretName: kubernetes-dashboard-certs

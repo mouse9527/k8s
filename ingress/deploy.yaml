@@ -274,7 +274,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
   labels:
     helm.sh/chart: ingress-nginx-3.8.0
     app.kubernetes.io/name: ingress-nginx
@@ -333,7 +332,7 @@ spec:
       dnsPolicy: ClusterFirst
       containers:
         - name: controller
-          image: docker-repository.k8s.mouse.center:1443/ingress-nginx/controller:v0.41.0@sha256:e6019e536cfb921afb99408d5292fa88b017c49dd29d05fc8dbc456aa770d590
+          image: docker-repository.mouse.center:1443/ingress-nginx/controller:v0.41.0@sha256:e6019e536cfb921afb99408d5292fa88b017c49dd29d05fc8dbc456aa770d590
           imagePullPolicy: IfNotPresent
           lifecycle:
             preStop:
@@ -598,7 +597,7 @@ spec:
 
       containers:
         - name: create
-          image: docker-repository.k8s.mouse.center:1443/jettech/kube-webhook-certgen:v1.5.0
+          image: docker-repository.mouse.center:1443/jettech/kube-webhook-certgen:v1.5.0
           imagePullPolicy: IfNotPresent
           args:
             - create
@@ -647,7 +646,7 @@ spec:
 
       containers:
         - name: patch
-          image: docker-repository.k8s.mouse.center:1443/jettech/kube-webhook-certgen:v1.5.0
+          image: docker-repository.mouse.center:1443/jettech/kube-webhook-certgen:v1.5.0
           imagePullPolicy: IfNotPresent
           args:
             - patch

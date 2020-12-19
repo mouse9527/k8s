@@ -88,7 +88,7 @@ spec:
       serviceAccountName: nfs-client-provisioner
       containers:
         - name: nfs-client-provisioner
-          image: docker-repository.k8s.mouse.center:1443/external_storage/nfs-client-provisioner:latest
+          image: docker-repository.mouse.center:1443/external_storage/nfs-client-provisioner:latest
           volumeMounts:
             - name: nfs-client-root
               mountPath: /persistentvolumes

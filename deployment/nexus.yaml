@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
         - name: nexus3
-          image: docker-repository.k8s.mouse.center:1443/sonatype/nexus3
+          image: docker-repository.mouse.center:1443/sonatype/nexus3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081
@@ -118,7 +118,7 @@ metadata:
 
 spec:
   rules:
-    - host: nexus.k8s.mouse.center
+    - host: nexus.mouse.center
       http:
         paths:
           - path: /
@@ -128,7 +128,7 @@ spec:
                 name: nexus3
                 port:
                   number: 80
-    - host: docker-repository.k8s.mouse.center
+    - host: docker-repository.mouse.center
       http:
         paths:
           - backend:

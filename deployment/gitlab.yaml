@@ -86,9 +86,10 @@ spec:
       namespace: builder
       name: gitlab
     spec:
+      hostname: scm.mouse.center
       containers:
         - name: gitlab
-          image: docker-repository.k8s.mouse.center:1443/gitlab/gitlab-ce
+          image: docker-repository.mouse.center:1443/gitlab/gitlab-ce
           ports:
             - containerPort: 80
               name: http
@@ -159,7 +160,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   rules:
-    - host: scm.k8s.mouse.center
+    - host: scm.mouse.center
       http:
         paths:
           - path: /
