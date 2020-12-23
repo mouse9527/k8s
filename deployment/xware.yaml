@@ -1,0 +1,92 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: xware-pv
+  namespace: app
+  labels:
+    pv: xware-pv
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/video/V
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: xware-pvc
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      pv: xware-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: xware
+  namespace: app
+  labels:
+    k8s-app: xware
+spec:
+  selector:
+    matchLabels:
+      k8s-app: xware
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: xware
+      namespace: app
+      name: xware
+    spec:
+      containers:
+        - name: xware
+          image: docker-repository.mouse.center:1443/yinheli/docker-thunder-xware
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          volumeMounts:
+            - mountPath: /app/TDDOWNLOAD
+              name: xware-data
+      volumes:
+        - name: xware-data
+          persistentVolumeClaim:
+            claimName: xware-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xware
+  namespace: app
+  labels:
+    k8s-app: xware
+spec:
+  type: NodePort
+  ports:
+    - port: 9000
+      targetPort: 9000
+      nodePort: 30090
+  selector:
+    k8s-app: xware
