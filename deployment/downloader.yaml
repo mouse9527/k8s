@@ -199,6 +199,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/auth-type: basic
     nginx.ingress.kubernetes.io/auth-secret: downloader-web-auth
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - downloader'
 spec:
   rules:
     - host: downloader.mouse.center
