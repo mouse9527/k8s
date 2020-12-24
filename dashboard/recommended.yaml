@@ -330,7 +330,3 @@ spec:
                 name: kubernetes-dashboard
                 port:
                   number: 443
-  tls:
-    - hosts:
-        - dashboard.mouse.center
-      secretName: kubernetes-dashboard-certs
