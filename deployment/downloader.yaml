@@ -116,7 +116,10 @@ spec:
             - name: UMASK_SET
               value: "022"
             - name: RPC_SECRET
-              value: Hz970210
+              valueFrom:
+                secretKeyRef:
+                  name: downloader-secret
+                  key: secret
             - name: RPC_PORT
               value: "6800"
             - name: LISTEN_PORT
