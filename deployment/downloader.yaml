@@ -88,10 +88,13 @@ spec:
           image: docker-repository.mouse.center:1443/p3terx/aria2-pro
           ports:
             - containerPort: 6800
+              name: rpc
               protocol: TCP
             - containerPort: 6888
+              name: tcp
               protocol: TCP
             - containerPort: 6888
+              name: udp
               protocol: UDP
           livenessProbe:
             tcpSocket:
@@ -170,9 +173,11 @@ spec:
       name: web
       targetPort: 80
     - port: 6888
+      name: tcp
       protocol: TCP
       nodePort: 30688
     - port: 6888
+      name: udp
       protocol: UDP
       nodePort: 30688
   selector:
