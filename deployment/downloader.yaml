@@ -134,7 +134,7 @@ spec:
               name: downloader-data
             - mountPath: /config
               name: downloader-config
-        - name: donloader-web
+        - name: downloader-web
           image: docker-repository.mouse.center:1443/p3terx/ariang
           ports:
             - containerPort: 6880
