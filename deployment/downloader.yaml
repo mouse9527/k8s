@@ -212,3 +212,13 @@ spec:
                 name: downloader
                 port:
                   number: 80
+    - host: downloader-rpc.mouse.center
+      http:
+        paths:
+          - backend:
+              service:
+                name: downloader
+                port:
+                  number: 6800
+            path: /
+            pathType: Prefix
