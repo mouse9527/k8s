@@ -1,0 +1,202 @@
+# pvc start
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: downloader-pv
+  namespace: app
+  labels:
+    pv: downloader-pv
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/video/V
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: downloader-pvc
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      pv: downloader-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: downloader-config-pv
+  namespace: app
+  labels:
+    pv: downloader-config-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/downloader/config
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: app
+  name: downloader-config-pvc
+spec:
+  selector:
+    matchLabels:
+      pv: downloader-config-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+# pvc end
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: downloader
+  namespace: app
+  labels:
+    k8s-app: downloader
+spec:
+  selector:
+    matchLabels:
+      k8s-app: downloader
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: downloader
+      namespace: app
+      name: downloader
+    spec:
+      containers:
+        - name: downloader
+          image: docker-repository.mouse.center:1443/p3terx/aria2-pro
+          ports:
+            - containerPort: 6800
+              protocol: TCP
+            - containerPort: 6888
+              protocol: TCP
+            - containerPort: 6888
+              protocol: UDP
+          livenessProbe:
+            tcpSocket:
+              port: 6800
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 6800
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          env:
+            - name: PUID
+              value: "65534"
+            - name: PGID
+              value: "65534"
+            - name: UMASK_SET
+              value: "022"
+            - name: RPC_SECRET
+              value: Hz970210
+            - name: RPC_PORT
+              value: "6800"
+            - name: LISTEN_PORT
+              value: "6888"
+            - name: DISK_CACHE
+              value: 256M
+            - name: IPV6_MODE
+              value: "false"
+            - name: UPDATE_TRACKERS
+              value: "false"
+            - name: TZ
+              value: Asia/Shanghai
+          volumeMounts:
+            - mountPath: /downloads
+              name: downloader-data
+            - mountPath: /config
+              name: downloader-config
+        - name: donloader-web
+          image: docker-repository.mouse.center:1443/p3terx/ariang
+          ports:
+            - containerPort: 6880
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 6880
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 6880
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+      volumes:
+        - name: downloader-data
+          persistentVolumeClaim:
+            claimName: downloader-pvc
+        - name: downloader-config
+          persistentVolumeClaim:
+            claimName: downloader-config-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: downloader
+  namespace: app
+  labels:
+    k8s-app: downloader
+spec:
+  type: NodePort
+  ports:
+    - port: 6880
+      name: web
+      targetPort: 80
+    - port: 6888
+      protocol: TCP
+      nodePort: 30688
+    - port: 6888
+      protocol: UDP
+      nodePort: 30688
+  selector:
+    k8s-app: downloader
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gitlab-ingress
+  namespace: builder
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: downloader-web-auth
+spec:
+  rules:
+    - host: downloader.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: downloader
+                port:
+                  number: 80
