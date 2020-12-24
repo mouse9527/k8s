@@ -182,6 +182,10 @@ spec:
       protocol: UDP
       targetPort: 6888
       nodePort: 30688
+    - port: 6800
+      name: rpc
+      targetPort: 6800
+      nodePort: 30680
   selector:
     k8s-app: downloader
 ---
@@ -193,8 +197,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-#    nginx.ingress.kubernetes.io/auth-type: basic
-#    nginx.ingress.kubernetes.io/auth-secret: downloader-web-auth
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: downloader-web-auth
 spec:
   rules:
     - host: downloader.mouse.center
