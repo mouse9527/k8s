@@ -86,10 +86,7 @@ spec:
       namespace: builder
       name: gitlab
     spec:
-      hostAliases:
-        - ip: 127.0.0.1
-          hostnames:
-            - "scm.mouse.center"
+      hostname: "scm.mouse.center"
       containers:
         - name: gitlab
           image: docker-repository.mouse.center:1443/gitlab/gitlab-ce
