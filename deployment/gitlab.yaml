@@ -116,8 +116,6 @@ spec:
             - name: GITLAB_OMNIBUS_CONFIG
               value: |
                 gitlab_rails['gitlab_default_projects_features_builds'] = false
-                external_url 'https://scm.mouse.center:1443'
-                letsencrypt['enable'] = false
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
