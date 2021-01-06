@@ -103,13 +103,13 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 120
+            initialDelaySeconds: 240
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 120
+            initialDelaySeconds: 240
             periodSeconds: 10
             failureThreshold: 6
           env:
