@@ -112,6 +112,8 @@ spec:
             - name: GITLAB_OMNIBUS_CONFIG
               value: |
                 gitlab_rails['gitlab_default_projects_features_builds'] = false
+                gitlab_rails['gitlab_ssh_host'] = 'scm.mouse.center'
+                gitlab_rails['time_zone'] = 'GMT'
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
