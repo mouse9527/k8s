@@ -86,7 +86,6 @@ spec:
       namespace: builder
       name: gitlab
     spec:
-      hostname: "scm.mouse.center"
       containers:
         - name: gitlab
           image: docker-repository.mouse.center:1443/gitlab/gitlab-ce
@@ -113,6 +112,8 @@ spec:
             - name: GITLAB_OMNIBUS_CONFIG
               value: |
                 gitlab_rails['gitlab_default_projects_features_builds'] = false
+          command: [/bin/sh]
+          args: ['-c','hostname', 'scm.mouse.center']
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
