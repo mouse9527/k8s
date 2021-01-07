@@ -13,7 +13,7 @@ spec:
   volumeMode: Filesystem
   nfs:
     server: 192.168.20.5
-    path: /volume1/k8s/12306/config
+    path: /volume1/k8s/12306
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -29,38 +29,6 @@ spec:
   resources:
     requests:
       storage: 1Gi
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: 12306-data-pv
-  namespace: app
-  labels:
-    pv: 12306-data-pv
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: 192.168.20.5
-    path: /volume1/k8s/12306/data
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: 12306-data-pvc
-  namespace: app
-spec:
-  selector:
-    matchLabels:
-      pv: 12306-data-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -103,15 +71,10 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: 12306-config
-            - mountPath: /data
-              name: 12306-data
       volumes:
         - name: 12306-config
           persistentVolumeClaim:
             claimName: 12306-config-pvc
-        - name: 12306-data
-          persistentVolumeClaim:
-            claimName: 12306-data-pvc
 ---
 kind: Service
 apiVersion: v1
