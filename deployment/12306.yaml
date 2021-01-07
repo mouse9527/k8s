@@ -18,7 +18,7 @@ spec:
         k8s-app: app-12306
     spec:
       containers:
-        - name: 12306_code_server
+        - name: 12306-code-server
           image: docker-repository.mouse.center:1443/yinaoxiong/12306_code_server
           ports:
             - containerPort: 80
