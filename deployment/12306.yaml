@@ -91,13 +91,13 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 8008
-            initialDelaySeconds: 120
+            initialDelaySeconds: 20
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
               port: 8008
-            initialDelaySeconds: 120
+            initialDelaySeconds: 20
             periodSeconds: 10
             failureThreshold: 6
           volumeMounts:
