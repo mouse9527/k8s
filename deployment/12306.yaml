@@ -1,0 +1,150 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: 12306-config-pv
+  namespace: app
+  labels:
+    pv: 12306-config-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/12306/config
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: 12306-config-pvc
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      pv: 12306-config-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: 12306-data-pv
+  namespace: app
+  labels:
+    pv: 12306-data-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/12306/data
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: 12306-data-pvc
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      pv: 12306-data-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 12306
+  namespace: app
+  labels:
+    k8s-app: 12306
+spec:
+  selector:
+    matchLabels:
+      k8s-app: app
+  replicas: 1
+  template:
+    metadata:
+      namespace: app
+      name: 12306
+      labels:
+        k8s-app: 12306
+    spec:
+      containers:
+        - name: 12306-server
+          image: docker-repository.mouse.center:1443/pjialin/py12306
+          ports:
+            - containerPort: 8008
+              name: api
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8008
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 8008
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          volumeMounts:
+            - mountPath: /config
+              name: 12306-config
+            - mountPath: /data
+              name: 12306-data
+      volumes:
+        - name: 12306-config
+          persistentVolumeClaim:
+            claimName: 12306-config-pvc
+        - name: 12306-data
+          persistentVolumeClaim:
+            claimName: 12306-data-pvc
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: 12306
+  namespace: app
+  labels:
+    k8s-app: 12306
+spec:
+  ports:
+    - port: 80
+      name: web
+      targetPort: 8008
+  selector:
+    k8s-app: 12306
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: 12306-ingress
+  namespace: app
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: 12306.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: '12306'
+                port:
+                  number: 80
