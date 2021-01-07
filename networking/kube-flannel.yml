@@ -127,7 +127,9 @@ data:
     {
       "Network": "10.244.0.0/16",
       "Backend": {
-        "Type": "vxlan"
+        "Type": "vxlan",
+        "VNI" : 4096,
+        "Port": 4789
       }
     }
 ---
