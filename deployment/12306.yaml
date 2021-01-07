@@ -50,7 +50,7 @@ spec:
       volumes:
         - name: ticker-config
           configMap:
-            name: configMap-12306
+            name: 12306ConfigMap
 ---
 kind: Service
 apiVersion: v1
