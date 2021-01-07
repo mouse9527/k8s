@@ -121,7 +121,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-
+    nginx.ingress.kubernetes.io/proxy-body-size: 10000m
 spec:
   rules:
     - host: nexus.mouse.center
