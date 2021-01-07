@@ -65,10 +65,10 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 12306
+  name: 12306-app
   namespace: app
   labels:
-    k8s-app: 12306
+    k8s-app: 12306-app
 spec:
   selector:
     matchLabels:
@@ -77,9 +77,9 @@ spec:
   template:
     metadata:
       namespace: app
-      name: 12306
+      name: 12306-app
       labels:
-        k8s-app: 12306
+        k8s-app: 12306-app
     spec:
       containers:
         - name: 12306-server
@@ -116,17 +116,17 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: 12306
+  name: 12306-app
   namespace: app
   labels:
-    k8s-app: 12306
+    k8s-app: 12306-app
 spec:
   ports:
     - port: 80
       name: web
       targetPort: 8008
   selector:
-    k8s-app: 12306
+    k8s-app: 12306-app
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
@@ -145,6 +145,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: '12306'
+                name: 12306-app
                 port:
                   number: 80
