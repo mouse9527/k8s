@@ -54,7 +54,7 @@ spec:
           image: docker-repository.mouse.center:1443/pjialin/py12306
           ports:
             - containerPort: 8008
-              name: api
+              name: web
               protocol: TCP
           livenessProbe:
             tcpSocket:
@@ -71,6 +71,24 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: 12306-config
+        - name: code-ocr
+          image: docker-repository.mouse.center:1443/pjialin/12306-ocr
+          ports:
+            - containerPort: 8000
+              name: api
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
       volumes:
         - name: 12306-config
           persistentVolumeClaim:
@@ -88,6 +106,9 @@ spec:
     - port: 80
       name: web
       targetPort: 8008
+    - port: 8000
+      name: ocr
+      targetPort: 8000
   selector:
     k8s-app: app-12306
 ---
