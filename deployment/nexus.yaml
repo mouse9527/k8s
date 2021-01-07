@@ -60,6 +60,9 @@ spec:
             - containerPort: 5000
               name: docker-proxy
               protocol: TCP
+            - containerPort: 5001
+              name: docker-push
+              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
@@ -104,6 +107,9 @@ spec:
     - port: 81
       name: docker-repository
       targetPort: 5000
+    - port: 82
+      name: docker-push
+      targetPort: 5001
   selector:
     k8s-app: nexus3
 ---
@@ -136,5 +142,15 @@ spec:
                 name: nexus3
                 port:
                   number: 81
+            path: /
+            pathType: Prefix
+    - host: docker-push.mouse.center
+      http:
+        paths:
+          - backend:
+              service:
+                name: nexus3
+                port:
+                  number: 82
             path: /
             pathType: Prefix
