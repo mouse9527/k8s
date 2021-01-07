@@ -1,35 +1,3 @@
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: 12306-config-pv
-  namespace: app
-  labels:
-    pv: 12306-config-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: 192.168.20.5
-    path: /volume1/k8s/12306
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: 12306-config-pvc
-  namespace: app
-spec:
-  selector:
-    matchLabels:
-      pv: 12306-config-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 1Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -50,49 +18,39 @@ spec:
         k8s-app: app-12306
     spec:
       containers:
-        - name: 12306-server
-          image: docker-repository.mouse.center:1443/pjialin/py12306
+        - name: 12306_code_server
+          image: docker-repository.mouse.center:1443/yinaoxiong/12306_code_server
           ports:
-            - containerPort: 8008
-              name: web
-              protocol: TCP
-          livenessProbe:
-            tcpSocket:
-              port: 8008
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            failureThreshold: 6
-          readinessProbe:
-            tcpSocket:
-              port: 8008
-            initialDelaySeconds: 20
-            periodSeconds: 10
-            failureThreshold: 6
-          volumeMounts:
-            - mountPath: /config
-              name: 12306-config
-        - name: code-ocr
-          image: docker-repository.mouse.center:1443/pjialin/12306-ocr
-          ports:
-            - containerPort: 8000
+            - containerPort: 80
               name: api
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 8000
-            initialDelaySeconds: 10
+              port: 80
+            initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
-              port: 8000
-            initialDelaySeconds: 10
+              port: 80
+            initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 6
+          env:
+            - name: WORKERS
+              value: '1'
+            - name: PYTHONUNBUFFERED
+              value: '1'
+        - name: 12306-server
+          image: docker-repository.mouse.center:1443/12306
+          volumeMounts:
+            - mountPath: /usr/src/app/TickerConfig.py
+              name: ticker-config
+              subPath: TickerConfig.py
       volumes:
-        - name: 12306-config
-          persistentVolumeClaim:
-            claimName: 12306-config-pvc
+        - name: ticker-config
+          configMap:
+            name: 12306-configMap
 ---
 kind: Service
 apiVersion: v1
@@ -104,31 +62,7 @@ metadata:
 spec:
   ports:
     - port: 80
-      name: web
-      targetPort: 8008
-    - port: 8000
-      name: ocr
-      targetPort: 8000
+      name: code-api
+      targetPort: 80
   selector:
     k8s-app: app-12306
----
-kind: Ingress
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: 12306-ingress
-  namespace: app
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-spec:
-  rules:
-    - host: 12306.mouse.center
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: app-12306
-                port:
-                  number: 80
