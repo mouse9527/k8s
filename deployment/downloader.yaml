@@ -99,13 +99,13 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 6800
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
               port: 6800
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 6
           env:
@@ -145,13 +145,13 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 6880
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
               port: 6880
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 6
       volumes:
