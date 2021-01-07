@@ -72,7 +72,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      k8s-app: app
+      k8s-app: 12306-app
   replicas: 1
   template:
     metadata:
