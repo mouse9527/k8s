@@ -74,7 +74,7 @@ metadata:
     app: nfs-client-provisioner
   namespace: nfs-voumes
 spec:
-  replicas: 3
+  replicas: 4
   strategy:
     type: Recreate
   selector:
