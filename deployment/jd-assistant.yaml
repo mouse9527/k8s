@@ -12,6 +12,7 @@ spec:
       volumeMounts:
         - mountPath: /etc/jd-assistant
           name: main-py
+          subPath: main.py
   volumes:
     - name: main-py
       configMap:
