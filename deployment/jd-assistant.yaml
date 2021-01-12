@@ -10,16 +10,13 @@ spec:
     - name: jd-assistant
       image: docker-repository.mouse.center:1443/jd-assistant
       volumeMounts:
-        - mountPath: /etc/jd-assistant/
+        - mountPath: /etc/jd-assistant/main.py
           name: main-py
           subPath: main.py
   volumes:
     - name: main-py
       configMap:
         name: jd-assistant-cfg
-        items:
-          - key: main.py
-            path: main.py
   nodeSelector:
     beta.kubernetes.io/os: linux
 ---
