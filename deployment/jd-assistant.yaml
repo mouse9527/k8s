@@ -13,7 +13,7 @@ spec:
         - mountPath: /tmp
           name: main-py
       command: ["/bin/sh"]
-      args: ["mv /tmp/main.py", "/etc/jd-assistant/main.py"]
+      args: ["ll", "/tmp/"]
   volumes:
     - name: main-py
       configMap:
