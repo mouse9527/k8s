@@ -1,0 +1,57 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: jd-assistant
+  namespace: app
+  labels:
+    k8s-app: jd-assistant
+spec:
+  selector:
+    matchLabels:
+      k8s-app: jd-assistant
+  replicas: 1
+  template:
+    metadata:
+      namespace: app
+      name: jd-assistant
+      labels:
+        k8s-app: jd-assistant
+    spec:
+      containers:
+        - name: jd-assistant
+          image: docker-repository.mouse.center:1443/jd-assistant
+          volumeMounts:
+            - mountPath: /etc/jd-assistant
+              name: main.py
+              subPath: main.py
+      volumes:
+        - name: main.py
+          configMap:
+            name: jd-assistant-cfg
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: jd-assistant-cfg
+  namespace: app
+data:
+  main.py: |
+    from jd_assistant import Assistant
+
+    if __name__ == '__main__':
+        sku_ids = '100015042086'
+        asst = Assistant()
+        asst.login_by_QRcode()
+        asst.add_item_to_cart(sku_ids)
+        asst.exec_seckill_by_time(sku_ids=sku_ids, buy_time='2021-01-12 12:00:00.000', retry=10, interval=0.01)
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: app
+  name: jd-assistant
+  labels:
+    k8s-app: jd-assistant
+spec:
+  selector:
+    k8s-app: jd-assistant
