@@ -1,39 +1,23 @@
-kind: Deployment
-apiVersion: apps/v1
+kind: Pod
+apiVersion: v1
 metadata:
   name: jd-assistant
   namespace: app
   labels:
     k8s-app: jd-assistant
 spec:
-  selector:
-    matchLabels:
-      k8s-app: jd-assistant
-  replicas: 1
-  template:
-    metadata:
-      namespace: app
-      name: jd-assistant
-      labels:
-        k8s-app: jd-assistant
-    spec:
-      containers:
-        - name: jd-assistant
-          image: docker-repository.mouse.center:1443/jd-assistant
-          volumeMounts:
-            - mountPath: /etc/jd-assistant
-              name: main-py
-              subPath: main.py
-
-      volumes:
-        - name: main-py
-          configMap:
-            name: jd-assistant-cfg
-            items:
-              - key: main.py
-                path: main.py
-      nodeSelector:
-        beta.kubernetes.io/os: linux
+  containers:
+    - name: jd-assistant
+      image: docker-repository.mouse.center:1443/jd-assistant
+      volumeMounts:
+        - mountPath: /etc/jd-assistant
+          name: main-py
+  volumes:
+    - name: main-py
+      configMap:
+        name: jd-assistant-cfg
+  nodeSelector:
+    beta.kubernetes.io/os: linux
 ---
 kind: ConfigMap
 apiVersion: v1
