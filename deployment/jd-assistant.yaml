@@ -10,11 +10,11 @@ spec:
     - name: jd-assistant
       image: docker-repository.mouse.center:1443/jd-assistant
       volumeMounts:
-        - mountPath: /etc/jd-assistant
-          name: main-py
+        - mountPath: /etc/jd-assistant/
+          name: jd-assistant-cfg
           subPath: main.py
   volumes:
-    - name: main-py
+    - name: jd-assistant-cfg
       configMap:
         name: jd-assistant-cfg
   nodeSelector:
