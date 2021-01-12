@@ -17,6 +17,9 @@ spec:
     - name: jd-assistant-cfg
       configMap:
         name: jd-assistant-cfg
+        items:
+          - key: main.py
+            path: /etc/jd-assistant
   nodeSelector:
     beta.kubernetes.io/os: linux
 ---
