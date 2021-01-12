@@ -28,6 +28,8 @@ spec:
         - name: main-py
           configMap:
             name: jd-assistant-cfg
+      nodeSelector:
+        beta.kubernetes.io/os: linux
 ---
 kind: ConfigMap
 apiVersion: v1
