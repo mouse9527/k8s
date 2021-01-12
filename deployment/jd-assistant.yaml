@@ -13,7 +13,7 @@ spec:
         - mountPath: /tmp
           name: main-py
       command: ["/bin/sh"]
-      args: ["ll", "/tmp/"]
+      args: ["ls", "/tmp/"]
   volumes:
     - name: main-py
       configMap:
