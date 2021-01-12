@@ -12,6 +12,7 @@ spec:
       volumeMounts:
         - mountPath: /etc/jd-assistant
           name: main-py
+          subPath: main.py
   volumes:
     - name: main-py
       configMap:
@@ -25,7 +26,7 @@ metadata:
   name: jd-assistant-cfg
   namespace: app
 data:
-  main.py: |
+  main.py: |-
     from jd_assistant import Assistant
 
     if __name__ == '__main__':
