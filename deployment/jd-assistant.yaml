@@ -24,10 +24,14 @@ spec:
             - mountPath: /etc/jd-assistant
               name: main-py
               subPath: main.py
+
       volumes:
         - name: main-py
           configMap:
             name: jd-assistant-cfg
+            items:
+              - key: main.py
+                path: main.py
       nodeSelector:
         beta.kubernetes.io/os: linux
 ---
