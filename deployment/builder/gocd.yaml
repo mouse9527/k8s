@@ -91,15 +91,15 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 8153
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
-            failureThreshold: 6
+            failureThreshold: 12
           readinessProbe:
             tcpSocket:
               port: 8153
-            initialDelaySeconds: 120
+            initialDelaySeconds: 60
             periodSeconds: 10
-            failureThreshold: 6
+            failureThreshold: 12
           volumeMounts:
             - mountPath: /godata
               name: godata
