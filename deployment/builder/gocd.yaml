@@ -118,6 +118,8 @@ spec:
     - port: 80
       name: http
       targetPort: 8153
+  selector:
+    k8s-app: gocd
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
