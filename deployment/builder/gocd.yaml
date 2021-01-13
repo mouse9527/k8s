@@ -80,15 +80,11 @@ spec:
       labels:
         k8s-app: gocd
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
       nodeSelector:
         kubernetes.io/os: linux
-      initContainers:
-        - name: init
-          image: docker-repository.mouse.center:1443/centos:7
-          command: ["sh", "-c", "chown -R 1000:1000 /etc/godata && ls -l /etc/godata"]
-          volumeMounts:
-            - mountPath: /etc/godata
-              name: godata
       containers:
         - name: gocd-server
           image: docker-repository.mouse.center:1443/gocd/gocd-server:v21.1.0
