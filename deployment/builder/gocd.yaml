@@ -1,0 +1,141 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: godata-pv
+  namespace: builder
+  labels:
+    pv: godata-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/gocd/data
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: godata-pvc
+  namespace: builder
+spec:
+  selector:
+    matchLabels:
+      pv: godata-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: gohome-pv
+  namespace: builder
+  labels:
+    pv: gohome-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/gocd/go
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: gohome-pvc
+  namespace: builder
+spec:
+  selector:
+    matchLabels:
+      pv: gohome-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gocd
+  namespace: builder
+  labels:
+    k8s-app: gocd
+spec:
+  selector:
+    matchLabels:
+      k8s-app: gocd
+  template:
+    spec:
+      containers:
+        - name: gocd-server
+          image: docker-repository.mouse.center:1443/gocd/gocd-server:v21.1.0
+          ports:
+            - containerPort: 8153
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8153
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 8153
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 6
+          volumeMounts:
+            - mountPath: /godata
+              name: godata
+            - mountPath: /home/go
+              name: gohome
+      volumes:
+        - name: godata
+          persistentVolumeClaim:
+            claimName: godata-pvc
+        - name: gohome
+          persistentVolumeClaim:
+            claimName: gohome-pvc
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: builder
+  name: gocd
+  labels:
+    k8s-app: gocd
+spec:
+  ports:
+    - port: 80
+      name: http
+      targetPort: 8153
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gocd-ingress
+  namespace: builder
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: cd.mouse.center
+      http:
+        paths:
+          - backend:
+              service:
+                name: gocd
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
