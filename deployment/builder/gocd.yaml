@@ -6,6 +6,9 @@ metadata:
   labels:
     pv: godata-pv
 spec:
+  mountOptions:
+    - uid=1000
+    - gid=1000
   capacity:
     storage: 100Gi
   accessModes:
@@ -38,6 +41,9 @@ metadata:
   labels:
     pv: gohome-pv
 spec:
+  mountOptions:
+    - uid=1000
+    - gid=1000
   capacity:
     storage: 10Gi
   accessModes:
