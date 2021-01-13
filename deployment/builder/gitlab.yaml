@@ -90,7 +90,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: gitlab
-          image: docker-repository.mouse.center:1443/gitlab/gitlab-ce
+          image: docker-repository.mouse.center:1443/gitlab/gitlab-ce:13.7.3-ce.0
           ports:
             - containerPort: 80
               name: http
