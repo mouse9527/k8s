@@ -49,6 +49,8 @@ spec:
       namespace: builder
       name: nexus3
     spec:
+      nodeSelector:
+        kubernetes.io/os: linux
       containers:
         - name: nexus3
           image: docker-repository.mouse.center:1443/sonatype/nexus3

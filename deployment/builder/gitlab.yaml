@@ -86,6 +86,8 @@ spec:
       namespace: builder
       name: gitlab
     spec:
+      nodeSelector:
+        kubernetes.io/os: linux
       containers:
         - name: gitlab
           image: docker-repository.mouse.center:1443/gitlab/gitlab-ce

@@ -83,6 +83,8 @@ spec:
       namespace: app
       name: downloader
     spec:
+      nodeSelector:
+        kubernetes.io/os: linux
       containers:
         - name: downloader
           image: docker-repository.mouse.center:1443/p3terx/aria2-pro
