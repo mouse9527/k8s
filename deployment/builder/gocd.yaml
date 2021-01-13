@@ -80,9 +80,6 @@ spec:
       labels:
         k8s-app: gocd
     spec:
-      securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
       nodeSelector:
         kubernetes.io/os: linux
       containers:
