@@ -74,6 +74,11 @@ spec:
     matchLabels:
       k8s-app: gocd
   template:
+    metadata:
+      name: gocd
+      namespace: builder
+      labels:
+        k8s-app: gocd
     spec:
       containers:
         - name: gocd-server
