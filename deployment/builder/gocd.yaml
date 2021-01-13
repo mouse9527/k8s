@@ -85,7 +85,7 @@ spec:
       initContainers:
         - name: init
           image: docker-repository.mouse.center:1443/centos:7
-          command: ["sh", "-c", "chown -R 200:200 /etc/godata && ll /etc/godata"]
+          command: ["sh", "-c", "chown -R 200:200 /etc/godata && ls -l /etc/godata"]
           volumeMounts:
             - mountPath: /etc/godata
               name: godata
