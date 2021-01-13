@@ -161,28 +161,15 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: gocd-role
 rules:
-  - apiGroups:
-      - ""
-    resources:
-      - nodes
-      - namespace
-    verbs:
-      - list
-      - get
-  - apiGroups:
-      - ""
-    resources:
-      - events
-    verbs:
-      - list
-      - watch
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-      - pods/log
-    verbs:
-      - *
+  - apiGroups: [""]
+    resources: ["nodes", "namespace"]
+    verbs: ["list", "get"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["*"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
