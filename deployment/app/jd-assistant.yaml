@@ -11,6 +11,11 @@ spec:
     matchLabels:
       k8s-app: jd-assistant
   template:
+    metadata:
+      name: jd-assistant
+      namespace: app
+      labels:
+        k8s-app: jd-assistant
     spec:
       containers:
         - name: jd-assistant
