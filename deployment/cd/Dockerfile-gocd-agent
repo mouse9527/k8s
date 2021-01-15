@@ -1,0 +1,18 @@
+FROM gocd/gocd-agent-centos-7:v19.12.0
+
+USER root
+
+RUN yum install epel-release -y && yum install -y java-latest-openjdk nodejs docker-client wget unzip
+
+ENV TZ=Asia/Shanghai
+ENV JAVA_HOME=/usr/lib/jvm/jre-14-openjdk
+
+ENV GRADLE_HOME=/opt/gradle
+ENV GRADLE_VERSION=6.6.1
+
+RUN wget --no-verbose --output-document=gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
+    && unzip gradle.zip \
+    && mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
+    && rm gradle.zip \
+    && ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
+    && gradle --version
