@@ -39,8 +39,8 @@ data:
     from jd_assistant import Assistant
 
     if __name__ == '__main__':
-      sku_ids = '100015042086'  # 商品id
+      sku_ids = '100016138906'  # 商品id
       asst = Assistant()  # 初始化
       asst.login_by_QRcode()  # 扫码登陆
       asst.add_item_to_cart(sku_ids)
-      asst.exec_seckill_by_time(sku_ids=sku_ids, buy_time='2021-01-14 11:00:00.000', retry=10, interval=0.01)
+      asst.exec_seckill_by_time(sku_ids=sku_ids, buy_time='2021-01-15 11:00:00.000', retry=10, interval=0.01)
