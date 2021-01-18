@@ -103,7 +103,7 @@ spec:
           volumeMounts:
             - mountPath: /godata
               name: godata
-            - mountPath: /home/go
+            - mountPath: /root/
               name: gohome
       volumes:
         - name: godata
