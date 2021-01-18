@@ -14,11 +14,12 @@ spec:
         - mountPath: /var/run/docker.sock
           name: dockersock
         - mountPath: /root/.ssh
-          name: gocd-agent-pvc
+          name: ssh
+          subPath: .ssh
   volumes:
     - name: dockersock
       hostPath:
         path: /var/run/docker.sock
-    - name: gocd-agent-pvc
+    - name: ssh
       persistentVolumeClaim:
-        claimName: gocd-agent-pvc
+        claimName: gohome-pvc
