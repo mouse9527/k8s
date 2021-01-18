@@ -84,7 +84,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: gocd-server
-          image: docker-repository.mouse.center:1443/gocd-server:v19.12.0
+          image: docker-repository.mouse.center:1443/gocd/gocd-server:v21.1.0
           ports:
             - containerPort: 8153
               protocol: TCP
