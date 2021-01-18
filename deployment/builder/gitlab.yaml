@@ -113,8 +113,8 @@ spec:
           env:
             - name: GITLAB_OMNIBUS_CONFIG
               value: |
+                external_url = 'https://scm.mouse.center:1443'
                 gitlab_rails['gitlab_default_projects_features_builds'] = false
-                external_url 'https://scm.mouse.center:1443'
                 gitlab_rails['gitlab_ssh_host'] = 'scm.mouse.center'
                 gitlab_rails['time_zone'] = 'GMT'
           volumeMounts:
