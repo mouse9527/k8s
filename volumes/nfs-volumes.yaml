@@ -110,3 +110,4 @@ kind: StorageClass
 metadata:
   name: nfs-sc
 provisioner: nfs-storage
+reclaimPolicy: Retain
