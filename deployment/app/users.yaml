@@ -1,3 +1,4 @@
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -8,13 +9,12 @@ data:
     application:
       iam:
         jwt:
-          private-key: /users/privatekey.pem
-          public-key: /users/publickey.pem
+          private-key: /app/privatekey.pem
+          public-key: /app/publickey.pem
     spring:
       data:
         mongodb:
-          uri: mongodb://mongo.db:27017,mongo.db:27018,mongo.db:27019
-          database: users
+          uri: mongodb://mongo-0.mongo.db:27017,mongo-1.mongo.db:27017,mongo-2.mongo.db:27017/users?replicaSet=rs0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -52,3 +52,13 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 20
             failureThreshold: 6
+          volumeMounts:
+            - mountPath: /app
+              name: users-key
+      volumes:
+        - name: users-key
+          nfs:
+            server: 192.168.20.5
+            path: /volume1/k8s/users
+            readOnly: true
+---
