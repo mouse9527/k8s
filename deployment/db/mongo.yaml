@@ -27,6 +27,8 @@ spec:
   replicas: 3
   template:
     metadata:
+      name: mongo
+      namespace: db
       labels:
         k8s-app: mongo
     spec:
@@ -47,6 +49,8 @@ spec:
           env:
             - name: MONGO_SIDECAR_POD_LABELS
               value: "k8s-app=mongo"
+            - name: KUBE_NAMESPACE
+              value: "db"
   volumeClaimTemplates:
     - metadata:
         name: mongo-persistent-storage
