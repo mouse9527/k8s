@@ -62,7 +62,7 @@ spec:
               name: users-key
             - mountPath: /application.yaml
               name: applycation
-              subPath: /application.yaml
+              subPath: application.yaml
       volumes:
         - name: users-key
           nfs:
