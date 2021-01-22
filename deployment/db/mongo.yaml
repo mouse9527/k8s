@@ -44,13 +44,6 @@ spec:
           volumeMounts:
             - mountPath: /data/db
               name: mongo-persistent-storage
-        - name: mongo-sidecar
-          image: cvallance/mongo-k8s-sidecar
-          env:
-            - name: MONGO_SIDECAR_POD_LABELS
-              value: "k8s-app=mongo"
-            - name: KUBE_NAMESPACE
-              value: "db"
   volumeClaimTemplates:
     - metadata:
         name: mongo-persistent-storage
