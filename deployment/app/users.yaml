@@ -1,0 +1,54 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: users-config
+  namespace: app
+data:
+  application.yaml: |
+    application:
+      iam:
+        jwt:
+          private-key: /users/privatekey.pem
+          public-key: /users/publickey.pem
+    spring:
+      data:
+        mongodb:
+          uri: mongodb://mongo.db:27017,mongo.db:27018,mongo.db:27019
+          database: users
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users
+  namespace: app
+  labels:
+    k8s-app: users
+spec:
+  selector:
+    matchLabels:
+      k8s-app: users
+  template:
+    metadata:
+      namespace: app
+      name: users
+      labels:
+        k8s-app: users
+    spec:
+      containers:
+        - name: users
+          image: docker-repository.mouse.center:1443/users/users
+          ports:
+            - containerPort: 8080
+              name: web
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6

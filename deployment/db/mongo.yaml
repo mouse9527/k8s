@@ -1,0 +1,239 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: mongo1
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    k8s-app: mongo1
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo1-pv
+  namespace: db
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/db/mongo1
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: db
+  name: mongo1-pvc
+spec:
+  selector:
+    matchLabels:
+      pv: mongo1-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongo1
+  namespace: db
+  labels:
+    k8s-app: mongo1
+spec:
+  containers:
+    - name: mongo1
+      image: docker-repository.mouse.center:1443/mongo:4.4.3
+      ports:
+        - containerPort: 27017
+      args:
+        - --replSet
+        - replSet1
+      livenessProbe:
+        tcpSocket:
+          port: 27017
+        initialDelaySeconds: 180
+        periodSeconds: 10
+        failureThreshold: 6
+      readinessProbe:
+        tcpSocket:
+          port: 27017
+        initialDelaySeconds: 180
+        periodSeconds: 10
+        failureThreshold: 6
+      volumeMounts:
+        - mountPath: /data/db
+          name: mongo-data
+  volumes:
+    - name: mongo-data
+      persistentVolumeClaim:
+        claimName: mongo1-pvc
+---
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: mongo2
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    k8s-app: mongo2
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo2-pv
+  namespace: db
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/db/mongo2
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: db
+  name: mongo2-pvc
+spec:
+  selector:
+    matchLabels:
+      pv: mongo2-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongo2
+  namespace: db
+  labels:
+    k8s-app: mongo2
+spec:
+  containers:
+    - name: mongo2
+      image: docker-repository.mouse.center:1443/mongo:4.4.3
+      ports:
+        - containerPort: 27017
+      args:
+        - --replSet
+        - replSet1
+      livenessProbe:
+        tcpSocket:
+          port: 27017
+        initialDelaySeconds: 180
+        periodSeconds: 10
+        failureThreshold: 6
+      readinessProbe:
+        tcpSocket:
+          port: 27017
+        initialDelaySeconds: 180
+        periodSeconds: 10
+        failureThreshold: 6
+      volumeMounts:
+        - mountPath: /data/db
+          name: mongo-data
+  volumes:
+    - name: mongo-data
+      persistentVolumeClaim:
+        claimName: mongo2-pvc
+---
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: mongo3
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    k8s-app: mongo3
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo3-pv
+  namespace: db
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/db/mongo3
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: db
+  name: mongo3-pvc
+spec:
+  selector:
+    matchLabels:
+      pv: mongo3-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mongo3
+  namespace: db
+  labels:
+    k8s-app: mongo3
+spec:
+  containers:
+    - name: mongo3
+      image: docker-repository.mouse.center:1443/mongo:4.4.3
+      ports:
+        - containerPort: 27017
+      args:
+        - --replSet
+        - replSet1
+      livenessProbe:
+        tcpSocket:
+          port: 27017
+        initialDelaySeconds: 180
+        periodSeconds: 10
+        failureThreshold: 6
+      readinessProbe:
+        tcpSocket:
+          port: 27017
+        initialDelaySeconds: 180
+        periodSeconds: 10
+        failureThreshold: 6
+      volumeMounts:
+        - mountPath: /data/db
+          name: mongo-data
+  volumes:
+    - name: mongo-data
+      persistentVolumeClaim:
+        claimName: mongo3-pvc
+---
