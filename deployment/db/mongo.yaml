@@ -39,6 +39,18 @@ spec:
             - rs0
           ports:
             - containerPort: 27017
+          livenessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 27017
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
           volumeMounts:
             - mountPath: /data/db
               name: mongo-persistent-storage
