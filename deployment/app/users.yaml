@@ -42,9 +42,8 @@ spec:
           ports:
             - containerPort: 8080
               name: web
-          env:
-            - name: spring.config.location
-              value: /application.yaml
+          args:
+            - spring.config.location=/application.yaml
           livenessProbe:
             tcpSocket:
               port: 8080
