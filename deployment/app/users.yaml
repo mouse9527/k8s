@@ -2,7 +2,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: users-config
+  name: users-cfg
   namespace: app
 data:
   application.yaml: |
@@ -17,13 +17,15 @@ data:
           uri: mongodb://mongo-0.mongo.db:27017,mongo-1.mongo.db:27017,mongo-2.mongo.db:27017/users?replicaSet=rs0
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: users
   namespace: app
   labels:
     k8s-app: users
 spec:
+  serviceName: users
+  replicas: 1
   selector:
     matchLabels:
       k8s-app: users
@@ -40,6 +42,9 @@ spec:
           ports:
             - containerPort: 8080
               name: web
+          env:
+            - name: spring.config.location
+              value: /application.yaml
           livenessProbe:
             tcpSocket:
               port: 8080
@@ -53,12 +58,16 @@ spec:
             periodSeconds: 20
             failureThreshold: 6
           volumeMounts:
-            - mountPath: /app
+            - mountPath: /app/cofnig
               name: users-key
+            - mountPath: /application.yaml
+              name: applycation
       volumes:
         - name: users-key
           nfs:
             server: 192.168.20.5
             path: /volume1/k8s/users
             readOnly: true
----
+        - name: applycation
+          configMap:
+            name: users-cfg
