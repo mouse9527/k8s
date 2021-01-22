@@ -73,6 +73,18 @@ spec:
           configMap:
             name: users-cfg
 ---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: app
+  name: users
+spec:
+  selector:
+    k8s-app: users
+  ports:
+    - port: 80
+      targetPort: 8080
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -92,4 +104,4 @@ spec:
               service:
                 name: users
                 port:
-                  number: 8080
+                  number: 80
