@@ -42,15 +42,15 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 27017
-            initialDelaySeconds: 60
+            initialDelaySeconds: 20
             periodSeconds: 20
-            failureThreshold: 6
+            failureThreshold: 10
           readinessProbe:
             tcpSocket:
               port: 27017
-            initialDelaySeconds: 60
+            initialDelaySeconds: 20
             periodSeconds: 20
-            failureThreshold: 6
+            failureThreshold: 10
           volumeMounts:
             - mountPath: /data/db
               name: mongo-persistent-storage
