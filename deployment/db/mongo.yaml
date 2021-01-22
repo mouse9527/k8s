@@ -1,16 +1,4 @@
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: db
-  name: mongo1
-spec:
-  ports:
-    - port: 27017
-      targetPort: 27017
-  selector:
-    k8s-app: mongo1
----
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -43,6 +31,72 @@ spec:
     requests:
       storage: 100Gi
 ---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo2-pv
+  namespace: db
+  labels:
+    pv: mongo2-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/db/mongo2
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: db
+  name: mongo2-pvc
+spec:
+  selector:
+    matchLabels:
+      pv: mongo2-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mongo3-pv
+  namespace: db
+  labels:
+    pv: mongo3-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: 192.168.20.5
+    path: /volume1/k8s/db/mongo3
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: db
+  name: mongo3-pvc
+spec:
+  selector:
+    matchLabels:
+      pv: mongo3-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+---
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -78,52 +132,6 @@ spec:
     - name: mongo-data
       persistentVolumeClaim:
         claimName: mongo1-pvc
----
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: db
-  name: mongo2
-spec:
-  ports:
-    - port: 27017
-      targetPort: 27017
-  selector:
-    k8s-app: mongo2
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: mongo2-pv
-  namespace: db
-  labels:
-    pv: mongo2-pv
-spec:
-  capacity:
-    storage: 100Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: 192.168.20.5
-    path: /volume1/k8s/db/mongo2
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  namespace: db
-  name: mongo2-pvc
-spec:
-  selector:
-    matchLabels:
-      pv: mongo2-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 100Gi
 ---
 apiVersion: v1
 kind: Pod
@@ -161,52 +169,6 @@ spec:
       persistentVolumeClaim:
         claimName: mongo2-pvc
 ---
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: db
-  name: mongo3
-spec:
-  ports:
-    - port: 27017
-      targetPort: 27017
-  selector:
-    k8s-app: mongo3
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: mongo3-pv
-  namespace: db
-  labels:
-    pv: mongo3-pv
-spec:
-  capacity:
-    storage: 100Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: 192.168.20.5
-    path: /volume1/k8s/db/mongo3
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  namespace: db
-  name: mongo3-pvc
-spec:
-  selector:
-    matchLabels:
-      pv: mongo3-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 100Gi
----
 apiVersion: v1
 kind: Pod
 metadata:
@@ -243,3 +205,40 @@ spec:
       persistentVolumeClaim:
         claimName: mongo3-pvc
 ---
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: mongo1
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    k8s-app: mongo1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: mongo2
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    k8s-app: mongo2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: mongo3
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    k8s-app: mongo3
