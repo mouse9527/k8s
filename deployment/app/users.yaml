@@ -9,8 +9,8 @@ data:
     application:
       iam:
         jwt:
-          private-key: /app/privatekey.pem
-          public-key: /app/publickey.pem
+          private-key: /app/cofnig/privatekey.pem
+          public-key: /app/cofnig/publickey.pem
     spring:
       data:
         mongodb:
