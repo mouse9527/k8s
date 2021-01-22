@@ -42,8 +42,9 @@ spec:
           ports:
             - containerPort: 8080
               name: web
-          args:
-            - spring.config.location=/application.yaml
+          env:
+            - name: spring.config.location
+              value: /application.yaml
           livenessProbe:
             tcpSocket:
               port: 8080
@@ -61,6 +62,7 @@ spec:
               name: users-key
             - mountPath: /application.yaml
               name: applycation
+              subPath: /application.yaml
       volumes:
         - name: users-key
           nfs:
