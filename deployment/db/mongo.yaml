@@ -142,6 +142,8 @@ spec:
         - name: mongo-data
           persistentVolumeClaim:
             claimName: mongo1-pvc
+      nodeSelector:
+        node: node1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -188,6 +190,8 @@ spec:
         - name: mongo-data
           persistentVolumeClaim:
             claimName: mongo2-pvc
+      nodeSelector:
+        node: node2
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -234,7 +238,8 @@ spec:
         - name: mongo-data
           persistentVolumeClaim:
             claimName: mongo3-pvc
-
+      nodeSelector:
+        node: node3
 ---
 
 ---
