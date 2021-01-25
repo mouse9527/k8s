@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: application-cfg
-  namespace: app
-data:
-  spring-config-import: optional:configserver:http://config-server.app
-  profile-test: test

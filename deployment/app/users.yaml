@@ -24,17 +24,9 @@ spec:
           ports:
             - containerPort: 8080
               name: web
-          env:
-            - name: spring.config.import
-              valueFrom:
-                configMapKeyRef:
-                  name: application-cfg
-                  key: spring-config-import
-            - name: spring.cloud.config.profile
-              valueFrom:
-                configMapKeyRef:
-                  name: application-cfg
-                  key: profile-test
+          envFrom:
+            - configMapRef:
+                name: application-test-cfg
           livenessProbe:
             tcpSocket:
               port: 8080
