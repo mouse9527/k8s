@@ -4,8 +4,5 @@ metadata:
   name: application-cfg
   namespace: app
 data:
-  application.yaml: |
-    spring:
-      config:
-        import: optional:configserver:http://config-server.app
-
+  spring-config-import: optional:configserver:http://config-server.app
+  profile-test: test

@@ -25,10 +25,16 @@ spec:
             - containerPort: 8080
               name: web
           env:
-            - name: spring.config.location
-              value: /application.yaml
+            - name: spring.config.import
+              valueFrom:
+                configMapKeyRef:
+                  name: application-cfg
+                  key: spring-config-import
             - name: spring.cloud.config.profile
-              value: test
+              valueFrom:
+                configMapKeyRef:
+                  name: application-cfg
+                  key: profile-test
           livenessProbe:
             tcpSocket:
               port: 8080
@@ -44,18 +50,12 @@ spec:
           volumeMounts:
             - mountPath: /app/cofnig
               name: users-key
-            - mountPath: /application.yaml
-              name: applycation
-              subPath: application.yaml
       volumes:
         - name: users-key
           nfs:
             server: 192.168.20.5
             path: /volume1/k8s/users
             readOnly: true
-        - name: applycation
-          configMap:
-            name: application-cfg
 ---
 kind: Service
 apiVersion: v1
