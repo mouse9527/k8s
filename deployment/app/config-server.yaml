@@ -27,14 +27,14 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 20
+            initialDelaySeconds: 20
+            periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
               port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 20
+            initialDelaySeconds: 20
+            periodSeconds: 10
             failureThreshold: 6
 ---
 kind: Service
