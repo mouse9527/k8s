@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: config-server
+  namespace: app
+  labels:
+    k8s-app: config-server
+spec:
+  serviceName: config-server
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: config-server
+  template:
+    metadata:
+      namespace: app
+      name: config-server
+      labels:
+        k8s-app: config-server
+    spec:
+      containers:
+        - name: config-server
+          image: docker-repository.mouse.center:1443/config-server
+          ports:
+            - containerPort: 8080
+              name: web
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: app
+  name: config-server
+spec:
+  selector:
+    k8s-app: config-server
+  ports:
+    - port: 80
+      targetPort: 8080
