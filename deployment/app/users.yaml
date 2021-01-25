@@ -1,21 +1,3 @@
----
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: users-cfg
-  namespace: app
-data:
-  application.yaml: |
-    application:
-      iam:
-        jwt:
-          private-key: /app/cofnig/privatekey.pem
-          public-key: /app/cofnig/publickey.pem
-    spring:
-      data:
-        mongodb:
-          uri: mongodb://mongo-0.mongo.db:27017,mongo-1.mongo.db:27017,mongo-2.mongo.db:27017/users?replicaSet=rs0
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -45,6 +27,8 @@ spec:
           env:
             - name: spring.config.location
               value: /application.yaml
+            - name: spring.cloud.config.profile
+              value: test
           livenessProbe:
             tcpSocket:
               port: 8080
@@ -71,7 +55,7 @@ spec:
             readOnly: true
         - name: applycation
           configMap:
-            name: users-cfg
+            name: application-cfg
 ---
 kind: Service
 apiVersion: v1
