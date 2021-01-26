@@ -21,6 +21,7 @@ spec:
       containers:
         - name: users
           image: docker-repository.mouse.center:1443/users/users
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               name: web
