@@ -7,3 +7,4 @@ data:
   spring.config.import: optional:configserver:http://config-server.app
   spring.cloud.config.profile: test
   spring.cloud.config.fail-fast: 'true'
+  spring.profiles.active: test
