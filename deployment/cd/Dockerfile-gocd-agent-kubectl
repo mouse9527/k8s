@@ -1,0 +1,7 @@
+FROM gocd/gocd-agent-centos-7:v21.1.0
+
+USER root
+
+RUN echo -e "[kubernetes]\nname=Kubernetes\nbaseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64\nenabled=1\ngpgcheck=1\nrepo_gpgchec k=1\ngpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg" \
+     >> /etc/yum.repos.d/kubernetes.repo \
+     && yum install -y kubectl
