@@ -17,15 +17,10 @@ spec:
         - mountPath: /root/.ssh
           name: ssh
           subPath: .ssh
-        - mountPath: /root/.gradle
-          name: gradle-cache
   volumes:
     - name: dockersock
       hostPath:
         path: /var/run/docker.sock
-    - name: gradle-cache
-      hostPath:
-        path: /root/.gradle
     - name: ssh
       persistentVolumeClaim:
         claimName: gohome-pvc
