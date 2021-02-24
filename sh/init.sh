@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-kubeadm init --pod-network-cidr "10.244.0.0/16" --apiserver-advertise-address "192.168.20.10" --image-repository "docker-repository.mouse.center:1443"
+kubeadm init --pod-network-cidr "10.244.0.0/16" --apiserver-advertise-address "master.lan" --image-repository "docker-repository.mouse.center:1443"
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
 source ~/.bash_profile
 
