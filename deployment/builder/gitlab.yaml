@@ -14,7 +14,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: 192.168.20.5
+    server: nas.lan
     path: /volume1/k8s/gitlab/config
 ---
 kind: PersistentVolumeClaim
@@ -46,7 +46,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: 192.168.20.5
+    server: nas.lan
     path: /volume1/k8s/gitlab/data
 ---
 kind: PersistentVolumeClaim
