@@ -15,7 +15,7 @@ kind: Pod
 apiVersion: v1
 metadata:
   name: mongo-0
-  namespace: mongo
+  namespace: db
   labels:
     k8s-app: mongo
 spec:
@@ -45,7 +45,7 @@ kind: Pod
 apiVersion: v1
 metadata:
   name: mongo-1
-  namespace: mongo
+  namespace: db
   labels:
     k8s-app: mongo
 spec:
@@ -75,7 +75,7 @@ kind: Pod
 apiVersion: v1
 metadata:
   name: mongo-2
-  namespace: mongo
+  namespace: db
   labels:
     k8s-app: mongo
 spec:
