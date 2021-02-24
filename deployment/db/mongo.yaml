@@ -19,6 +19,7 @@ metadata:
   labels:
     k8s-app: mongo
 spec:
+  hostname: mongo-0
   containers:
     - name: mongo
       image: docker-repository.mouse.center:1443/mongo:4.4.3
@@ -49,6 +50,7 @@ metadata:
   labels:
     k8s-app: mongo
 spec:
+  hostname: mongo-1
   containers:
     - name: mongo
       image: docker-repository.mouse.center:1443/mongo:4.4.3
@@ -79,6 +81,7 @@ metadata:
   labels:
     k8s-app: mongo
 spec:
+  hostname: mongo-2
   containers:
     - name: mongo
       image: docker-repository.mouse.center:1443/mongo:4.4.3
