@@ -11,49 +11,93 @@ spec:
   selector:
     k8s-app: mongo
 ---
-
-apiVersion: apps/v1
-kind: StatefulSet
+kind: Pod
+apiVersion: v1
 metadata:
-  name: mongo
-  namespace: db
+  name: mongo-0
+  namespace: mongo
   labels:
     k8s-app: mongo
 spec:
-  selector:
-    matchLabels:
-      k8s-app: mongo
-  serviceName: mongo
-  replicas: 3
-  template:
-    metadata:
-      name: mongo
-      namespace: db
-      labels:
-        k8s-app: mongo
-    spec:
-      containers:
-        - name: mongo
-          image: docker-repository.mouse.center:1443/mongo:4.4.3
-          command:
-            - mongod
-            - "--replSet"
-            - rs0
-            - "--port"
-            - '27017'
-            - "--bind_ip"
-            - "0.0.0.0"
-          ports:
-            - containerPort: 27017
-          volumeMounts:
-            - mountPath: /data/db
-              name: mongo-persistent-storage
-  volumeClaimTemplates:
-    - metadata:
-        name: mongo-persistent-storage
-      spec:
-        storageClassName: "nfs-sc"
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 100Gi
+  containers:
+    - name: mongo
+      image: docker-repository.mouse.center:1443/mongo:4.4.3
+      command:
+        - mongod
+        - "--replSet"
+        - rs0
+        - "--port"
+        - '27017'
+        - "--bind_ip"
+        - "0.0.0.0"
+      ports:
+        - containerPort: 27017
+      volumeMounts:
+        - mountPath: /data/db
+          name: mongo-0-storage
+  volumes:
+    - name: mongo-0-storage
+      nfs:
+        path: /volume1/k8s/db/mongo-0
+        server: nas.lan
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mongo-1
+  namespace: mongo
+  labels:
+    k8s-app: mongo
+spec:
+  containers:
+    - name: mongo
+      image: docker-repository.mouse.center:1443/mongo:4.4.3
+      command:
+        - mongod
+        - "--replSet"
+        - rs0
+        - "--port"
+        - '27017'
+        - "--bind_ip"
+        - "0.0.0.0"
+      ports:
+        - containerPort: 27017
+      volumeMounts:
+        - mountPath: /data/db
+          name: mongo-1-storage
+  volumes:
+    - name: mongo-1-storage
+      nfs:
+        path: /volume1/k8s/db/mongo-1
+        server: nas.lan
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mongo-2
+  namespace: mongo
+  labels:
+    k8s-app: mongo
+spec:
+  containers:
+    - name: mongo
+      image: docker-repository.mouse.center:1443/mongo:4.4.3
+      command:
+        - mongod
+        - "--replSet"
+        - rs0
+        - "--port"
+        - '27017'
+        - "--bind_ip"
+        - "0.0.0.0"
+      ports:
+        - containerPort: 27017
+      volumeMounts:
+        - mountPath: /data/db
+          name: mongo-0-storage
+  volumes:
+    - name: mongo-2-storage
+      nfs:
+        path: /volume1/k8s/db/mongo-2
+        server: nas.lan
+---
