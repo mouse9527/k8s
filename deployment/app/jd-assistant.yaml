@@ -15,7 +15,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: jd-assistant
-          image: docker-repository.mouse.center:1433/jd-assistant
+          image: docker-repository.mouse.center:1443/jd-assistant
           volumeMounts:
             - mountPath: /etc/jd-assistant/main.py
               name: cfg
