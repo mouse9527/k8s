@@ -37,7 +37,7 @@ metadata:
   name: jd-assistant-cfg
   namespace: app
 data:
-  main.yp: |
+  main.py: |
     from exception import AsstException
     from jd_assistant import Assistant
 
