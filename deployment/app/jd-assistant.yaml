@@ -44,7 +44,7 @@ data:
 
     if __name__ == '__main__':
         asst = Assistant()
-        time.sleep(60)
+
         if not asst.is_login:
             raise AsstException('未登陆')
         asst.add_item_to_cart(sku_ids='100004187691')
