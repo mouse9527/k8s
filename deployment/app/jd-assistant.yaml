@@ -7,7 +7,12 @@ metadata:
     jobgroup: jd-assistant
 spec:
   template:
+    metadata:
+      name: jd-assistant
+      labels:
+        jobgroup: jd-assistant
     spec:
+      restartPolicy: Never
       containers:
         - name: jd-assistant
           image: docker-repository.mouse.center:1433/jd-assistant
