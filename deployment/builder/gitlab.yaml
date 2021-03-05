@@ -92,21 +92,21 @@ spec:
         - name: gitlab
           image: docker-repository.mouse.center:1443/gitlab/gitlab-ce:13.7.3-ce.0
           ports:
-            - containerPort: 80
-              name: http
+            - containerPort: 443
+              name: https
               protocol: TCP
             - containerPort: 22
               name: ssh
               protocol: TCP
           livenessProbe:
             tcpSocket:
-              port: 80
+              port: 443
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 15
           readinessProbe:
             tcpSocket:
-              port: 80
+              port: 443
             initialDelaySeconds: 60
             periodSeconds: 10
             failureThreshold: 15
@@ -117,11 +117,6 @@ spec:
                 gitlab_rails['gitlab_default_projects_features_builds'] = false
                 gitlab_rails['gitlab_ssh_host'] = 'scm.mouse.center'
                 gitlab_rails['time_zone'] = 'GMT'
-                nginx['enable'] = false
-                web_server['external_users'] = ['root']
-                gitlab_rails['trusted_proxies'] = [ '192.168.10.1']
-                registry_nginx['listen_port'] = 80
-                registry_nginx['listen_https'] = false
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
@@ -150,9 +145,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 80
-      name: http
-      targetPort: 80
+    - port: 443
+      name: https
+      targetPort: 443
     - port: 22
       name: ssh
       targetPort: 22
@@ -167,7 +162,7 @@ metadata:
   namespace: builder
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
     - host: scm.mouse.center
@@ -179,4 +174,4 @@ spec:
               service:
                 name: gitlab
                 port:
-                  number: 80
+                  number: 443
