@@ -117,6 +117,9 @@ spec:
                 gitlab_rails['gitlab_default_projects_features_builds'] = false
                 gitlab_rails['gitlab_ssh_host'] = 'scm.mouse.center'
                 gitlab_rails['time_zone'] = 'GMT'
+                nginx['redirect_http_to_https'] = false
+                registry_nginx['redirect_http_to_https'] = false
+                mattermost_nginx['redirect_http_to_https'] = false
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
