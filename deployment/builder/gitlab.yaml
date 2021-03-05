@@ -120,6 +120,8 @@ spec:
                 nginx['enable'] = false
                 web_server['external_users'] = ['root']
                 gitlab_rails['trusted_proxies'] = [ '192.168.10.1']
+                registry_nginx['listen_port'] = 80
+                registry_nginx['listen_https'] = false
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
