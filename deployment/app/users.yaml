@@ -47,7 +47,7 @@ spec:
         - name: users-key
           nfs:
             server: nas.lan
-            path: /volume1/k8s/users
+            path: /mnt/Database/k8s/users
             readOnly: true
 ---
 kind: Service

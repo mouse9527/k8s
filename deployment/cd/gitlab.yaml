@@ -15,7 +15,7 @@ spec:
   volumeMode: Filesystem
   nfs:
     server: nas.lan
-    path: /volume1/k8s/gitlab/config
+    path: /mnt/Database/k8s/gitlab/config
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -47,7 +47,7 @@ spec:
   volumeMode: Filesystem
   nfs:
     server: nas.lan
-    path: /volume1/k8s/gitlab/data
+    path: /mnt/Database/k8s/gitlab/data
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

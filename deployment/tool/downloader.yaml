@@ -14,7 +14,7 @@ spec:
   volumeMode: Filesystem
   nfs:
     server: nas.lan
-    path: /volume1/video/V
+    path: /mnt/Database/video/V
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -46,7 +46,7 @@ spec:
   volumeMode: Filesystem
   nfs:
     server: nas.lan
-    path: /volume1/k8s/downloader/config
+    path: /mnt/Database/k8s/downloader/config
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -64,8 +64,8 @@ spec:
       storage: 1Gi
 # pvc end
 ---
+apiVersion: apps/v1
 kind: Deployment
-apiVersion: tools/v1
 metadata:
   name: downloader
   namespace: tool
