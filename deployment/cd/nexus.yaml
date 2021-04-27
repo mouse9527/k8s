@@ -2,7 +2,7 @@ kind: PersistentVolume
 apiVersion: v1
 metadata:
   name: nexus-pv
-  namespace: builder
+  namespace: cd
   labels:
     pv: nexus-pv
 spec:
@@ -18,7 +18,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  namespace: builder
+  namespace: cd
   name: nexus-pvc
 spec:
   accessModes:
@@ -34,7 +34,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nexus3
-  namespace: builder
+  namespace: cd
   labels:
     k8s-app: nexus3
 spec:
@@ -46,7 +46,7 @@ spec:
     metadata:
       labels:
         k8s-app: nexus3
-      namespace: builder
+      namespace: cd
       name: nexus3
     spec:
       nodeSelector:
@@ -98,7 +98,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nexus3
-  namespace: builder
+  namespace: cd
   labels:
     k8s-app: nexus3
 spec:
@@ -119,7 +119,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nexus3-ingress
-  namespace: builder
+  namespace: cd
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
