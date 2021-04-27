@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-kubeadm init --pod-network-cidr "10.244.0.0/16" --image-repository "registry.mouse.center:1443/k8s"
+kubeadm init --pod-network-cidr "10.244.0.0/16" --image-repository "registry.mouse.center:1443"
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bash_profile
 source ~/.bash_profile
 

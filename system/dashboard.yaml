@@ -195,7 +195,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: registry.mouse.center:1443/k8s/kubernetesui/dashboard:v2.0.0
+          image: registry.mouse.center:1443/kubernetesui/dashboard:v2.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8443

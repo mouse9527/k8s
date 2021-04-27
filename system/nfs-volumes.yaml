@@ -88,7 +88,7 @@ spec:
       serviceAccountName: nfs-client-provisioner
       containers:
         - name: nfs-client-provisioner
-          image: registry.mouse.center:1443/quay/external_storage/nfs-client-provisioner:latest
+          image: registry.mouse.center:1443/external_storage/nfs-client-provisioner:latest
           volumeMounts:
             - name: nfs-client-root
               mountPath: /persistentvolumes

@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: users
-          image: registry.mouse.center:1443/mouse/users/users
+          image: registry.mouse.center:1443/users/users
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
