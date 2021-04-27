@@ -171,7 +171,6 @@ metadata:
   name: gocd-ingress
   namespace: cd
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   rules:
