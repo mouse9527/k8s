@@ -12,7 +12,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: nas.lan
+    server: nas
     path: /mnt/Database/k8s/nexus3
 ---
 kind: PersistentVolumeClaim

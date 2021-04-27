@@ -96,13 +96,13 @@ spec:
             - name: PROVISIONER_NAME
               value: nfs-storage
             - name: NFS_SERVER
-              value: nas.lan
+              value: nas
             - name: NFS_PATH
               value: /mnt/Database/k8s
       volumes:
         - name: nfs-client-root
           nfs:
-            server: nas.lan
+            server: nas
             path: /mnt/Database/k8s
 ---
 apiVersion: storage.k8s.io/v1

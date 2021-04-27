@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: users-key
           nfs:
-            server: nas.lan
+            server: nas
             path: /mnt/Database/k8s/users
             readOnly: true
 ---

@@ -12,7 +12,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: nas.lan
+    server: nas
     path: /mnt/Database/k8s/gocd/data
 ---
 kind: PersistentVolumeClaim
@@ -44,7 +44,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: nas.lan
+    server: nas
     path: /mnt/Database/k8s/gocd/go
 ---
 kind: PersistentVolumeClaim
@@ -76,7 +76,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: nas.lan
+    server: nas
     path: /mnt/Database/k8s/gocd/working
 ---
 kind: PersistentVolumeClaim

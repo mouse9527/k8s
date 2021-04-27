@@ -13,7 +13,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: nas.lan
+    server: nas
     path: /mnt/Database/video/V
 ---
 kind: PersistentVolumeClaim
@@ -45,7 +45,7 @@ spec:
     - ReadWriteMany
   volumeMode: Filesystem
   nfs:
-    server: nas.lan
+    server: nas
     path: /mnt/Database/k8s/downloader/config
 ---
 kind: PersistentVolumeClaim
