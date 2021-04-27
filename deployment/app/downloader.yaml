@@ -87,7 +87,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: downloader
-          image: docker-repository.mouse.center:1443/p3terx/aria2-pro
+          image: registry.mouse.center:1443/p3terx/aria2-pro
           ports:
             - containerPort: 6800
               name: rpc
@@ -140,7 +140,7 @@ spec:
             - mountPath: /config
               name: downloader-config
         - name: downloader-web
-          image: docker-repository.mouse.center:1443/p3terx/ariang
+          image: registry.mouse.center:1443/p3terx/ariang
           ports:
             - containerPort: 6880
               protocol: TCP

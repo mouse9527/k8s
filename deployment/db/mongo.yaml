@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: mongo
-          image: docker-repository.mouse.center:1443/mongo:4.4.3
+          image: registry.mouse.center:1443/mongo:4.4.3
           command:
             - mongod
             - "--replSet"

@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
     - name: gocd-agent-kubectl
-      image: docker-repository.mouse.center:1443/gocd-agent-kubectl
+      image: registry.mouse.center:1443/mouse/gocd-agent-kubectl
       volumeMounts:
         - mountPath: /root/.kube/config
           name: gocd-agent-config

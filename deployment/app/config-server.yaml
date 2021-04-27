@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: config-server
-          image: docker-repository.mouse.center:1443/config-server
+          image: registry.mouse.center:1443/mouse/config-server
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
