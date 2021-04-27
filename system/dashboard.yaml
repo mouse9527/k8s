@@ -320,7 +320,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
-    - host: dashboard.mouse.center
+    - host: k8s.mouse.center
       http:
         paths:
           - path: /
