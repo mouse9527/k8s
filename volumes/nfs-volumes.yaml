@@ -88,7 +88,7 @@ spec:
       serviceAccountName: nfs-client-provisioner
       containers:
         - name: nfs-client-provisioner
-          image: docker-repository.mouse.center:1443/external_storage/nfs-client-provisioner:latest
+          image: registry.mouse.center:1443/quay/external_storage/nfs-client-provisioner:latest
           volumeMounts:
             - name: nfs-client-root
               mountPath: /persistentvolumes
@@ -103,7 +103,7 @@ spec:
         - name: nfs-client-root
           nfs:
             server: nas.lan
-            path: /volume1/k8s
+            path: /mnt/Database/k8s
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
