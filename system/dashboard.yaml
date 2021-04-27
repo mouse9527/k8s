@@ -300,3 +300,26 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
+
+---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: k8s-dashboard-ingress
+  namespace: kubernetes-dashboard
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  rules:
+    - host: k8s.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes-dashboard
+                port:
+                  number: 443
