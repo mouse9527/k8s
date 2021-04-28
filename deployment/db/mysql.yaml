@@ -13,6 +13,39 @@ spec:
       targetPort: 3306
 
 ---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: mysql-data-pv
+  namespace: db
+  labels:
+    pv: mysql-data-pv
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: nas
+    path: /mnt/Database/k8s/mysql/data
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mysql-data-pvc
+  namespace: db
+spec:
+  selector:
+    matchLabels:
+      pv: mysql-data-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+
+---
 
 kind: StatefulSet
 apiVersion: apps/v1
@@ -50,6 +83,5 @@ spec:
               name: data
       volumes:
         - name: data
-          nfs:
-            path: /mnt/Database/k8s/mysql/data
-            server: nas
+          persistentVolumeClaim:
+            claimName: mysql-data-pvc
