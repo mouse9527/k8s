@@ -1,35 +1,36 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-replication
-  labels:
-    db: mongo-replication
+  namespace: db
+  name: mongo
 spec:
   ports:
     - port: 27017
       targetPort: 27017
   selector:
-    db: mongo-replication
+    k8s-app: mongo
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  name: mongo
   namespace: db
-  name: mongo-replication
   labels:
-    db: mongo-replication
+    k8s-app: mongo
 spec:
   selector:
     matchLabels:
-      db: mongo-replication
-  serviceName: mongo-replication
+      k8s-app: mongo
+  serviceName: mongo
   replicas: 3
   template:
     metadata:
-      name: mongo-replication
+      name: mongo
       namespace: db
       labels:
-        db: mongo-replication
+        k8s-app: mongo
     spec:
       containers:
         - name: mongo
@@ -46,10 +47,10 @@ spec:
             - containerPort: 27017
           volumeMounts:
             - mountPath: /data/db
-              name: mongo-replication-storage
+              name: mongo-persistent-storage
   volumeClaimTemplates:
     - metadata:
-        name: mongo-replication-storage
+        name: mongo-persistent-storage
       spec:
         storageClassName: "nfs-sc"
         accessModes: [ "ReadWriteOnce" ]
