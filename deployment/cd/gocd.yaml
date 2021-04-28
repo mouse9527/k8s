@@ -171,7 +171,7 @@ metadata:
   name: gocd-ingress
   namespace: cd
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   rules:
     - host: cd.mouse.center
