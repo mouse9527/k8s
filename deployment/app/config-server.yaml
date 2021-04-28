@@ -1,21 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: app
+  name: config-server
+spec:
+  selector:
+    app: config-server
+  ports:
+    - port: 80
+      targetPort: 8080
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: config-server
   namespace: app
   labels:
-    k8s-app: config-server
+    app: config-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: config-server
+      app: config-server
   template:
     metadata:
       namespace: app
       name: config-server
       labels:
-        k8s-app: config-server
+        app: config-server
     spec:
       containers:
         - name: config-server
@@ -36,15 +48,3 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 10
             failureThreshold: 6
----
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: app
-  name: config-server
-spec:
-  selector:
-    k8s-app: config-server
-  ports:
-    - port: 80
-      targetPort: 8080
