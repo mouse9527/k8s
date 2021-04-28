@@ -55,7 +55,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   namespace: db
-  name: mongo-0
+  name: mongo-1
   labels:
     k8s-app: mongo-1
 spec:
@@ -107,7 +107,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   namespace: db
-  name: mongo-0
+  name: mongo-2
   labels:
     k8s-app: mongo-2
 spec:
