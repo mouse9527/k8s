@@ -1,22 +1,33 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: app
+  name: users
+spec:
+  selector:
+    app: users
+  ports:
+    - port: 80
+      targetPort: 8080
+---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: users
   namespace: app
   labels:
-    k8s-app: users
+    app: users
 spec:
-  serviceName: users
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: users
+      app: users
   template:
     metadata:
       namespace: app
       name: users
       labels:
-        k8s-app: users
+        app: users
     spec:
       containers:
         - name: users
@@ -49,18 +60,6 @@ spec:
             server: nas
             path: /mnt/Database/k8s/users
             readOnly: true
----
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: app
-  name: users
-spec:
-  selector:
-    k8s-app: users
-  ports:
-    - port: 80
-      targetPort: 8080
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
