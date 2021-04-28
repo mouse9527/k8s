@@ -1,12 +1,11 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: config-server
   namespace: app
   labels:
     k8s-app: config-server
 spec:
-  serviceName: config-server
   replicas: 1
   selector:
     matchLabels:
