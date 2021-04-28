@@ -64,4 +64,4 @@ spec:
         - name: data
           nfs:
             path: /mnt/Database/k8s/mysql/data
-            server: nfs
+            server: nas
