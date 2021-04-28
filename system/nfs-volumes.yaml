@@ -67,16 +67,13 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   name: nfs-client-provisioner
   labels:
     app: nfs-client-provisioner
   namespace: nfs-voumes
 spec:
-  replicas: 3
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       app: nfs-client-provisioner
