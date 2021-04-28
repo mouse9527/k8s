@@ -159,8 +159,8 @@ metadata:
     k8s-app: gocd
 spec:
   ports:
-    - port: 443
-      name: https
+    - port: 80
+      name: http
       targetPort: 8153
   selector:
     k8s-app: gocd
@@ -181,6 +181,6 @@ spec:
               service:
                 name: gocd
                 port:
-                  number: 443
+                  number: 80
             path: /
             pathType: Prefix
