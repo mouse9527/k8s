@@ -159,8 +159,8 @@ metadata:
     k8s-app: gocd
 spec:
   ports:
-    - port: 80
-      name: http
+    - port: 443
+      name: https
       targetPort: 8153
   selector:
     k8s-app: gocd
@@ -171,7 +171,7 @@ metadata:
   name: gocd-ingress
   namespace: cd
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   rules:
     - host: cd.mouse.center
@@ -181,6 +181,6 @@ spec:
               service:
                 name: gocd
                 port:
-                  number: 80
+                  number: 443
             path: /
             pathType: Prefix
