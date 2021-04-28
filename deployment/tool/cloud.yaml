@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud
+  namespace: tool
+  labels:
+    app: cloud
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: cloud
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloud-env-cfg
+  namespace: db
+data:
+  MYSQL_DATABASE: "nextcloud"
+  MYSQL_USER: "nextcloud"
+  MYSQL_HOST: "mysql.db"
+  REDIS_HOST: "redis.db"
+
+---
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: tool
+  name: cloud
+  labels:
+    app: cloud
+spec:
+  selector:
+    matchLabels:
+      app: cloud
+  template:
+    metadata:
+      name: cloud
+      namespace: tool
+      labels:
+        app: cloud
+    spec:
+      containers:
+        - name: nextcloud
+          image: registry.mouse.center:1443/nextcloud
+          envFrom:
+            - configMapRef:
+                name: cloud-env-cfg
+          env:
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: db/mysql-secert
+          ports:
+            - containerPort: 80
+              name: web
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            failureThreshold: 6
+          volumeMounts:
+            - mountPath: /var/www/html
+              name: nextcloud
+      volumes:
+        - name: nextcloud
+          nfs:
+            path: /mnt/Database/k8s/cloud
+            server: nas
+
+---
+
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: cloud-ingress
+  namespace: tool
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: cloud.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cloud
+                port:
+                  number: 80
