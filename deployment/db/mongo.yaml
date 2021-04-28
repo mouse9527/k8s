@@ -5,6 +5,9 @@ metadata:
   labels:
     db: mongo-replication
 spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
   selector:
     db: mongo-replication
 ---
