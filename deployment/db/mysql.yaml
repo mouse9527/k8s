@@ -78,6 +78,18 @@ spec:
                   name: mysql-secert
           ports:
             - containerPort: 3306
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
+          readinessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            failureThreshold: 6
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: data
