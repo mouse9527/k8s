@@ -972,7 +972,7 @@ data:
 
             {{ if not (empty $location.Rewrite.AppRoot) }}
             if ($uri = /) {
-                return 302 $scheme://$http_host{{ $location.Rewrite.AppRoot }};
+                return 302 https://$http_host{{ $location.Rewrite.AppRoot }};
             }
             {{ end }}
 
