@@ -19,6 +19,7 @@ metadata:
   name: cloud-env-cfg
   namespace: db
 data:
+  MYSQL_PASSWORD: "970210"
   MYSQL_DATABASE: "nextcloud"
   MYSQL_USER: "nextcloud"
   MYSQL_HOST: "mysql.db"
@@ -50,12 +51,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: cloud-env-cfg
-          env:
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  key: password
-                  name: db/mysql-secert
           ports:
             - containerPort: 80
               name: web
