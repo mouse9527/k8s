@@ -239,11 +239,11 @@ spec:
               name: nextcloud
             - mountPath: /var/www/html/data
               name: user
-            - mountPath: /var/www/html/data/video
+            - mountPath: /var/www/html/data/public/files/video
               name: video
-            - mountPath: /var/www/html/data/share
+            - mountPath: /var/www/html/data/public/files/share
               name: share
-            - mountPath: /var/www/html/data/music
+            - mountPath: /var/www/html/data/public/files/music
               name: music
       volumes:
         - name: nextcloud
