@@ -1,3 +1,69 @@
+# pvc start
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: downloader-pv
+  namespace: tool
+  labels:
+    pv: downloader-pv
+spec:
+  capacity:
+    storage: 500Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: nas
+    path: /mnt/Database/video/V
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: downloader-pvc
+  namespace: tool
+spec:
+  selector:
+    matchLabels:
+      pv: downloader-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: downloader-config-pv
+  namespace: tool
+  labels:
+    pv: downloader-config-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  nfs:
+    server: nas
+    path: /mnt/Database/k8s/downloader/config
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: tool
+  name: downloader-config-pvc
+spec:
+  selector:
+    matchLabels:
+      pv: downloader-config-pv
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+# pvc end
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -92,13 +158,11 @@ spec:
             failureThreshold: 6
       volumes:
         - name: downloader-data
-          nfs:
-            path: /mnt/Database/video/V
-            server: nas
+          persistentVolumeClaim:
+            claimName: downloader-pvc
         - name: downloader-config
-          nfs:
-            path: /mnt/Database/k8s/downloader/config
-            server: nas
+          persistentVolumeClaim:
+            claimName: downloader-config-pvc
 ---
 apiVersion: v1
 kind: Service
