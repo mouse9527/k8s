@@ -86,18 +86,18 @@ spec:
           ports:
             - containerPort: 80
               name: web
-          livenessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 60
-            periodSeconds: 20
-            failureThreshold: 6
-          readinessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 60
-            periodSeconds: 20
-            failureThreshold: 6
+#          livenessProbe:
+#            tcpSocket:
+#              port: 80
+#            initialDelaySeconds: 60
+#            periodSeconds: 20
+#            failureThreshold: 6
+#          readinessProbe:
+#            tcpSocket:
+#              port: 80
+#            initialDelaySeconds: 60
+#            periodSeconds: 20
+#            failureThreshold: 6
           volumeMounts:
             - mountPath: /var/www/html
               name: nextcloud
