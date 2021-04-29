@@ -1161,7 +1161,7 @@ data:
                 set $pass_server_port    $server_port;
                 {{ end }}
 
-                set $best_http_host      $http_host;
+                set $best_http_host      $host;
                 set $pass_port           $pass_server_port;
 
                 set $proxy_alternative_upstream_name "";
