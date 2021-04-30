@@ -270,6 +270,7 @@ metadata:
   namespace: tool
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-body-size: "102400M"
 spec:
   rules:
     - host: cloud.mouse.center
