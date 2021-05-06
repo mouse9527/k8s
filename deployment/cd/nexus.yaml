@@ -59,13 +59,6 @@ spec:
             - containerPort: 8081
               name: web
               protocol: TCP
-          resources:
-            limits:
-              cpu: 1000m
-              memory: 2Gi
-            requests:
-              cpu: 500m
-              memory: 512Mi
           volumeMounts:
             - name: nexus-data
               mountPath: /nexus-data
