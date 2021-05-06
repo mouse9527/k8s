@@ -53,7 +53,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: nexus3
-          image: registry.mouse.center:1443/sonatype/nexus3
+          image: sonatype/nexus3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081
