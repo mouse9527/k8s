@@ -59,20 +59,6 @@ spec:
             - containerPort: 8081
               name: web
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8081
-            initialDelaySeconds: 300
-            periodSeconds: 10
-            failureThreshold: 6
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8081
-            initialDelaySeconds: 300
-            periodSeconds: 10
-            failureThreshold: 6
           resources:
             limits:
               cpu: 1000m
