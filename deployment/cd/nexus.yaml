@@ -59,12 +59,6 @@ spec:
             - containerPort: 8081
               name: web
               protocol: TCP
-            - containerPort: 5000
-              name: docker-proxy
-              protocol: TCP
-            - containerPort: 5001
-              name: docker-push
-              protocol: TCP
           livenessProbe:
             httpGet:
               path: /
@@ -106,12 +100,6 @@ spec:
     - port: 80
       name: http
       targetPort: 8081
-    - port: 81
-      name: docker-repository
-      targetPort: 5000
-    - port: 82
-      name: docker-push
-      targetPort: 5001
   selector:
     k8s-app: nexus3
 ---
@@ -122,10 +110,10 @@ metadata:
   namespace: cd
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/proxy-body-size: 10000m
+    nginx.ingress.kubernetes.io/proxy-body-size: 10240M
 spec:
   rules:
-    - host: nexus.mouse.center
+    - host: registry.mouse.center
       http:
         paths:
           - path: /
@@ -135,23 +123,3 @@ spec:
                 name: nexus3
                 port:
                   number: 80
-    - host: docker-repository.mouse.center
-      http:
-        paths:
-          - backend:
-              service:
-                name: nexus3
-                port:
-                  number: 81
-            path: /
-            pathType: Prefix
-    - host: docker-push.mouse.center
-      http:
-        paths:
-          - backend:
-              service:
-                name: nexus3
-                port:
-                  number: 82
-            path: /
-            pathType: Prefix
