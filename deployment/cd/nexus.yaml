@@ -63,14 +63,14 @@ spec:
             httpGet:
               path: /
               port: 8081
-            initialDelaySeconds: 180
+            initialDelaySeconds: 300
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             httpGet:
               path: /
               port: 8081
-            initialDelaySeconds: 180
+            initialDelaySeconds: 300
             periodSeconds: 10
             failureThreshold: 6
           resources:
