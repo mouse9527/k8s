@@ -123,7 +123,7 @@ spec:
                   name: downloader-secret
                   key: secret
             - name: RPC_PORT
-              value: "1443"
+              value: "6800"
             - name: LISTEN_PORT
               value: "6888"
             - name: DISK_CACHE
@@ -190,6 +190,7 @@ spec:
     - port: 6800
       name: rpc
       targetPort: 6800
+      nodePort: 30680
   selector:
     k8s-app: downloader
 ---
@@ -215,7 +216,20 @@ spec:
                 name: downloader
                 port:
                   number: 80
-          - path: /jsonrpc
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: downloader-rpc-ingress
+  namespace: tool
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: downloader-rpc.mouse.center
+      http:
+        paths:
+          - path: /
             pathType: Prefix
             backend:
               service:
