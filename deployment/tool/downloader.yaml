@@ -190,7 +190,6 @@ spec:
     - port: 6800
       name: rpc
       targetPort: 6800
-      nodePort: 30680
   selector:
     k8s-app: downloader
 ---
