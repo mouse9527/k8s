@@ -123,7 +123,7 @@ spec:
                   name: downloader-secret
                   key: secret
             - name: RPC_PORT
-              value: "6800"
+              value: "1443"
             - name: LISTEN_PORT
               value: "6888"
             - name: DISK_CACHE
