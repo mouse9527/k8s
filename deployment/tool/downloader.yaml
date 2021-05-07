@@ -216,20 +216,7 @@ spec:
                 name: downloader
                 port:
                   number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: downloader-rpc-ingress
-  namespace: tool
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-spec:
-  rules:
-    - host: downloader-rpc.mouse.center
-      http:
-        paths:
-          - path: /
+          - path: /jsonrpc
             pathType: Prefix
             backend:
               service:
