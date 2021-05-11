@@ -135,8 +135,8 @@ spec:
             - name: TZ
               value: Asia/Shanghai
           volumeMounts:
-            - mountPath: /downloads
-              name: downloader-data
+#            - mountPath: /downloads
+#              name: downloader-data
             - mountPath: /config
               name: downloader-config
         - name: downloader-web
@@ -187,10 +187,9 @@ spec:
       protocol: UDP
       targetPort: 6888
       nodePort: 30688
-    - port: 6800
+    - port: 443
       name: rpc
       targetPort: 6800
-      nodePort: 30680
   selector:
     k8s-app: downloader
 ---
@@ -216,23 +215,10 @@ spec:
                 name: downloader
                 port:
                   number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: downloader-rpc-ingress
-  namespace: tool
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-spec:
-  rules:
-    - host: downloader-rpc.mouse.center
-      http:
-        paths:
-          - path: /
+          - path: /jsonrpc
             pathType: Prefix
             backend:
               service:
                 name: downloader
                 port:
-                  number: 6800
+                  number: 443
