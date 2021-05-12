@@ -93,10 +93,10 @@ spec:
               name: rpc
               protocol: TCP
             - containerPort: 6888
-              name: tcp
+              name: bt
               protocol: TCP
             - containerPort: 6888
-              name: udp
+              name: dht
               protocol: UDP
           livenessProbe:
             tcpSocket:
@@ -112,11 +112,11 @@ spec:
             failureThreshold: 6
           env:
             - name: PUID
-              value: "65534"
+              value: "0"
             - name: PGID
-              value: "65534"
+              value: "0"
             - name: UMASK_SET
-              value: "022"
+              value: "000"
             - name: RPC_SECRET
               valueFrom:
                 secretKeyRef:
@@ -144,6 +144,7 @@ spec:
           ports:
             - containerPort: 6880
               protocol: TCP
+              name: http
           livenessProbe:
             tcpSocket:
               port: 6880
@@ -175,19 +176,19 @@ spec:
   type: NodePort
   ports:
     - port: 80
-      name: web
+      name: http
       targetPort: 6880
     - port: 6888
-      name: tcp
+      name: bt
       protocol: TCP
       targetPort: 6888
       nodePort: 30688
     - port: 6888
-      name: udp
+      name: dht
       protocol: UDP
       targetPort: 6888
       nodePort: 30688
-    - port: 443
+    - port: 6800
       name: rpc
       targetPort: 6800
   selector:
@@ -214,11 +215,11 @@ spec:
               service:
                 name: downloader
                 port:
-                  number: 80
+                  - name: web
           - path: /jsonrpc
             pathType: Prefix
             backend:
               service:
                 name: downloader
                 port:
-                  number: 443
+                  name: rpc
