@@ -194,6 +194,16 @@ spec:
     requests:
       storage: 10240Gi
 ---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloud-crontab-cfg
+  namespace: tool
+data:
+  root: |
+    */5  *  *  *  * php -f /var/www/html/cron.php
+    */1  *  *  *  * php -f /var/www/html/occ files:scan -p /var/www/html/data/__groupfolders/
+---
 
 kind: Deployment
 apiVersion: apps/v1
@@ -216,11 +226,6 @@ spec:
       containers:
         - name: nextcloud
           image: registry.mouse.center:1443/nextcloud:fpm-alpine-cron
-          command:
-            - /bin/sh
-          args:
-            - -c
-            - "echo -e '*/5  *  *  *  * php -f /var/www/html/cron.php\n*/1  *  *  *  * php -f /var/www/html/occ files:scan -p /var/www/html/data/__groupfolders/' | crontab -u root -"
           envFrom:
             - configMapRef:
                 name: cloud-env-cfg
@@ -250,6 +255,9 @@ spec:
               name: share
             - mountPath: /var/www/html/data/__groupfolders/3
               name: music
+            - mountPath: /etc/crontabs/root
+              name: crontab
+              subPath: root
       volumes:
         - name: nextcloud
           persistentVolumeClaim:
@@ -266,6 +274,9 @@ spec:
         - name: music
           persistentVolumeClaim:
             claimName: cloud-music-pvc
+        - name: crontab
+          configMap:
+            name: cloud-crontab-cfg
 ---
 
 kind: Ingress
