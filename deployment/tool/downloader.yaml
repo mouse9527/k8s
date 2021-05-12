@@ -2,10 +2,10 @@
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: downloader-pv
+  name: downloader-video-pv
   namespace: tool
   labels:
-    pv: downloader-pv
+    pv: downloader-video-pv
 spec:
   capacity:
     storage: 500Gi
@@ -14,17 +14,17 @@ spec:
   volumeMode: Filesystem
   nfs:
     server: nas
-    path: /mnt/Database/video/V
+    path: /mnt/Database/video
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: downloader-pvc
+  name: downloader-video-pvc
   namespace: tool
 spec:
   selector:
     matchLabels:
-      pv: downloader-pv
+      pv: downloader-video-pv
   accessModes:
     - ReadWriteMany
   resources:
@@ -135,8 +135,8 @@ spec:
             - name: TZ
               value: Asia/Shanghai
           volumeMounts:
-#            - mountPath: /downloads
-#              name: downloader-data
+            - mountPath: /downloads/video
+              name: downloader-video
             - mountPath: /config
               name: downloader-config
         - name: downloader-web
@@ -157,9 +157,9 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
       volumes:
-        - name: downloader-data
+        - name: downloader-video
           persistentVolumeClaim:
-            claimName: downloader-pvc
+            claimName: downloader-video-pvc
         - name: downloader-config
           persistentVolumeClaim:
             claimName: downloader-config-pvc
