@@ -116,7 +116,7 @@ spec:
             - name: PGID
               value: "0"
             - name: UMASK_SET
-              value: "000"
+              value: "022"
             - name: RPC_SECRET
               valueFrom:
                 secretKeyRef:
