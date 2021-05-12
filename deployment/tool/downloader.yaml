@@ -171,7 +171,7 @@ metadata:
   name: downloader
   namespace: tool
   labels:
-      k8s-app: downloader
+    k8s-app: downloader
 spec:
   type: NodePort
   ports:
@@ -215,7 +215,7 @@ spec:
               service:
                 name: downloader
                 port:
-                  - number: 80
+                  number: 80
           - path: /jsonrpc
             pathType: Prefix
             backend:
