@@ -10,7 +10,7 @@ spec:
   capacity:
     storage: 500Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   volumeMode: Filesystem
   nfs:
     server: nas
@@ -26,7 +26,7 @@ spec:
     matchLabels:
       pv: downloader-video-pv
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 500Gi
@@ -42,7 +42,7 @@ spec:
   capacity:
     storage: 1Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   volumeMode: Filesystem
   nfs:
     server: nas
@@ -58,7 +58,7 @@ spec:
     matchLabels:
       pv: downloader-config-pv
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
@@ -101,13 +101,13 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 6800
-            initialDelaySeconds: 60
+            initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
               port: 6800
-            initialDelaySeconds: 60
+            initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 6
           env:
