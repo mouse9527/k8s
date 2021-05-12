@@ -215,7 +215,12 @@ spec:
     spec:
       containers:
         - name: nextcloud
-          image: registry.mouse.center:1443/nextcloud
+          image: registry.mouse.center:1443/nextcloud:fpm-alpine-cron
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - "echo -e '*/5  *  *  *  * php -f /var/www/html/cron.php\n*/1  *  *  *  * php -f /var/www/html/occ files:scan -p /var/www/html/data/__groupfolders/' | crontab -u root -"
           envFrom:
             - configMapRef:
                 name: cloud-env-cfg
@@ -239,11 +244,11 @@ spec:
               name: nextcloud
             - mountPath: /var/www/html/data
               name: user
-            - mountPath: /var/www/html/data/public/files/video
+            - mountPath: /var/www/html/data/__groupfolders/1
               name: video
-            - mountPath: /var/www/html/data/public/files/share
+            - mountPath: /var/www/html/data/__groupfolders/2
               name: share
-            - mountPath: /var/www/html/data/public/files/music
+            - mountPath: /var/www/html/data/__groupfolders/3
               name: music
       volumes:
         - name: nextcloud
