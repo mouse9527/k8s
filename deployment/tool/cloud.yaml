@@ -200,7 +200,7 @@ metadata:
   name: cloud-crontab-cfg
   namespace: tool
 data:
-  root: |
+  www-data: |
     */5  *  *  *  * php -f /var/www/html/cron.php
     */1  *  *  *  * php -f /var/www/html/occ files:scan -p /var/www/html/data/__groupfolders/
 ---
@@ -225,7 +225,7 @@ spec:
     spec:
       containers:
         - name: nextcloud
-          image: registry.mouse.center:1443/nextcloud:fpm-alpine-cron
+          image: registry.mouse.center:1443/nextcloud:fpm-alpine
           envFrom:
             - configMapRef:
                 name: cloud-env-cfg
@@ -255,9 +255,9 @@ spec:
               name: share
             - mountPath: /var/www/html/data/__groupfolders/3
               name: music
-            - mountPath: /etc/crontabs/root
+            - mountPath: /var/spool/cron/crontabs/www-data
               name: crontab
-              subPath: root
+              subPath: www-data
       volumes:
         - name: nextcloud
           persistentVolumeClaim:
