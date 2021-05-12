@@ -215,11 +215,11 @@ spec:
               service:
                 name: downloader
                 port:
-                  number: 80
+                  name: web
           - path: /jsonrpc
             pathType: Prefix
             backend:
               service:
                 name: downloader
                 port:
-                  number: 6800
+                  name: rpc
