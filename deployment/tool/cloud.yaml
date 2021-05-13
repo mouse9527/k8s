@@ -394,11 +394,6 @@ spec:
       containers:
         - name: nextcloud
           image: registry.mouse.center:1443/nextcloud:fpm-alpine-cron
-          command:
-            - /bin/sh
-          args:
-            - -c
-            - /cron.sh
           ports:
             - containerPort: 9000
               name: php-handler
