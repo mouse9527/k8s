@@ -57,7 +57,7 @@ spec:
     spec:
       containers:
         - name: es0
-          image: registry.mouse.center:1443/elasticsearch/elasticsearch:7.12.1
+          image: registry.mouse.center:1443/elasticsearch:7.12.1
           envFrom:
             - configMapRef:
                 name: es-cfg
@@ -125,7 +125,7 @@ spec:
     spec:
       containers:
         - name: es1
-          image: registry.mouse.center:1443/elasticsearch/elasticsearch:7.12.1
+          image: registry.mouse.center:1443/elasticsearch:7.12.1
           envFrom:
             - configMapRef:
                 name: es-cfg
@@ -193,7 +193,7 @@ spec:
     spec:
       containers:
         - name: es2
-          image: registry.mouse.center:1443/elasticsearch/elasticsearch:7.12.1
+          image: registry.mouse.center:1443/elasticsearch:7.12.1
           envFrom:
             - configMapRef:
                 name: es-cfg
