@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-web-client
+  namespace: db
+spec:
+  selector:
+    app: db-web-client
+  ports:
+    - port: 80
+      name: web
+      targetPort: 3000
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: db
+  name: db-web-client
+spec:
+  selector:
+    matchLabels:
+      app: db-web-client
+  template:
+    metadata:
+      name: db-web-client
+      namespace: db
+      labels:
+        app: db-web-client
+    spec:
+      containers:
+        - name: web
+          image: registry.mouse.center:1443/sqlpad/sqlpad
+          envFrom:
+            - secretRef:
+                name: web-client-secret
+          ports:
+            - containerPort: 3000
+              name: web
+          livenessProbe:
+            httpGet:
+              port: 3000
+              path: /
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              port: 3000
+              path: /
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 6
+          volumeMounts:
+            - mountPath: /var/lib/sqlpad
+              name: db-web-client
+      volumes:
+        - name: db-web-client
+          nfs:
+            path: /mnt/Database/k8s/db-web-client
+            server: nas
