@@ -57,3 +57,35 @@ spec:
         resources:
           requests:
             storage: 100Gi
+
+
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: db
+  name: mongo-0-pv
+  labels:
+    pv: mongo-0-pv
+spec:
+  nfs:
+    path: /mnt/Database/k8s/mongo/mongo-0
+    server: nas
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-0-pvc
+  namespace: db
+spec:
+  selector:
+    matchLabels:
+      pv: mongo-0-pv
+  accessModes:
+    - ReadWriteOnce
