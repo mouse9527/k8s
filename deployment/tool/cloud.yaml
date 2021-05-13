@@ -393,7 +393,7 @@ spec:
     spec:
       containers:
         - name: nextcloud
-          image: registry.mouse.center:1443/nextcloud:fpm-alpine
+          image: registry.mouse.center:1443/nextcloud:fpm-alpine-cron
           command:
             - /bin/sh
           args:
