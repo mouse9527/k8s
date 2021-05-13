@@ -48,4 +48,4 @@ COPY supervisord.conf /
 
 ENV NEXTCLOUD_UPDATE=1
 
-ENTRYPOINT ["/cron.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
