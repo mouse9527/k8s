@@ -9,7 +9,7 @@ spec:
   capacity:
     storage: 10240Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Filesystem
   nfs:
     server: nas
@@ -25,7 +25,7 @@ spec:
     matchLabels:
       pv: cloud-pv
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10240Gi
@@ -42,7 +42,7 @@ spec:
   capacity:
     storage: 10240Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Filesystem
   nfs:
     server: nas
@@ -59,7 +59,7 @@ spec:
     matchLabels:
       pv: cloud-user-pv
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10240Gi
@@ -76,7 +76,7 @@ spec:
   capacity:
     storage: 10240Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Filesystem
   nfs:
     server: nas
@@ -93,7 +93,7 @@ spec:
     matchLabels:
       pv: cloud-video-pv
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10240Gi
@@ -110,7 +110,7 @@ spec:
   capacity:
     storage: 10240Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Filesystem
   nfs:
     server: nas
@@ -127,7 +127,7 @@ spec:
     matchLabels:
       pv: cloud-share-pv
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10240Gi
@@ -144,7 +144,7 @@ spec:
   capacity:
     storage: 10240Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   volumeMode: Filesystem
   nfs:
     server: nas
@@ -161,7 +161,7 @@ spec:
     matchLabels:
       pv: cloud-music-pv
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10240Gi
