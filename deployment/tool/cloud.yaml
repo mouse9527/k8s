@@ -394,30 +394,14 @@ spec:
       containers:
         - name: nextcloud
           image: registry.mouse.center:1443/nextcloud:fpm-alpine
-          ports:
-            - containerPort: 9000
-              name: php-handler
-          envFrom:
-            - configMapRef:
-                name: cloud-env-cfg
-          volumeMounts:
-            - mountPath: /var/www/html
-              name: nextcloud
-            - mountPath: /var/www/html/data
-              name: user
-            - mountPath: /var/www/html/data/public/files/video
-              name: video
-            - mountPath: /var/www/html/data/public/files/share
-              name: share
-            - mountPath: /var/www/html/data/public/files/music
-              name: music
-        - name: cron
-          image: registry.mouse.center:1443/nextcloud:fpm-alpine
           command:
             - /bin/sh
           args:
             - -c
             - /cron.sh
+          ports:
+            - containerPort: 9000
+              name: php-handler
           envFrom:
             - configMapRef:
                 name: cloud-env-cfg
