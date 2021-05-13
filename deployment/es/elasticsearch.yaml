@@ -18,9 +18,9 @@ metadata:
   namespace: es
   name: es-cfg
 data:
-  "cluster.name": es-cluster
-  "cluster.initial_master_nodes": es0, es1, es2
-  "bootstrap.memory_lock": true
+  cluster.name: "es-cluster"
+  cluster.initial_master_nodes: "es0, es1, es2"
+  bootstrap.memory_lock: "true"
   ES_JAVA_OPTS: "-Xms512m -Xmx512m"
 
 ---
