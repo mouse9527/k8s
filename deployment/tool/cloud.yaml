@@ -188,7 +188,7 @@ metadata:
 data:
   www-data: |
     */5  *  *  *  * php -f /var/www/html/cron.php
-    */1  *  *  *  * php -f /var/www/html/occ files:scan -p /var/www/html/data/__groupfolders/
+    */1  *  *  *  * php -f /var/www/html/occ files:scan public
 
 ---
 kind: ConfigMap
