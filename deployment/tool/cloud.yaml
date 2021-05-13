@@ -443,13 +443,13 @@ spec:
           livenessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 60
+            initialDelaySeconds: 30
             periodSeconds: 20
             failureThreshold: 6
           readinessProbe:
             tcpSocket:
               port: 80
-            initialDelaySeconds: 60
+            initialDelaySeconds: 30
             periodSeconds: 20
             failureThreshold: 6
           volumeMounts:
