@@ -846,7 +846,7 @@ spec:
     spec:
       containers:
         - name: nextcloud
-          image: registry.mouse.center:1443/nextcloud:fpm-alpine
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm
           ports:
             - containerPort: 9000
               name: php-handler
@@ -868,7 +868,7 @@ spec:
               name: php-fpm-cfg
               subPath: www.conf
         - name: cron
-          image: registry.mouse.center:1443/nextcloud:fpm-alpine
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm
           command:
             - /bin/sh
           args:
