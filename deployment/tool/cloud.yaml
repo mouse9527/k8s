@@ -186,7 +186,7 @@ metadata:
   name: cloud-crontab-cfg
   namespace: tool
 data:
-  www-data: |
+  root: |
     */5  *  *  *  * php -f /var/www/html/cron.php
     */1  *  *  *  * php -f /var/www/html/occ files:scan public
 
@@ -432,9 +432,9 @@ spec:
               name: share
             - mountPath: /var/www/html/data/public/files/music
               name: music
-            - mountPath: /var/spool/cron/crontabs/www-data
+            - mountPath: /var/spool/cron/crontabs/root
               name: crontab
-              subPath: www-data
+              subPath: root
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
