@@ -58,3 +58,24 @@ spec:
           nfs:
             path: /mnt/Database/k8s/db-web-client
             server: nas
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: db-web-client-ingress
+  namespace: db
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: db.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: db-web-client
+                port:
+                  name: web
