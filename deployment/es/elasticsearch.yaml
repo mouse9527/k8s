@@ -42,6 +42,17 @@ data:
   "discovery.seed_hosts": "es-cluster"
   "cluster.initial_master_nodes": "es-0,es-1,es-2"
   "ES_JAVA_OPTS": "-Xms512m -Xmx512m"
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: es-sysctl-cfg
+  namespace: es
+data:
+  sysctl.conf: |
+    vm.max_map_count=262144
+
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -72,6 +83,9 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-0
+            - mountPath: /etc/sysctl.conf
+              name: es-sysctl-cfg
+              subPath: sysctl.conf
           resources:
             limits:
               memory: 1Gi
@@ -82,6 +96,9 @@ spec:
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-0
             server: nas
+        - name: es-sysctl-cfg
+          configMap:
+            name: es-sysctl-cfg
 
 ---
 kind: Deployment
@@ -113,6 +130,9 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-1
+            - mountPath: /etc/sysctl.conf
+              name: es-sysctl-cfg
+              subPath: sysctl.conf
           resources:
             limits:
               memory: 1Gi
@@ -123,6 +143,9 @@ spec:
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-1
             server: nas
+        - name: es-sysctl-cfg
+          configMap:
+            name: es-sysctl-cfg
 
 ---
 kind: Deployment
@@ -154,6 +177,9 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-2
+            - mountPath: /etc/sysctl.conf
+              name: es-sysctl-cfg
+              subPath: sysctl.conf
           resources:
             limits:
               memory: 1Gi
@@ -164,3 +190,6 @@ spec:
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-2
             server: nas
+        - name: es-sysctl-cfg
+          configMap:
+            name: es-sysctl-cfg
