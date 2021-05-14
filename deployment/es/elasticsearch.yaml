@@ -33,9 +33,9 @@ spec:
   selector:
     es: es0
   ports:
-    - port: 9200
-      name: api
-      targetPort: 9200
+    - port: 9300
+      name: cluster
+      targetPort: 9300
 
 ---
 kind: Deployment
@@ -68,20 +68,23 @@ spec:
               value: es1, es2
           ports:
             - containerPort: 9200
-          readinessProbe:
-            httpGet:
-              port: 9200
-              path: /_cluster/health
-            initialDelaySeconds: 30
-            periodSeconds: 20
-            failureThreshold: 6
-          livenessProbe:
-            httpGet:
-              port: 9200
-              path: /_cluster/health
-            initialDelaySeconds: 30
-            periodSeconds: 20
-            failureThreshold: 6
+              name: api
+            - containerPort: 9300
+              name: cluster
+#          readinessProbe:
+#            httpGet:
+#              port: 9200
+#              path: /_cluster/health
+#            initialDelaySeconds: 30
+#            periodSeconds: 20
+#            failureThreshold: 6
+#          livenessProbe:
+#            httpGet:
+#              port: 9200
+#              path: /_cluster/health
+#            initialDelaySeconds: 30
+#            periodSeconds: 20
+#            failureThreshold: 6
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es0-data
@@ -101,9 +104,9 @@ spec:
   selector:
     es: es1
   ports:
-    - port: 9200
-      name: api
-      targetPort: 9200
+    - port: 9300
+      name: cluster
+      targetPort: 9300
 
 ---
 kind: Deployment
@@ -136,20 +139,23 @@ spec:
               value: es0, es2
           ports:
             - containerPort: 9200
-          readinessProbe:
-            httpGet:
-              port: 9200
-              path: /_cluster/health
-            initialDelaySeconds: 30
-            periodSeconds: 20
-            failureThreshold: 6
-          livenessProbe:
-            httpGet:
-              port: 9200
-              path: /_cluster/health
-            initialDelaySeconds: 30
-            periodSeconds: 20
-            failureThreshold: 6
+              name: api
+            - containerPort: 9300
+              name: cluster
+#          readinessProbe:
+#            httpGet:
+#              port: 9200
+#              path: /_cluster/health
+#            initialDelaySeconds: 30
+#            periodSeconds: 20
+#            failureThreshold: 6
+#          livenessProbe:
+#            httpGet:
+#              port: 9200
+#              path: /_cluster/health
+#            initialDelaySeconds: 30
+#            periodSeconds: 20
+#            failureThreshold: 6
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es1-data
@@ -169,9 +175,9 @@ spec:
   selector:
     es: es2
   ports:
-    - port: 9200
-      name: api
-      targetPort: 9200
+    - port: 9300
+      name: cluster
+      targetPort: 9300
 
 ---
 kind: Deployment
@@ -204,20 +210,23 @@ spec:
               value: es0, es1
           ports:
             - containerPort: 9200
-          readinessProbe:
-            httpGet:
-              port: 9200
-              path: /_cluster/health
-            initialDelaySeconds: 30
-            periodSeconds: 20
-            failureThreshold: 6
-          livenessProbe:
-            httpGet:
-              port: 9200
-              path: /_cluster/health
-            initialDelaySeconds: 30
-            periodSeconds: 20
-            failureThreshold: 6
+              name: api
+            - containerPort: 9300
+              name: cluster
+#          readinessProbe:
+#            httpGet:
+#              port: 9200
+#              path: /_cluster/health
+#            initialDelaySeconds: 30
+#            periodSeconds: 20
+#            failureThreshold: 6
+#          livenessProbe:
+#            httpGet:
+#              port: 9200
+#              path: /_cluster/health
+#            initialDelaySeconds: 30
+#            periodSeconds: 20
+#            failureThreshold: 6
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es2-data
