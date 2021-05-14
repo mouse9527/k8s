@@ -9,7 +9,7 @@ spec:
   selector:
     app: es
   ports:
-    - port: 80
+    - port: 9200
       targetPort: 9200
       protocol: TCP
       name: api
