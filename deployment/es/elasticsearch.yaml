@@ -44,16 +44,6 @@ data:
   "ES_JAVA_OPTS": "-Xms512m -Xmx512m"
 
 ---
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: es-sysctl-cfg
-  namespace: es
-data:
-  sysctl.conf: |
-    vm.max_map_count=262144
-
----
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -74,6 +64,11 @@ spec:
       containers:
         - name: es-0
           image: registry.mouse.center:1443/elasticsearch:7.12.1
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - "sysctl -w vm.max_map_count=262144"
           env:
             - name: "node.name"
               value: "es-0"
@@ -83,9 +78,6 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-0
-            - mountPath: /etc/sysctl.conf
-              name: es-sysctl-cfg
-              subPath: sysctl.conf
           resources:
             limits:
               memory: 1Gi
@@ -96,9 +88,6 @@ spec:
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-0
             server: nas
-        - name: es-sysctl-cfg
-          configMap:
-            name: es-sysctl-cfg
 
 ---
 kind: Deployment
@@ -121,6 +110,11 @@ spec:
       containers:
         - name: es-1
           image: registry.mouse.center:1443/elasticsearch:7.12.1
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - "sysctl -w vm.max_map_count=262144"
           env:
             - name: "node.name"
               value: "es-1"
@@ -130,9 +124,6 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-1
-            - mountPath: /etc/sysctl.conf
-              name: es-sysctl-cfg
-              subPath: sysctl.conf
           resources:
             limits:
               memory: 1Gi
@@ -143,9 +134,6 @@ spec:
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-1
             server: nas
-        - name: es-sysctl-cfg
-          configMap:
-            name: es-sysctl-cfg
 
 ---
 kind: Deployment
@@ -168,6 +156,11 @@ spec:
       containers:
         - name: es-2
           image: registry.mouse.center:1443/elasticsearch:7.12.1
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - "sysctl -w vm.max_map_count=262144"
           env:
             - name: "node.name"
               value: "es-2"
@@ -177,9 +170,6 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-2
-            - mountPath: /etc/sysctl.conf
-              name: es-sysctl-cfg
-              subPath: sysctl.conf
           resources:
             limits:
               memory: 1Gi
@@ -190,6 +180,3 @@ spec:
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-2
             server: nas
-        - name: es-sysctl-cfg
-          configMap:
-            name: es-sysctl-cfg
