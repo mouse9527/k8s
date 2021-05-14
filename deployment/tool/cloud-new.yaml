@@ -640,7 +640,7 @@ metadata:
   name: cloud-crontab-cfg
   namespace: tool
 data:
-  root: |
+  www-data: |
     */10  *  *  *  * php -f /var/www/html/cron.php
 
 ---
@@ -690,6 +690,9 @@ spec:
               name: nextcloud
             - mountPath: /var/www/html/data
               name: user
+            - mountPath: /var/spool/cron/crontabs/www-data
+              name: crontab
+              subPath: www-data
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
@@ -728,6 +731,9 @@ spec:
         - name: php-fpm-cfg
           configMap:
             name: cloud-php-fpm-cfg
+        - name: crontab
+          configMap:
+            name: cloud-crontab-cfg
 
 ---
 apiVersion: v1
