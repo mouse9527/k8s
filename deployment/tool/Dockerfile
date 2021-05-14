@@ -58,4 +58,6 @@ ENV NEXTCLOUD_UPDATE=1
 
 COPY downloader-web-auth.sh /
 
-CMD ["/bin/sh", "-c", "/downloader-web-auth.sh"]
+CMD ["/bin/sh", "-c", "downloader-web-auth.sh"]
+
+CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
