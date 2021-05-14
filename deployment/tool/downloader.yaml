@@ -1,69 +1,3 @@
-# pvc start
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: downloader-video-pv
-  namespace: tool
-  labels:
-    pv: downloader-video-pv
-spec:
-  capacity:
-    storage: 500Gi
-  accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/video
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: downloader-video-pvc
-  namespace: tool
-spec:
-  selector:
-    matchLabels:
-      pv: downloader-video-pv
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 500Gi
----
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: downloader-config-pv
-  namespace: tool
-  labels:
-    pv: downloader-config-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/k8s/downloader/config
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  namespace: tool
-  name: downloader-config-pvc
-spec:
-  selector:
-    matchLabels:
-      pv: downloader-config-pv
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-# pvc end
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -137,6 +71,8 @@ spec:
           volumeMounts:
             - mountPath: /downloads/video
               name: downloader-video
+            - mountPath: /downloads/share
+              name: downloads-share
             - mountPath: /config
               name: downloader-config
         - name: downloader-web
@@ -159,11 +95,17 @@ spec:
             failureThreshold: 6
       volumes:
         - name: downloader-video
-          persistentVolumeClaim:
-            claimName: downloader-video-pvc
+          nfs:
+            server: nas
+            path: /mnt/Database/video
         - name: downloader-config
-          persistentVolumeClaim:
-            claimName: downloader-config-pvc
+          nfs:
+            server: nas
+            path: /mnt/Database/k8s/downloader/config
+        - name: downloads-share
+          nfs:
+            path: /mnt/Database/share
+            server: nas
 ---
 apiVersion: v1
 kind: Service
