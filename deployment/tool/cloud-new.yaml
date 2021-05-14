@@ -640,7 +640,7 @@ metadata:
   name: cloud-crontab-cfg
   namespace: tool
 data:
-  www-data: |
+  root: |
     */10  *  *  *  * php -f /var/www/html/cron.php
 
 ---
@@ -690,9 +690,6 @@ spec:
               name: nextcloud
             - mountPath: /var/www/html/data
               name: user
-            - mountPath: /var/spool/cron/crontabs/www-data
-              name: crontab
-              subPath: www-data
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
@@ -716,6 +713,27 @@ spec:
             - mountPath: /etc/nginx/nginx.conf
               name: cloud-nginx-cfg
               subPath: nginx.conf
+        - name: cron
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - /cron.sh
+          envFrom:
+            - configMapRef:
+                name: cloud-env-cfg
+          volumeMounts:
+            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+              name: php-fpm-cfg
+              subPath: www.conf
+            - mountPath: /var/www/html
+              name: nextcloud
+            - mountPath: /var/www/html/data
+              name: user
+            - mountPath: /var/spool/cron/crontabs/root
+              name: crontab
+              subPath: root
       volumes:
         - name: nextcloud
           nfs:

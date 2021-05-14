@@ -46,14 +46,3 @@ RUN set -ex; \
     \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*
-
-RUN mkdir -p \
-    /var/log/supervisord \
-    /var/run/supervisord \
-;
-
-COPY supervisord.conf /
-
-ENV NEXTCLOUD_UPDATE=1
-
-CMD ["/usr/bin/supervisord", "-c", "/supervisord.conf"]
