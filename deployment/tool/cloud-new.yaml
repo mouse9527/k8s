@@ -640,8 +640,8 @@ metadata:
   name: cloud-crontab-cfg
   namespace: tool
 data:
-  root: |
-    */10  *  *  *  * php -f /var/www/html/cron.php
+  www-data: |
+    */5  *  *  *  * php -f /var/www/html/cron.php
 
 ---
 kind: ConfigMap
@@ -731,9 +731,9 @@ spec:
               name: nextcloud
             - mountPath: /var/www/html/data
               name: user
-            - mountPath: /var/spool/cron/crontabs/root
+            - mountPath: /var/spool/cron/crontabs/www-data
               name: crontab
-              subPath: root
+              subPath: www-data
       volumes:
         - name: nextcloud
           nfs:
