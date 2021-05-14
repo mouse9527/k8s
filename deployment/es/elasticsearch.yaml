@@ -1,237 +1,107 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: es
   namespace: es
+  labels:
+    app: es
 spec:
   selector:
     app: es
   ports:
     - port: 80
-      name: api
       targetPort: 9200
+      protocol: TCP
+      name: api
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: es
+  name: es-cluster
+  labels:
+    app: es
+spec:
+  selector:
+    app: es
+  ports:
+    - port: 9300
+      name: cluster
+      protocol: TCP
 
 ---
 kind: ConfigMap
 apiVersion: v1
 metadata:
+  name: es-cluster-cfg
   namespace: es
-  name: es-cfg
 data:
-  "cluster.name": "es-cluster"
-  "cluster.initial_master_nodes": "es0, es1, es2"
-  "bootstrap.memory_lock": "true"
-  "ES_JAVA_OPTS": "-Xms512m -Xmx512m"
-
+  elasticsearch.yml: |
+    cluster.name: "es-cluster"
+    node.name: "${POD_NAME}"
+    network.host: 0.0.0.0
+    discovery.seed_hosts: "es-cluster"
+    cluster.initial_master_nodes: "es-0,es-1,es-2"
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: es0
-  namespace: es
-spec:
-  selector:
-    es: es0
-  ports:
-    - port: 9300
-      name: cluster
-      targetPort: 9300
-
----
-kind: Deployment
 apiVersion: apps/v1
+kind: StatefulSet
 metadata:
+  name: es
   namespace: es
-  name: es0
+  labels:
+    app: es
 spec:
+  replicas: 3
+  serviceName: es
   selector:
     matchLabels:
-      es: es0
+      app: es
   template:
     metadata:
-      name: es0
-      namespace: es
       labels:
-        es: es0
         app: es
     spec:
       containers:
-        - name: es0
+        - name: es
           image: registry.mouse.center:1443/elasticsearch:7.12.1
-          envFrom:
-            - configMapRef:
-                name: es-cfg
           env:
-            - name: node.name
-              value: es0
-            - name: discovery.seed_hosts
-              value: es1, es2
-          ports:
-            - containerPort: 9200
-              name: api
-            - containerPort: 9300
-              name: cluster
-#          readinessProbe:
-#            httpGet:
-#              port: 9200
-#              path: /_cluster/health
-#            initialDelaySeconds: 30
-#            periodSeconds: 20
-#            failureThreshold: 6
-#          livenessProbe:
-#            httpGet:
-#              port: 9200
-#              path: /_cluster/health
-#            initialDelaySeconds: 30
-#            periodSeconds: 20
-#            failureThreshold: 6
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: ES_JAVA_OPTS
+              value: "-Xms512m -Xmx512m"
+          resources:
+            limits:
+              cpu: '1'
+              memory: 1Gi
+            requests:
+              cpu: '1'
+              memory: 1Gi
           volumeMounts:
-            - mountPath: /usr/share/elasticsearch/data
-              name: es0-data
+            - name: es-config
+              mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+              subPath: elasticsearch.yml
+            - name: ${POD_NAME}
+              mountPath: /usr/share/elasticsearch/data
       volumes:
-        - name: es0-data
+        - name: es-config
+          configMap:
+            name: es-cluster-cfg
+        - name: es-0
           nfs:
-            path: /mnt/Database/k8s/es/es0
+            path: /mnt/Database/k8s/elasticsearch/es-0
             server: nas
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: es1
-  namespace: es
-spec:
-  selector:
-    es: es1
-  ports:
-    - port: 9300
-      name: cluster
-      targetPort: 9300
-
----
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  namespace: es
-  name: es1
-spec:
-  selector:
-    matchLabels:
-      es: es1
-  template:
-    metadata:
-      name: es1
-      namespace: es
-      labels:
-        es: es1
-        app: es
-    spec:
-      containers:
-        - name: es1
-          image: registry.mouse.center:1443/elasticsearch:7.12.1
-          envFrom:
-            - configMapRef:
-                name: es-cfg
-          env:
-            - name: node.name
-              value: es1
-            - name: discovery.seed_hosts
-              value: es0, es2
-          ports:
-            - containerPort: 9200
-              name: api
-            - containerPort: 9300
-              name: cluster
-#          readinessProbe:
-#            httpGet:
-#              port: 9200
-#              path: /_cluster/health
-#            initialDelaySeconds: 30
-#            periodSeconds: 20
-#            failureThreshold: 6
-#          livenessProbe:
-#            httpGet:
-#              port: 9200
-#              path: /_cluster/health
-#            initialDelaySeconds: 30
-#            periodSeconds: 20
-#            failureThreshold: 6
-          volumeMounts:
-            - mountPath: /usr/share/elasticsearch/data
-              name: es1-data
-      volumes:
-        - name: es1-data
+        - name: es-1
           nfs:
-            path: /mnt/Database/k8s/es/es1
+            path: /mnt/Database/k8s/elasticsearch/es-1
             server: nas
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: es2
-  namespace: es
-spec:
-  selector:
-    es: es2
-  ports:
-    - port: 9300
-      name: cluster
-      targetPort: 9300
-
----
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  namespace: es
-  name: es2
-spec:
-  selector:
-    matchLabels:
-      es: es2
-  template:
-    metadata:
-      name: es2
-      namespace: es
-      labels:
-        es: es2
-        app: es
-    spec:
-      containers:
-        - name: es2
-          image: registry.mouse.center:1443/elasticsearch:7.12.1
-          envFrom:
-            - configMapRef:
-                name: es-cfg
-          env:
-            - name: node.name
-              value: es2
-            - name: discovery.seed_hosts
-              value: es0, es1
-          ports:
-            - containerPort: 9200
-              name: api
-            - containerPort: 9300
-              name: cluster
-#          readinessProbe:
-#            httpGet:
-#              port: 9200
-#              path: /_cluster/health
-#            initialDelaySeconds: 30
-#            periodSeconds: 20
-#            failureThreshold: 6
-#          livenessProbe:
-#            httpGet:
-#              port: 9200
-#              path: /_cluster/health
-#            initialDelaySeconds: 30
-#            periodSeconds: 20
-#            failureThreshold: 6
-          volumeMounts:
-            - mountPath: /usr/share/elasticsearch/data
-              name: es2-data
-      volumes:
-        - name: es2-data
+        - name: es-2
           nfs:
-            path: /mnt/Database/k8s/es/es2
+            path: /mnt/Database/k8s/elasticsearch/es-2
             server: nas
