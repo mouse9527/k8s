@@ -37,70 +37,121 @@ metadata:
   name: es-cluster-cfg
   namespace: es
 data:
-  elasticsearch.yml: |
-    cluster.name: "es-cluster"
-    node.name: "${POD_NAME}"
-    network.host: 0.0.0.0
-    discovery.seed_hosts: "es-cluster"
-    cluster.initial_master_nodes: "es-0,es-1,es-2"
+  "cluster.name": "es-cluster"
+  "node.name": "${POD_NAME}"
+  "network.host": 0.0.0.0
+  "discovery.seed_hosts": "es-cluster"
+  "cluster.initial_master_nodes": "es-0,es-1,es-2"
+
 ---
+kind: Deployment
 apiVersion: apps/v1
-kind: StatefulSet
 metadata:
-  name: es
+  name: es-0
   namespace: es
-  labels:
-    app: es
 spec:
-  replicas: 3
-  serviceName: es
   selector:
     matchLabels:
-      app: es
+      es: es-0
   template:
     metadata:
+      namespace: es
+      name: es-0
       labels:
         app: es
+        es: es-0
     spec:
       containers:
-        - name: es
+        - name: es-0
           image: registry.mouse.center:1443/elasticsearch:7.12.1
           env:
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
             - name: POD_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: ES_JAVA_OPTS
-              value: "-Xms512m -Xmx512m"
-          resources:
-            limits:
-              cpu: '1'
-              memory: 1Gi
-            requests:
-              cpu: '1'
-              memory: 1Gi
+          envFrom:
+            - configMapRef:
+                name: es-cluster-cfg
           volumeMounts:
-            - name: es-config
-              mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
-              subPath: elasticsearch.yml
-            - name: {{metadata.name}}
-              mountPath: /usr/share/elasticsearch/data
+            - mountPath: /usr/share/elasticsearch/data
+              name: es-0
       volumes:
-        - name: es-config
-          configMap:
-            name: es-cluster-cfg
         - name: es-0
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-0
             server: nas
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: es-1
+  namespace: es
+spec:
+  selector:
+    matchLabels:
+      es: es-1
+  template:
+    metadata:
+      namespace: es
+      name: es-1
+      labels:
+        app: es
+        es: es-1
+    spec:
+      containers:
+        - name: es-1
+          image: registry.mouse.center:1443/elasticsearch:7.12.1
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          envFrom:
+            - configMapRef:
+                name: es-cluster-cfg
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: es-1
+      volumes:
         - name: es-1
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-1
             server: nas
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: es-2
+  namespace: es
+spec:
+  selector:
+    matchLabels:
+      es: es-2
+  template:
+    metadata:
+      namespace: es
+      name: es-2
+      labels:
+        app: es
+        es: es-2
+    spec:
+      containers:
+        - name: es-2
+          image: registry.mouse.center:1443/elasticsearch:7.12.1
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          envFrom:
+            - configMapRef:
+                name: es-cluster-cfg
+          volumeMounts:
+            - mountPath: /usr/share/elasticsearch/data
+              name: es-2
+      volumes:
         - name: es-2
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-2
