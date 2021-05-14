@@ -1,36 +1,33 @@
----
 apiVersion: v1
 kind: Service
 metadata:
   namespace: db
-  name: mongo
+  name: mongo-0
 spec:
   ports:
     - port: 27017
       targetPort: 27017
   selector:
-    k8s-app: mongo
+    app: mongo-0
 
 ---
+kind: Deployment
 apiVersion: apps/v1
-kind: StatefulSet
 metadata:
-  name: mongo
+  name: mongo-0
   namespace: db
   labels:
-    k8s-app: mongo
+    app: mongo-0
 spec:
   selector:
     matchLabels:
-      k8s-app: mongo
-  serviceName: mongo
-  replicas: 3
+      app: mongo-0
   template:
     metadata:
-      name: mongo
       namespace: db
+      name: mongo-0
       labels:
-        k8s-app: mongo
+        app: mongo-0
     spec:
       containers:
         - name: mongo
@@ -43,49 +40,115 @@ spec:
             - '27017'
             - "--bind_ip"
             - "0.0.0.0"
-          ports:
-            - containerPort: 27017
           volumeMounts:
             - mountPath: /data/db
-              name: mongo-persistent-storage
-  volumeClaimTemplates:
-    - metadata:
-        name: mongo-persistent-storage
-      spec:
-        storageClassName: "nfs-sc"
-        accessModes: [ "ReadWriteOnce" ]
-        resources:
-          requests:
-            storage: 100Gi
-
+              name: mongo-0
+      volumes:
+        - name: mongo-0
+          nfs:
+            path: /mnt/Database/k8s/mongo/mongo-0
+            server: nas
 
 ---
-kind: PersistentVolume
 apiVersion: v1
+kind: Service
 metadata:
   namespace: db
-  name: mongo-0-pv
-  labels:
-    pv: mongo-0-pv
+  name: mongo-1
 spec:
-  nfs:
-    path: /mnt/Database/k8s/mongo/mongo-0
-    server: nas
-  capacity:
-    storage: 100Gi
-  accessModes:
-    - ReadWriteOnce
-  volumeMode: Filesystem
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongo-1
 
 ---
-kind: PersistentVolumeClaim
-apiVersion: v1
+kind: Deployment
+apiVersion: apps/v1
 metadata:
-  name: mongo-0-pvc
+  name: mongo-1
   namespace: db
+  labels:
+    app: mongo-1
 spec:
   selector:
     matchLabels:
-      pv: mongo-0-pv
-  accessModes:
-    - ReadWriteOnce
+      app: mongo-1
+  template:
+    metadata:
+      namespace: db
+      name: mongo-1
+      labels:
+        app: mongo-1
+    spec:
+      containers:
+        - name: mongo
+          image: registry.mouse.center:1443/mongo:4.4.3
+          command:
+            - mongod
+            - "--replSet"
+            - rs0
+            - "--port"
+            - '27017'
+            - "--bind_ip"
+            - "0.0.0.0"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-1
+      volumes:
+        - name: mongo-1
+          nfs:
+            path: /mnt/Database/k8s/mongo/mongo-1
+            server: nas
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: db
+  name: mongo-2
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: mongo-2
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mongo-2
+  namespace: db
+  labels:
+    app: mongo-2
+spec:
+  selector:
+    matchLabels:
+      app: mongo-2
+  template:
+    metadata:
+      namespace: db
+      name: mongo-2
+      labels:
+        app: mongo-2
+    spec:
+      containers:
+        - name: mongo
+          image: registry.mouse.center:1443/mongo:4.4.3
+          command:
+            - mongod
+            - "--replSet"
+            - rs0
+            - "--port"
+            - '27017'
+            - "--bind_ip"
+            - "0.0.0.0"
+          volumeMounts:
+            - mountPath: /data/db
+              name: mongo-2
+      volumes:
+        - name: mongo-2
+          nfs:
+            path: /mnt/Database/k8s/mongo/mongo-2
+            server: nas
