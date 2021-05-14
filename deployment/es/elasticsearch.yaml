@@ -64,6 +64,10 @@ spec:
       containers:
         - name: es-0
           image: registry.mouse.center:1443/elasticsearch:7.12.1
+          command:
+            - /bin/bash
+            - -c
+            - "bin/elasticsearch-plugin install --batch ingest-attachment"
           env:
             - name: "node.name"
               value: "es-0"
@@ -105,6 +109,10 @@ spec:
       containers:
         - name: es-1
           image: registry.mouse.center:1443/elasticsearch:7.12.1
+          command:
+            - /bin/bash
+            - -c
+            - "bin/elasticsearch-plugin install --batch ingest-attachment"
           env:
             - name: "node.name"
               value: "es-1"
@@ -146,6 +154,10 @@ spec:
       containers:
         - name: es-2
           image: registry.mouse.center:1443/elasticsearch:7.12.1
+          command:
+            - /bin/bash
+            - -c
+            - "bin/elasticsearch-plugin install --batch ingest-attachment"
           env:
             - name: "node.name"
               value: "es-2"
