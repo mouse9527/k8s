@@ -64,10 +64,6 @@ spec:
       containers:
         - name: es-0
           image: registry.mouse.center:1443/elasticsearch:7.12.1
-          command:
-            - /bin/bash
-            - -c
-            - "bin/elasticsearch-plugin install --batch ingest-attachment"
           env:
             - name: "node.name"
               value: "es-0"
@@ -77,6 +73,8 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-0
+            - mountPath: /usr/share/elasticsearch/plugins
+              name: plugin
           resources:
             limits:
               memory: 1Gi
@@ -86,6 +84,10 @@ spec:
         - name: es-0
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-0
+            server: nas
+        - name: plugin
+          nfs:
+            path: /mnt/Database/k8s/elasticsearch/plugin
             server: nas
 
 ---
@@ -109,10 +111,6 @@ spec:
       containers:
         - name: es-1
           image: registry.mouse.center:1443/elasticsearch:7.12.1
-          command:
-            - /bin/bash
-            - -c
-            - "bin/elasticsearch-plugin install --batch ingest-attachment"
           env:
             - name: "node.name"
               value: "es-1"
@@ -122,6 +120,8 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-1
+            - mountPath: /usr/share/elasticsearch/plugins
+              name: plugin
           resources:
             limits:
               memory: 1Gi
@@ -131,6 +131,10 @@ spec:
         - name: es-1
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-1
+            server: nas
+        - name: plugin
+          nfs:
+            path: /mnt/Database/k8s/elasticsearch/plugin
             server: nas
 
 ---
@@ -154,10 +158,6 @@ spec:
       containers:
         - name: es-2
           image: registry.mouse.center:1443/elasticsearch:7.12.1
-          command:
-            - /bin/bash
-            - -c
-            - "bin/elasticsearch-plugin install --batch ingest-attachment"
           env:
             - name: "node.name"
               value: "es-2"
@@ -167,6 +167,8 @@ spec:
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: es-2
+            - mountPath: /usr/share/elasticsearch/plugins
+              name: plugin
           resources:
             limits:
               memory: 1Gi
@@ -176,4 +178,8 @@ spec:
         - name: es-2
           nfs:
             path: /mnt/Database/k8s/elasticsearch/es-2
+            server: nas
+        - name: plugin
+          nfs:
+            path: /mnt/Database/k8s/elasticsearch/plugin
             server: nas
