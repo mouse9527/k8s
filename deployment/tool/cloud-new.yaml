@@ -637,6 +637,16 @@ data:
 kind: ConfigMap
 apiVersion: v1
 metadata:
+  name: cloud-crontab-cfg
+  namespace: tool
+data:
+  root: |
+    */10  *  *  *  * php -f /var/www/html/cron.php
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
   name: cloud-env-cfg
   namespace: tool
 data:
