@@ -673,11 +673,13 @@ spec:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
-            - mountPath: /var/www/html
-              name: nextcloud
             - mountPath: /usr/local/etc/php-fpm.d/www.conf
               name: php-fpm-cfg
               subPath: www.conf
+            - mountPath: /var/www/html
+              name: nextcloud
+            - mountPath: /var/www/html/data
+              name: user
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
@@ -705,6 +707,10 @@ spec:
         - name: nextcloud
           nfs:
             path: /mnt/Database/k8s/cloud
+            server: nas
+        - name: user
+          nfs:
+            path: /mnt/Database/user
             server: nas
         - name: cloud-nginx-cfg
           configMap:
