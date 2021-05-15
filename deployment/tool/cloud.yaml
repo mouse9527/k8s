@@ -1,196 +1,3 @@
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: cloud-pv
-  namespace: tool
-  labels:
-    pv: cloud-pv
-spec:
-  capacity:
-    storage: 10240Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/k8s/cloud
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: cloud-pvc
-  namespace: tool
-spec:
-  selector:
-    matchLabels:
-      pv: cloud-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10240Gi
----
-
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: cloud-user-pv
-  namespace: tool
-  labels:
-    pv: cloud-user-pv
-spec:
-  capacity:
-    storage: 10240Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/user
-
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: cloud-user-pvc
-  namespace: tool
-spec:
-  selector:
-    matchLabels:
-      pv: cloud-user-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10240Gi
----
-
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: cloud-video-pv
-  namespace: tool
-  labels:
-    pv: cloud-video-pv
-spec:
-  capacity:
-    storage: 10240Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/video
-
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: cloud-video-pvc
-  namespace: tool
-spec:
-  selector:
-    matchLabels:
-      pv: cloud-video-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10240Gi
----
-
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: cloud-share-pv
-  namespace: tool
-  labels:
-    pv: cloud-share-pv
-spec:
-  capacity:
-    storage: 10240Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/share
-
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: cloud-share-pvc
-  namespace: tool
-spec:
-  selector:
-    matchLabels:
-      pv: cloud-share-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10240Gi
----
-
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: cloud-music-pv
-  namespace: tool
-  labels:
-    pv: cloud-music-pv
-spec:
-  capacity:
-    storage: 10240Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/music
-
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: cloud-music-pvc
-  namespace: tool
-spec:
-  selector:
-    matchLabels:
-      pv: cloud-music-pv
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10240Gi
-
----
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: cloud-env-cfg
-  namespace: tool
-data:
-  MYSQL_PASSWORD: "970210"
-  MYSQL_DATABASE: "nextcloud"
-  MYSQL_USER: "nextcloud"
-  MYSQL_HOST: "mysql.db"
-  REDIS_HOST: "redis.db"
-
----
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: cloud-crontab-cfg
-  namespace: tool
-data:
-  root: |
-    */5  *  *  *  * php -f /var/www/html/cron.php
-    */1  *  *  *  * php -f /var/www/html/occ files:scan public
-
----
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -377,6 +184,7 @@ data:
             }
         }
     }
+
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -826,74 +634,62 @@ data:
     ;php_admin_value[memory_limit] = 32M
 
 ---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloud-crontab-cfg
+  namespace: tool
+data:
+  www-data: |
+    */5  *  *  *  * php -f /var/www/html/cron.php
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloud-env-cfg
+  namespace: tool
+data:
+  MYSQL_PASSWORD: "970210"
+  MYSQL_DATABASE: "nextcloud"
+  MYSQL_USER: "nextcloud"
+  MYSQL_HOST: "mysql.db"
+  REDIS_HOST: "redis.db"
+
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  namespace: tool
   name: cloud
-  labels:
-    app: cloud
+  namespace: tool
 spec:
   selector:
     matchLabels:
       app: cloud
   template:
     metadata:
-      name: cloud
       namespace: tool
+      name: cloud
       labels:
         app: cloud
     spec:
       containers:
-        - name: nextcloud
-          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm
+        - name: app
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm-full
           ports:
             - containerPort: 9000
-              name: php-handler
+              name: php-fpm
           envFrom:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
+            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+              name: php-fpm-cfg
+              subPath: www.conf
             - mountPath: /var/www/html
               name: nextcloud
             - mountPath: /var/www/html/data
               name: user
-            - mountPath: /var/www/html/data/public/files/video
-              name: video
-            - mountPath: /var/www/html/data/public/files/share
-              name: share
-            - mountPath: /var/www/html/data/public/files/music
-              name: music
-            - mountPath: /usr/local/etc/php-fpm.d/www.conf
-              name: php-fpm-cfg
-              subPath: www.conf
-        - name: cron
-          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm
-          command:
-            - /bin/sh
-          args:
-            - -c
-            - /cron.sh
-          envFrom:
-            - configMapRef:
-                name: cloud-env-cfg
-          volumeMounts:
-            - mountPath: /var/www/html
-              name: nextcloud
-            - mountPath: /var/www/html/data
-              name: user
-            - mountPath: /var/www/html/data/public/files/video
-              name: video
-            - mountPath: /var/www/html/data/public/files/share
-              name: share
-            - mountPath: /var/www/html/data/public/files/music
-              name: music
-            - mountPath: /var/spool/cron/crontabs/root
-              name: crontab
-              subPath: root
-            - mountPath: /usr/local/etc/php-fpm.d/www.conf
-              name: php-fpm-cfg
-              subPath: www.conf
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
@@ -917,31 +713,46 @@ spec:
             - mountPath: /etc/nginx/nginx.conf
               name: cloud-nginx-cfg
               subPath: nginx.conf
+        - name: cron
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - /cron.sh
+          envFrom:
+            - configMapRef:
+                name: cloud-env-cfg
+          volumeMounts:
+            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+              name: php-fpm-cfg
+              subPath: www.conf
+            - mountPath: /var/www/html
+              name: nextcloud
+            - mountPath: /var/www/html/data
+              name: user
+            - mountPath: /var/spool/cron/crontabs/www-data
+              name: crontab
+              subPath: www-data
       volumes:
         - name: nextcloud
-          persistentVolumeClaim:
-            claimName: cloud-pvc
+          nfs:
+            path: /mnt/Database/k8s/cloud
+            server: nas
         - name: user
-          persistentVolumeClaim:
-            claimName: cloud-user-pvc
-        - name: video
-          persistentVolumeClaim:
-            claimName: cloud-video-pvc
-        - name: share
-          persistentVolumeClaim:
-            claimName: cloud-share-pvc
-        - name: music
-          persistentVolumeClaim:
-            claimName: cloud-music-pvc
-        - name: crontab
-          configMap:
-            name: cloud-crontab-cfg
+          nfs:
+            path: /mnt/Database/user
+            server: nas
         - name: cloud-nginx-cfg
           configMap:
             name: cloud-nginx-cfg
         - name: php-fpm-cfg
           configMap:
             name: cloud-php-fpm-cfg
+        - name: crontab
+          configMap:
+            name: cloud-crontab-cfg
+
 ---
 apiVersion: v1
 kind: Service
@@ -951,18 +762,15 @@ metadata:
   labels:
     app: cloud
 spec:
+  selector:
+    app: cloud
   ports:
     - port: 80
       name: web
-      targetPort: 80
     - port: 9000
-      name: php-handler
-      targetPort: 9000
-  selector:
-    app: cloud
+      name: php-fpm
 
 ---
-
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
