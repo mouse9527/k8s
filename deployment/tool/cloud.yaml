@@ -686,10 +686,22 @@ spec:
             - mountPath: /usr/local/etc/php-fpm.d/www.conf
               name: php-fpm-cfg
               subPath: www.conf
-            - mountPath: /var/www/html
+            - mountPath: /var/www/html/custom_apps
               name: nextcloud
+              subPath: custom_apps
+            - mountPath: /var/www/html/config
+              name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/config
+              name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/apps
+              name: nextcloud
+              subPath: apps
             - mountPath: /var/www/html/data
               name: user
+            - mountPath: /var/www/html
+              name: html
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
@@ -709,7 +721,7 @@ spec:
             failureThreshold: 6
           volumeMounts:
             - mountPath: /var/www/html
-              name: nextcloud
+              name: html
             - mountPath: /etc/nginx/nginx.conf
               name: cloud-nginx-cfg
               subPath: nginx.conf
@@ -724,13 +736,26 @@ spec:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
+          volumeMounts:
             - mountPath: /usr/local/etc/php-fpm.d/www.conf
               name: php-fpm-cfg
               subPath: www.conf
-            - mountPath: /var/www/html
+            - mountPath: /var/www/html/custom_apps
               name: nextcloud
+              subPath: custom_apps
+            - mountPath: /var/www/html/config
+              name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/config
+              name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/apps
+              name: nextcloud
+              subPath: apps
             - mountPath: /var/www/html/data
               name: user
+            - mountPath: /var/www/html
+              name: html
             - mountPath: /var/spool/cron/crontabs/www-data
               name: crontab
               subPath: www-data
@@ -752,7 +777,9 @@ spec:
         - name: crontab
           configMap:
             name: cloud-crontab-cfg
-
+        - name: html
+          emptyDir:
+            medium: Memory
 ---
 apiVersion: v1
 kind: Service
