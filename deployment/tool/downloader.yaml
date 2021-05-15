@@ -69,9 +69,9 @@ spec:
             - name: TZ
               value: Asia/Shanghai
           volumeMounts:
-            - mountPath: /downloads/video
+            - mountPath: /video
               name: downloader-video
-            - mountPath: /downloads/share
+            - mountPath: /share
               name: downloads-share
             - mountPath: /config
               name: downloader-config
