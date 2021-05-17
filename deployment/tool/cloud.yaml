@@ -254,9 +254,9 @@ spec:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
-            - mountPath: /usr/local/etc/php-fpm.d/www.conf
-              name: cloud-php-fpm-cfg
-              subPath: www.conf
+#            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+#              name: cloud-php-fpm-cfg
+#              subPath: www.conf
             - mountPath: /var/www/html/config
               name: nextcloud
               subPath: config
@@ -286,9 +286,9 @@ spec:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
-            - mountPath: /usr/local/etc/php-fpm.d/www.conf
-              name: cloud-php-fpm-cfg
-              subPath: www.conf
+#            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+#              name: cloud-php-fpm-cfg
+#              subPath: www.conf
             - mountPath: /var/www/html/config
               name: nextcloud
               subPath: config
