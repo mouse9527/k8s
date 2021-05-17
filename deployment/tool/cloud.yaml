@@ -753,16 +753,14 @@ spec:
             - containerPort: 80
               name: web
           readinessProbe:
-            httpGet:
+            tcpSocket:
               port: 80
-              path: /
             initialDelaySeconds: 30
             timeoutSeconds: 10
             failureThreshold: 20
           livenessProbe:
-            httpGet:
+            tcpSocket:
               port: 80
-              path: /
             initialDelaySeconds: 30
             timeoutSeconds: 10
             failureThreshold: 20
