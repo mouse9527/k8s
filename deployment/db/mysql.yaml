@@ -37,9 +37,6 @@ data:
     key_buffer_size = 4M
     ft_min_word_len = 4
     transaction_isolation = REPEATABLE-READ
-    slow_query_log = 1
-    long_query_time = 1
-    slow_query_log_file = /var/log/mysql/slow.log
     default-storage-engine = InnoDB
     innodb_file_per_table = 1
     innodb_open_files = 500
