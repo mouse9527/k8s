@@ -105,9 +105,9 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: mysql-data
-            - mountPath: /etc/mysql/conf.d/mysql.cnf
-              name: mysql-cnf
-              subPath: mysql.cnf
+#            - mountPath: /etc/mysql/conf.d/mysql.cnf
+#              name: mysql-cnf
+#              subPath: mysql.cnf
           resources:
             requests:
               cpu: 100m
