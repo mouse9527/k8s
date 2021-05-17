@@ -34,8 +34,6 @@ data:
     sort_buffer_size = 8M
     join_buffer_size = 8M
     thread_cache_size = 16
-    query_cache_size = 8M
-    query_cache_limit = 2M
     key_buffer_size = 4M
     ft_min_word_len = 4
     transaction_isolation = REPEATABLE-READ
