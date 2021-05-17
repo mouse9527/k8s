@@ -62,7 +62,7 @@ spec:
               subPath: data
             - mountPath: /etc/mysql
               name: mysql
-              subPath: conf
+              subPath: config
           resources:
             requests:
               cpu: 100m
