@@ -267,6 +267,13 @@ spec:
               subPath: themes
             - mountPath: /var/www/html/data
               name: data
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1Gi
+            limits:
+              cpu: 3000m
+              memory: 2Gi
         - name: cron
           image: registry.mouse.center:1443/nextcloud:21.0.1-fpm-full
           command:
@@ -295,6 +302,13 @@ spec:
             - mountPath: /var/spool/cron/crontabs/www-data
               name: crontab
               subPath: www-data
+          resources:
+            requests:
+              cpu: 200m
+              memory: 500Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
@@ -320,6 +334,13 @@ spec:
               subPath: nginx.conf
             - mountPath: /var/www/html
               name: html
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
       volumes:
         - name: nextcloud
           nfs:
