@@ -646,8 +646,8 @@ metadata:
   namespace: tool
 data:
   www-data: |
+  root: |
     */5  *  *  *  * php -f /var/www/html/cron.php
-
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -737,9 +737,8 @@ spec:
               name: data
             - mountPath: /var/www/html
               name: html
-            - mountPath: /var/spool/cron/crontabs/www-data
+            - mountPath: /var/spool/cron/crontabs
               name: crontab
-              subPath: www-data
           resources:
             requests:
               cpu: 200m
