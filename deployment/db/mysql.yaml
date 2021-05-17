@@ -10,10 +10,10 @@ spec:
     db: mysql
   ports:
     - port: 3306
-      targetPort: 3306
+      name: mysql
 
 ---
-kind: StatefulSet
+kind: Deployment
 apiVersion: apps/v1
 metadata:
   namespace: db
@@ -24,7 +24,6 @@ spec:
   selector:
     matchLabels:
       db: mysql
-  serviceName: mysql
   replicas: 1
   template:
     metadata:
@@ -58,7 +57,7 @@ spec:
             failureThreshold: 6
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: msyql
+              name: mysql
               subPath: data
             - mountPath: /etc/mysql
               name: mysql
