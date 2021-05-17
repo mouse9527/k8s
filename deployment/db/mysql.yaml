@@ -20,6 +20,11 @@ metadata:
 data:
   mysql.cnf: |
     [mysqld]
+    port = 3306
+    pid-file        = /var/run/mysqld/mysqld.pid
+    socket          = /var/run/mysqld/mysqld.sock
+    datadir         = /var/lib/mysql
+    secure-file-priv= NULL
     back_log = 600
     max_connections = 1000
     max_connect_errors = 6000
