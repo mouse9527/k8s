@@ -699,6 +699,8 @@ spec:
             - mountPath: /var/www/html/themes
               name: nextcloud
               subPath: themes
+            - mountPath: /var/www/html
+              name: html
             - mountPath: /var/www/html/data
               name: data
           resources:
@@ -733,6 +735,8 @@ spec:
               subPath: themes
             - mountPath: /var/www/html/data
               name: data
+            - mountPath: /var/www/html
+              name: html
             - mountPath: /var/spool/cron/crontabs/www-data
               name: crontab
               subPath: www-data
