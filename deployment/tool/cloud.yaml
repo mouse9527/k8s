@@ -1,16 +1,6 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: cloud-crontab-cfg
-  namespace: tool
-data:
-  www-data: |
-    */5  *  *  *  * php -f /var/www/html/cron.php
-
----
-kind: ConfigMap
-apiVersion: v1
-metadata:
   name: cloud-env-cfg
   namespace: tool
 data:
@@ -19,6 +9,210 @@ data:
   MYSQL_USER: "nextcloud"
   MYSQL_HOST: "mysql.db"
   REDIS_HOST: "redis.db"
+  NEXTCLOUD_TRUSTED_DOMAINS: "cloud.mouse.center"
+  PHP_MEMORY_LIMIT: "2048M"
+  PHP_UPLOAD_LIMIT: "10240M"
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloud-nginx-cfg
+  namespace: tool
+data:
+  nginx.conf: |
+    worker_processes auto;
+
+    error_log  /var/log/nginx/error.log warn;
+    pid        /var/run/nginx.pid;
+
+
+    events {
+        worker_connections  1024;
+    }
+
+
+    http {
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log  /var/log/nginx/access.log  main;
+
+        sendfile        on;
+        #tcp_nopush     on;
+
+        keepalive_timeout  65;
+
+        #gzip  on;
+
+        upstream php-handler {
+            server cloud:9000;
+        }
+
+        server {
+            listen 80;
+
+            # Add headers to serve security related headers
+            # Before enabling Strict-Transport-Security headers please read into this
+            # topic first.
+            #add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
+            #
+            # WARNING: Only add the preload option once you read about
+            # the consequences in https://hstspreload.org/. This option
+            # will add the domain to a hardcoded list that is shipped
+            # in all major browsers and getting removed from this list
+            # could take several months.
+            add_header Referrer-Policy "no-referrer" always;
+            add_header X-Content-Type-Options "nosniff" always;
+            add_header X-Download-Options "noopen" always;
+            add_header X-Frame-Options "SAMEORIGIN" always;
+            add_header X-Permitted-Cross-Domain-Policies "none" always;
+            add_header X-Robots-Tag "none" always;
+            add_header X-XSS-Protection "1; mode=block" always;
+
+            # Remove X-Powered-By, which is an information leak
+            fastcgi_hide_header X-Powered-By;
+
+            # Path to the root of your installation
+            root /var/www/html;
+
+            location = /robots.txt {
+                allow all;
+                log_not_found off;
+                access_log off;
+            }
+
+            # The following 2 rules are only needed for the user_webfinger app.
+            # Uncomment it if you're planning to use this app.
+            #rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
+            #rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json last;
+
+            # The following rule is only needed for the Social app.
+            # Uncomment it if you're planning to use this app.
+            #rewrite ^/.well-known/webfinger /public.php?service=webfinger last;
+
+            location = /.well-known/carddav {
+                return 301 $scheme://$host:$server_port/remote.php/dav;
+            }
+
+            location = /.well-known/caldav {
+                return 301 $scheme://$host:$server_port/remote.php/dav;
+            }
+
+            # set max upload size
+            client_max_body_size 10G;
+            fastcgi_buffers 64 4K;
+
+            # Enable gzip but do not remove ETag headers
+            gzip on;
+            gzip_vary on;
+            gzip_comp_level 4;
+            gzip_min_length 256;
+            gzip_proxied expired no-cache no-store private no_last_modified no_etag auth;
+            gzip_types application/atom+xml application/javascript application/json application/ld+json application/manifest+json application/rss+xml application/vnd.geo+json application/vnd.ms-fontobject application/x-font-ttf application/x-web-app-manifest+json application/xhtml+xml application/xml font/opentype image/bmp image/svg+xml image/x-icon text/cache-manifest text/css text/plain text/vcard text/vnd.rim.location.xloc text/vtt text/x-component text/x-cross-domain-policy;
+
+            # Uncomment if your server is build with the ngx_pagespeed module
+            # This module is currently not supported.
+            #pagespeed off;
+
+            location / {
+                rewrite ^ /index.php;
+            }
+
+            location ~ ^\/(?:build|tests|config|lib|3rdparty|templates|data)\/ {
+                deny all;
+            }
+            location ~ ^\/(?:\.|autotest|occ|issue|indie|db_|console) {
+                deny all;
+            }
+
+            location ~ ^\/(?:index|remote|public|cron|core\/ajax\/update|status|ocs\/v[12]|updater\/.+|oc[ms]-provider\/.+)\.php(?:$|\/) {
+                fastcgi_split_path_info ^(.+?\.php)(\/.*|)$;
+                set $path_info $fastcgi_path_info;
+                try_files $fastcgi_script_name =404;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                fastcgi_param PATH_INFO $path_info;
+                # fastcgi_param HTTPS on;
+
+                # Avoid sending the security headers twice
+                fastcgi_param modHeadersAvailable true;
+
+                # Enable pretty urls
+                fastcgi_param front_controller_active true;
+                fastcgi_pass php-handler;
+                fastcgi_intercept_errors on;
+                fastcgi_request_buffering off;
+            }
+
+            location ~ ^\/(?:updater|oc[ms]-provider)(?:$|\/) {
+                try_files $uri/ =404;
+                index index.php;
+            }
+
+            # Adding the cache control header for js, css and map files
+            # Make sure it is BELOW the PHP block
+            location ~ \.(?:css|js|woff2?|svg|gif|map)$ {
+                try_files $uri /index.php$request_uri;
+                add_header Cache-Control "public, max-age=15778463";
+                # Add headers to serve security related headers (It is intended to
+                # have those duplicated to the ones above)
+                # Before enabling Strict-Transport-Security headers please read into
+                # this topic first.
+                #add_header Strict-Transport-Security "max-age=15768000; includeSubDomains; preload;" always;
+                #
+                # WARNING: Only add the preload option once you read about
+                # the consequences in https://hstspreload.org/. This option
+                # will add the domain to a hardcoded list that is shipped
+                # in all major browsers and getting removed from this list
+                # could take several months.
+                add_header Referrer-Policy "no-referrer" always;
+                add_header X-Content-Type-Options "nosniff" always;
+                add_header X-Download-Options "noopen" always;
+                add_header X-Frame-Options "SAMEORIGIN" always;
+                add_header X-Permitted-Cross-Domain-Policies "none" always;
+                add_header X-Robots-Tag "none" always;
+                add_header X-XSS-Protection "1; mode=block" always;
+
+                # Optional: Don't log access to assets
+                access_log off;
+            }
+
+            location ~ \.(?:png|html|ttf|ico|jpg|jpeg|bcmap|mp4|webm)$ {
+                try_files $uri /index.php$request_uri;
+                # Optional: Don't log access to other assets
+                access_log off;
+            }
+        }
+    }
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloud-php-fpm-cfg
+  namespace: tool
+data:
+  www.conf: |
+    pm = dynamic
+    pm.max_children = 120
+    pm.start_servers = 12
+    pm.min_spare_servers = 6
+    pm.max_spare_servers = 18
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cloud-crontab-cfg
+  namespace: tool
+data:
+  www-data: |
+    */5  *  *  *  * php -f /var/www/html/cron.php
 
 ---
 kind: Deployment
@@ -39,17 +233,42 @@ spec:
     spec:
       containers:
         - name: app
-          image: registry.mouse.center:1443/nextcloud:21.0.1-apache-full
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm-full
+          ports:
+            - containerPort: 9000
+              name: php-fpm
+          livenessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 20
+          readinessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 20
           envFrom:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
-            - mountPath: /var/www/html
+            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+              name: cloud-php-fpm-cfg
+              subPath: www.conf
+            - mountPath: /var/www/html/config
               name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/custom_apps
+              name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/themes
+              name: nextcloud
+              subPath: themes
             - mountPath: /var/www/html/data
-              name: user
+              name: data
         - name: cron
-          image: registry.mouse.center:1443/nextcloud:21.0.1-apache-full
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm-full
           command:
             - /bin/sh
           args:
@@ -59,25 +278,69 @@ spec:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
-            - mountPath: /var/www/html
+            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+              name: cloud-php-fpm-cfg
+              subPath: www.conf
+            - mountPath: /var/www/html/config
               name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/custom_apps
+              name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/themes
+              name: nextcloud
+              subPath: themes
             - mountPath: /var/www/html/data
-              name: user
+              name: data
             - mountPath: /var/spool/cron/crontabs/www-data
               name: crontab
               subPath: www-data
+        - name: web
+          image: registry.mouse.center:1443/nginx
+          ports:
+            - containerPort: 80
+              name: web
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 20
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /
+            initialDelaySeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 20
+          volumeMounts:
+            - mountPath: /etc/nginx/nginx.conf
+              name: cloud-nginx-cfg
+              subPath: nginx.conf
+            - mountPath: /var/www/html
+              name: html
       volumes:
         - name: nextcloud
           nfs:
             path: /mnt/Database/k8s/cloud
             server: nas
-        - name: user
+        - name: data
           nfs:
             path: /mnt/Database/user
             server: nas
+        - name: html
+          emptyDir:
+            medium: Memory
         - name: crontab
           configMap:
             name: cloud-crontab-cfg
+        - name: cloud-nginx-cfg
+          configMap:
+            name: cloud-nginx-cfg
+        - name: cloud-php-fpm-cfg
+          configMap:
+            name: cloud-php-fpm-cfg
 ---
 apiVersion: v1
 kind: Service
@@ -92,6 +355,8 @@ spec:
   ports:
     - port: 80
       name: web
+    - port: 9000
+      name: php-fpm
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
