@@ -695,7 +695,7 @@ spec:
               subPath: config
             - mountPath: /var/www/html/custom_apps
               name: nextcloud
-              subPath: config
+              subPath: custom_apps
             - mountPath: /var/www/html/themes
               name: nextcloud
               subPath: themes
@@ -729,7 +729,7 @@ spec:
               subPath: config
             - mountPath: /var/www/html/custom_apps
               name: nextcloud
-              subPath: config
+              subPath: custom_apps
             - mountPath: /var/www/html/themes
               name: nextcloud
               subPath: themes
