@@ -11,6 +11,14 @@ spec:
   ports:
     - port: 3306
       name: mysql
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: my-cnf-cfg
+  namespace: db
+data:
+  my.cnf: |
 
 ---
 kind: Deployment
@@ -34,7 +42,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: registry.mouse.center:1443/mysql
+          image: registry.mouse.center:1443/mysql:8.0
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -57,11 +65,7 @@ spec:
             failureThreshold: 6
           volumeMounts:
             - mountPath: /var/lib/mysql
-              name: mysql
-              subPath: data
-            - mountPath: /etc/mysql
-              name: mysql
-              subPath: config
+              name: mysql-data
           resources:
             requests:
               cpu: 100m
@@ -70,7 +74,7 @@ spec:
               cpu: 3000m
               memory: 6Gi
       volumes:
-        - name: mysql
+        - name: mysql-data
           nfs:
-            path: /mnt/Database/k8s/mysql
+            path: /mnt/Database/k8s/mysql/data
             server: nas
