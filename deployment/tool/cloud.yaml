@@ -7,7 +7,7 @@ data:
   MYSQL_PASSWORD: "970210"
   MYSQL_DATABASE: "nextcloud_new"
   MYSQL_USER: "nextcloud"
-  MYSQL_HOST: "mysql.db"
+  MYSQL_HOST: "mysql.db "
   REDIS_HOST: "redis.db"
   NEXTCLOUD_TRUSTED_DOMAINS: "cloud.mouse.center:1443"
   PHP_MEMORY_LIMIT: "2048M"
@@ -736,7 +736,7 @@ spec:
             - mountPath: /var/www/html/data
               name: data
             - mountPath: /var/www/html
-              name: htmlc
+              name: html
             - mountPath: /var/spool/cron/crontabs
               name: crontab
           resources:
