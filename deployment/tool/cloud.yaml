@@ -228,42 +228,42 @@ spec:
             limits:
               cpu: 3000m
               memory: 2Gi
-#        - name: cron
-#          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm-full
-#          command:
-#            - /bin/sh
-#          args:
-#            - -c
-#            - /cron.sh
-#          envFrom:
-#            - configMapRef:
-#                name: cloud-env-cfg
-#          volumeMounts:
-#            - mountPath: /usr/local/etc/php-fpm.d/www.conf
-#              name: cloud-php-fpm-cfg
-#              subPath: www.conf
-#            - mountPath: /var/www/html/config
-#              name: nextcloud
-#              subPath: config
-#            - mountPath: /var/www/html/custom_apps
-#              name: nextcloud
-#              subPath: custom_apps
-#            - mountPath: /var/www/html/themes
-#              name: nextcloud
-#              subPath: themes
-#            - mountPath: /var/www/html/data
-#              name: data
-#            - mountPath: /var/www/html
-#              name: html
-#            - mountPath: /var/spool/cron/crontabs
-#              name: crontab
-#          resources:
-#            requests:
-#              cpu: 200m
-#              memory: 500Mi
-#            limits:
-#              cpu: 1000m
-#              memory: 1Gi
+        - name: cron
+          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm-full
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - /cron.sh
+          envFrom:
+            - configMapRef:
+                name: cloud-env-cfg
+          volumeMounts:
+            - mountPath: /usr/local/etc/php-fpm.d/www.conf
+              name: cloud-php-fpm-cfg
+              subPath: www.conf
+            - mountPath: /var/www/html
+              name: html
+            - mountPath: /var/www/html/config
+              name: nextcloud
+              subPath: config
+            - mountPath: /var/www/html/custom_apps
+              name: nextcloud
+              subPath: custom_apps
+            - mountPath: /var/www/html/themes
+              name: nextcloud
+              subPath: themes
+            - mountPath: /var/www/html/data
+              name: data
+            - mountPath: /var/spool/cron/crontabs
+              name: crontab
+          resources:
+            requests:
+              cpu: 200m
+              memory: 500Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi
         - name: web
           image: registry.mouse.center:1443/nginx
           ports:
