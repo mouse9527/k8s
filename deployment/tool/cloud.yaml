@@ -172,8 +172,6 @@ spec:
   ports:
     - port: 80
       name: web
-    - port: 9000
-      name: php-fpm
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
