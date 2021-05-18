@@ -17,25 +17,6 @@ data:
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: cloud-php-fpm-cfg
-  namespace: tool
-data:
-  www.conf: |
-    [www]
-    user = www-data
-    group = www-data
-    listen = 127.0.0.1:9000
-    pm = dynamic
-    pm.max_children = 120
-    pm.start_servers = 12
-    pm.min_spare_servers = 6
-    pm.max_spare_servers = 18
-    php_admin_value[memory_limit] = 512M
-
----
-kind: ConfigMap
-apiVersion: v1
-metadata:
   name: cloud-crontab-cfg
   namespace: tool
 data:
@@ -81,9 +62,6 @@ spec:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
-            - mountPath: /usr/local/etc/php-fpm.d/www.conf
-              name: cloud-php-fpm-cfg
-              subPath: www.conf
             - mountPath: /var/www/html/config
               name: nextcloud
               subPath: config
@@ -113,9 +91,6 @@ spec:
             - configMapRef:
                 name: cloud-env-cfg
           volumeMounts:
-            - mountPath: /usr/local/etc/php-fpm.d/www.conf
-              name: cloud-php-fpm-cfg
-              subPath: www.conf
             - mountPath: /var/www/html/config
               name: nextcloud
               subPath: config
@@ -148,9 +123,7 @@ spec:
         - name: crontab
           configMap:
             name: cloud-crontab-cfg
-        - name: cloud-php-fpm-cfg
-          configMap:
-            name: cloud-php-fpm-cfg
+
 ---
 apiVersion: v1
 kind: Service
