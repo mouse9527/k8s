@@ -5,7 +5,7 @@ metadata:
   namespace: tool
 data:
   MYSQL_PASSWORD: "970210"
-  MYSQL_DATABASE: "nextcloud"
+  MYSQL_DATABASE: "nextcloud_new"
   MYSQL_USER: "nextcloud"
   MYSQL_HOST: "mysql.db"
   REDIS_HOST: "redis.db"
@@ -736,7 +736,7 @@ spec:
             - mountPath: /var/www/html/data
               name: data
             - mountPath: /var/www/html
-              name: html
+              name: htmlc
             - mountPath: /var/spool/cron/crontabs
               name: crontab
           resources:
