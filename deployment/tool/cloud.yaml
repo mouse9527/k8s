@@ -84,8 +84,6 @@ spec:
             - mountPath: /usr/local/etc/php-fpm.d/www.conf
               name: cloud-php-fpm-cfg
               subPath: www.conf
-            - mountPath: /var/www/html
-              name: html
             - mountPath: /var/www/html/config
               name: nextcloud
               subPath: config
@@ -105,7 +103,7 @@ spec:
               cpu: 3000m
               memory: 2Gi
         - name: cron
-          image: registry.mouse.center:1443/nextcloud:21.0.1-fpm-full
+          image: registry.mouse.center:1443/nextcloud:21.0.1-apache-full
           command:
             - /bin/sh
           args:
@@ -118,8 +116,6 @@ spec:
             - mountPath: /usr/local/etc/php-fpm.d/www.conf
               name: cloud-php-fpm-cfg
               subPath: www.conf
-            - mountPath: /var/www/html
-              name: html
             - mountPath: /var/www/html/config
               name: nextcloud
               subPath: config
@@ -149,9 +145,6 @@ spec:
           nfs:
             path: /mnt/Database/user
             server: nas
-        - name: html
-          emptyDir:
-            medium: Memory
         - name: crontab
           configMap:
             name: cloud-crontab-cfg
