@@ -45,7 +45,7 @@ spec:
       volumes:
         - name: nexus-data
           nfs:
-            path: /volume2/k8s/nexus
+            path: /volume2/k8s/nexus-new
             server: nas
 ---
 apiVersion: v1
