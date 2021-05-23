@@ -1,35 +1,3 @@
-kind: PersistentVolume
-apiVersion: v1
-metadata:
-  name: nexus-pv
-  namespace: cd
-  labels:
-    pv: nexus-pv
-spec:
-  capacity:
-    storage: 200Gi
-  accessModes:
-    - ReadWriteMany
-  volumeMode: Filesystem
-  nfs:
-    server: nas
-    path: /mnt/Database/k8s/nexus
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  namespace: cd
-  name: nexus-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 200Gi
-  selector:
-    matchLabels:
-      pv: nexus-pv
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -62,10 +30,23 @@ spec:
           volumeMounts:
             - name: nexus-data
               mountPath: /nexus-data
+          livenessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 15
+          readinessProbe:
+            tcpSocket:
+              port: 8081
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 15
       volumes:
         - name: nexus-data
-          persistentVolumeClaim:
-            claimName: nexus-pvc
+          nfs:
+            path: /volume2/k8s/nexus
+            server: nas
 ---
 apiVersion: v1
 kind: Service
