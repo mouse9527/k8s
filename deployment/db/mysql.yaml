@@ -82,7 +82,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: password
-                  name: mysql-secert
+                  name: mysql-secret
           ports:
             - containerPort: 3306
           livenessProbe:
