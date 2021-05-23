@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: mongo-0
           nfs:
-            path: /mnt/Database/k8s/mongo/mongo-0
+            path: /volume2/k8s/mongo/mongo-0
             server: nas
 
 ---
@@ -98,7 +98,7 @@ spec:
       volumes:
         - name: mongo-1
           nfs:
-            path: /mnt/Database/k8s/mongo/mongo-1
+            path: /volume2/k8s/mongo/mongo-1
             server: nas
 
 ---
@@ -150,5 +150,5 @@ spec:
       volumes:
         - name: mongo-2
           nfs:
-            path: /mnt/Database/k8s/mongo/mongo-2
+            path: /volume2/k8s/mongo/mongo-2
             server: nas
