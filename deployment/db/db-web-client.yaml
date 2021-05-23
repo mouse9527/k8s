@@ -56,7 +56,7 @@ spec:
       volumes:
         - name: db-web-client
           nfs:
-            path: /mnt/Database/k8s/db-web-client
+            path: /volume2/k8s/db-web-client
             server: nas
 
 ---
