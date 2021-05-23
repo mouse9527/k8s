@@ -60,11 +60,11 @@ spec:
       volumes:
         - name: gitlab-config
           nfs:
-            path: /volume2/k8s/gitlab/config
+            path: /volume2/k8s/gitlab-new/config
             server: nas
         - name: gitlab-data
           nfs:
-            path: /volume2/k8s/gitlab/data
+            path: /volume2/k8s/gitlab-new/data
             server: nas
 ---
 apiVersion: v1
