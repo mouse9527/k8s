@@ -46,9 +46,9 @@ spec:
             failureThreshold: 6
           env:
             - name: PUID
-              value: "0"
+              value: "1024"
             - name: PGID
-              value: "0"
+              value: "100"
             - name: UMASK_SET
               value: "022"
             - name: RPC_SECRET
@@ -94,17 +94,17 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
       volumes:
-        - name: downloader-video
-          nfs:
-            server: nas
-            path: /mnt/Database/video
         - name: downloader-config
           nfs:
             server: nas
-            path: /mnt/Database/k8s/downloader/config
+            path: /volume2/k8s/downloader/config
+        - name: downloader-video
+          nfs:
+            server: nas
+            path: /volume2/video
         - name: downloads-share
           nfs:
-            path: /mnt/Database/share
+            path: /volume2/share
             server: nas
 ---
 apiVersion: v1
