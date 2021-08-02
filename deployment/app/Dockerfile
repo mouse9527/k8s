@@ -15,7 +15,7 @@ RUN set -ex; \
   cp /linuxgsm.sh /linuxgsm/linuxgsm.sh; \
   usermod -G tty linuxgsm; \
   chown -R linuxgsm:linuxgsm /linuxgsm/; \
-  chmod 755 /home/linuxgsm
+  chmod 755 /linuxgsm
 
 USER linuxgsm
 
