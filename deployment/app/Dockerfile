@@ -11,7 +11,8 @@ RUN chmod 777 /home/arkserver/linuxgsm.sh
 
 USER arkserver
 
-RUN bash /home/arkserver/linuxgsm.sh arkserver
+RUN export https_proxy=http://win10:7890 http_proxy=http://win10:7890 all_proxy=socks5://win10:7890 \
+    && bash /home/arkserver/linuxgsm.sh arkserver
 
 RUN /home/arkserver/arkserver install
 
