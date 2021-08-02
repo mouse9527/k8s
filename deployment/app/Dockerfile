@@ -5,6 +5,7 @@ RUN yum update -y; \
   yum install -y curl wget tar bzip2 gzip unzip python3 binutils bc jq tmux glibc.i686 libstdc++ libstdc++.i686 file nmap-ncat iproute
 
 RUN set -ex; \
+  export https_proxy=http://win10:7890 http_proxy=http://win10:7890 all_proxy=socks5://win10:7890;\
   wget https://linuxgsm.com/dl/linuxgsm.sh
 
 RUN set -ex; \
