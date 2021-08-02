@@ -11,8 +11,8 @@ RUN chmod 777 /home/arkserver/linuxgsm.sh
 
 USER arkserver
 
-RUN bash linuxgsm.sh arkserver
+RUN bash /home/arkserver/linuxgsm.sh arkserver
 
-RUN ./arkserver install
+RUN /home/arkserver/arkserver install
 
 ENTRYPOINT ['/home/arkserver/arkserver', 'start']
