@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [ ! -e /linuxgsm/linuxgsm.sh ]; then
+if [ ! -e /app/linuxgsm.sh ]; then
     echo "Initializing Linuxgsm User Script in New Volume"
-    cp /linuxgsm.sh /linuxgsm/linuxgsm.sh
-    if [ ! -e /linuxgsm/arkserver.sh ]; then
+    cp /linuxgsm.sh /app/linuxgsm.sh
+    if [ ! -e /app/arkserver.sh ]; then
         echo "Starting arkserver"
-        bash /linuxgsm/arkserver.sh start
+        bash /app/arkserver.sh start
     fi
 fi
 
