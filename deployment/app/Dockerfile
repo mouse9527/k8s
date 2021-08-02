@@ -5,11 +5,11 @@ RUN yum update -y \
     && yum install -y curl wget tar bzip2 gzip unzip python3 binutils bc jq tmux glibc.i686 libstdc++ libstdc++.i686 file nmap-ncat iproute \
     && adduser arkserver
 
+ADD ./linuxgsm.sh /home/arkserver/linuxgsm.sh
+
+RUN chmod 777 ./linuxgsm.sh
+
 USER arkserver
-
-ADD ./linuxgsm.sh ./
-
-RUN chmod +x ./linuxgsm.sh
 
 RUN bash linuxgsm.sh arkserver
 
