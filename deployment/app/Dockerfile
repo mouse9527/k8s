@@ -11,16 +11,17 @@ RUN set -ex; \
   useradd -g linuxgsm -u 750 linuxgsm; \
   chown linuxgsm:linuxgsm /linuxgsm.sh; \
   chmod +x /linuxgsm.sh; \
-  cp /linuxgsm.sh /home/linuxgsm/linuxgsm.sh; \
+  mkdir /linuxgsm  ; \
+  cp /linuxgsm.sh /linuxgsm/linuxgsm.sh; \
   usermod -G tty linuxgsm; \
-  chown -R linuxgsm:linuxgsm /home/linuxgsm/; \
+  chown -R linuxgsm:linuxgsm /linuxgsm/; \
   chmod 755 /home/linuxgsm
 
 USER linuxgsm
 
-WORKDIR /home/linuxgsm
+WORKDIR /linuxgsm
 
-ENV PATH=$PATH:/home/linuxgsm
+ENV PATH=$PATH:/linuxgsm
 
 COPY entrypoint.sh /entrypoint.sh
 

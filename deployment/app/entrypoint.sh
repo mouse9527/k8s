@@ -1,8 +1,12 @@
 #!/bin/bash
 
-if [ ! -e ~/linuxgsm.sh ]; then
+if [ ! -e /linuxgsm/linuxgsm.sh ]; then
     echo "Initializing Linuxgsm User Script in New Volume"
     cp /linuxgsm.sh ./linuxgsm.sh
+    if [ ! -e /linuxgsm/arkserver.sh ]; then
+        echo "Starting arkserver"
+        bash /linuxgsm/arkserver.sh start
+    fi
 fi
 
 # with no command, just spawn a running container suitable for exec's
