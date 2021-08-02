@@ -14,6 +14,6 @@ USER arkserver
 RUN export https_proxy=http://win10:7890 http_proxy=http://win10:7890 all_proxy=socks5://win10:7890 \
     && bash ./linuxgsm.sh arkserver
 
-RUN ./linuxgsm.sh install
+RUN ./arkserver install
 
 ENTRYPOINT ['/home/arkserver/arkserver', 'start']
