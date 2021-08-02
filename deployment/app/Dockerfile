@@ -7,8 +7,8 @@ RUN yum update -y; \
 COPY linuxgsm.sh /linuxgsm.sh
 
 RUN set -ex; \
-  groupadd linuxgsm; \
-  adduser linuxgsm linuxgsm; \
+  groupadd -g 750 linuxgsm; \
+  useradd -g linuxgsm -u 750 linuxgsm; \
   chown linuxgsm:linuxgsm /linuxgsm.sh; \
   chmod +x /linuxgsm.sh; \
   cp /linuxgsm.sh /home/linuxgsm/linuxgsm.sh; \
