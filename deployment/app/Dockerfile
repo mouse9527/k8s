@@ -7,7 +7,7 @@ RUN yum update -y \
 
 ADD ./linuxgsm.sh /home/arkserver/linuxgsm.sh
 
-RUN chmod 777 ./linuxgsm.sh
+RUN chmod 777 /home/arkserver/linuxgsm.sh
 
 USER arkserver
 
