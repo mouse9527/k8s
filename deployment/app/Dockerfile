@@ -5,15 +5,16 @@ RUN yum update -y \
     && yum install -y curl wget tar bzip2 gzip unzip python3 binutils bc jq tmux glibc.i686 libstdc++ libstdc++.i686 file nmap-ncat iproute \
     && adduser arkserver
 
-ADD ./linuxgsm.sh /linuxgsm.sh
+WORKDIR /arkserver
 
-RUN chmod 777 /linuxgsm.sh
+ADD ./linuxgsm.sh /arkserver/linuxgsm.sh
+
 
 USER arkserver
 
 RUN export https_proxy=http://win10:7890 http_proxy=http://win10:7890 all_proxy=socks5://win10:7890
-RUN bash /linuxgsm.sh arkserver
+RUN bash /arkserver/linuxgsm.sh arkserver
 
-RUN /arkserver install
+RUN /arkserver/arkserver install
 
-ENTRYPOINT ['/arkserver', 'start']
+ENTRYPOINT ['/arkserver//arkserver', 'start']
