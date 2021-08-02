@@ -58,7 +58,7 @@ spec:
         - name: users-key
           nfs:
             server: nas
-            path: /mnt/Database/k8s/users
+            path: /volume2/k8s/users
             readOnly: true
 ---
 apiVersion: networking.k8s.io/v1
