@@ -8,6 +8,10 @@ spec:
     matchLabels:
       app: linuxgsm
   template:
+    metadata:
+      name: app
+      labels:
+        app: linuxgsm
     spec:
       containers:
         - name: arkserver
