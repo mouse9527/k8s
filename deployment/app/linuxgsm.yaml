@@ -20,16 +20,12 @@ spec:
           ports:
             - containerPort: 7777
               name: game
-              protocol: UDP
             - containerPort: 7778
               name: raw
-              protocol: UDP
             - containerPort: 27015
               name: query
-              protocol: UDP
             - containerPort: 27020
               name: rcon
-              protocol: TCP
           livenessProbe:
             tcpSocket:
               port: 27020
@@ -69,19 +65,15 @@ spec:
       targetPort: 7777
       nodePort: 30777
       name: game
-      protocol: UDP
     - port: 7778
       targetPort: 7778
       nodePort: 30778
       name: raw
-      protocol: UDP
     - port: 27015
       targetPort: 27015
       nodePort: 30015
       name: query
-      protocol: UDP
     - port: 27020
       targetPort: 27020
       nodePort: 30020
       name: rcon
-      protocol: TCP
