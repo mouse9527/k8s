@@ -16,9 +16,6 @@ spec:
       containers:
         - name: arkserver
           image: registry.mouse.center:1443/linuxgsm
-          command:
-            - arkserver
-            - start
           ports:
             - containerPort: 7777
               name: game
