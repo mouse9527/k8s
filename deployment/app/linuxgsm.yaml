@@ -60,6 +60,7 @@ metadata:
   name: linuxgsm
   namespace: app
 spec:
+  type: NodePort
   selector:
     app: linuxgsm
   ports:
