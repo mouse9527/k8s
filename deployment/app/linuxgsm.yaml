@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: linuxgsm
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: linuxgsm
+  template:
+    spec:
+      containers:
+        - name: arkserver
+          image: registry.mouse.center:1443/linuxgsm
+          ports:
+            - containerPort: 7777
+              name: game
+              protocol: UDP
+            - containerPort: 7778
+              name: raw
+              protocol: UDP
+            - containerPort: 27015
+              name: query
+              protocol: UDP
+            - containerPort: 27020
+              name: rcon
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 27020
+            initialDelaySeconds: 40
+            periodSeconds: 20
+            failureThreshold: 10
+          readinessProbe:
+            tcpSocket:
+              port: 27020
+            initialDelaySeconds: 40
+            periodSeconds: 20
+            failureThreshold: 10
+          volumeMounts:
+            - mountPath: /app/
+              name: lgsm
+      volumes:
+        - name: lgsm
+          nfs:
+            path: /volume2/k8s/linuxgsm
+            server: nas
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: linuxgsm
+  namespace: app
+spec:
+  selector:
+    app: linuxgsm
+  ports:
+    - port: 7777
+      targetPort: 7777
+      nodePort: 30777
+      name: game
+      protocol: UDP
+    - port: 7778
+      targetPort: 7778
+      nodePort: 30778
+      name: raw
+      protocol: UDP
+    - port: 27015
+      targetPort: 27015
+      nodePort: 30015
+      name: query
+      protocol: UDP
+    - port: 27020
+      targetPort: 27020
+      nodePort: 30020
+      name: rcon
+      protocol: TCP
