@@ -44,6 +44,12 @@ spec:
           volumeMounts:
             - mountPath: /app/
               name: lgsm
+            - mountPath: /home/linuxgsm/.steam
+              name: steam
+              subPath: steam
+            - mountPath: /home/linuxgsm/.local
+              name: steam
+              subPath: local
           resources:
             limits:
               memory: 8Gi
@@ -52,7 +58,10 @@ spec:
           nfs:
             path: /volume2/k8s/linuxgsm
             server: nas
-
+        - name: steam
+          nfs:
+            path: /volume2/k8s/linuxgsm/steam
+            server: nas
 ---
 kind: Service
 apiVersion: v1
