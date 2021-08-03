@@ -2,15 +2,19 @@
 
 if [ ! -e /app/linuxgsm.sh ];
 then
-  echo "Will start server"
+    echo "Will start server"
 else
     echo "Initializing Linuxgsm User Script in New Volume"
     cp /linuxgsm.sh /app/linuxgsm.sh
 fi
 
-if [ ! -e /app/arkserver.sh ]; then
+if [ ! -e /app/arkserver ];
+then
+    echo "No arkserver!"
+    return -1
+else
     echo "Starting arkserver"
-    bash /app/arkserver.sh start
+    bash arkserver start
 fi
 
 # with no command, just spawn a running container suitable for exec's
