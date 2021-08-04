@@ -8,6 +8,6 @@ FROM busybox
 
 COPY --from=build /home/curl_user/kubectl /usr/sbin/
 
-COPY ./exec /usr/sbin/exec
+COPY ./kubeexec /usr/sbin/kubeexec
 
 RUN chmod +x /usr/sbin/kubectl
