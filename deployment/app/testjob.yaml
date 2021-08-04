@@ -12,12 +12,9 @@ spec:
           image: registry.mouse.center:1443/kubectl
           imagePullPolicy: Always
           command:
-            - sh
+            - gish
             - -c
-            - kubeexec
-            - app
-            - linuxgsm
-            - "arkserver monitor"
+            - kubeexec app linuxgsm "arkserver monitor"
           volumeMounts:
             - mountPath: /root/.kube/config
               name: kube
