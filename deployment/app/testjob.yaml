@@ -12,7 +12,7 @@ spec:
           image: registry.mouse.center:1443/kubectl
           imagePullPolicy: Always
           command:
-            - /bin/sh
+            - sh
             - -c
             - kubeexec
             - app
