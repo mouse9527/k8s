@@ -220,4 +220,4 @@ spec:
             - name: kube
               secret:
                 secretName: kubectl-secret
-  schedule: "0 0 * * 0"
+  schedule: "0 4 * * *"
