@@ -3,11 +3,11 @@ FROM curlimages/curl as build
 WORKDIR /home/curl_user
 
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+RUN chmod +x /home/curl_user/kubectl
 
 FROM busybox
 
-COPY --from=build /home/curl_user/kubectl /usr/sbin/
+COPY --from=build /home/curl_user/kubectl /bin/
 
-COPY ./kubeexec /usr/sbin/kubeexec
+COPY ./kubeexec /bin/
 
-RUN chmod +x /usr/sbin/kubectl
