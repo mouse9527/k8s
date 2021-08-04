@@ -11,7 +11,10 @@ spec:
         - name: kubectl
           image: registry.mouse.center:1443/kubectl
           command:
-            - kubectl exec -it -n app `kubectl get pods -n app -l app=linuxgsm | grep linuxgsm |awk '{print $1}'` -- arkserver monitor
+            - kubectl
+            - exec
+            - -it -n app `kubectl get pods -n app -l app=linuxgsm | grep linuxgsm |awk '{print $1}'`
+            - -- arkserver monitor
           volumeMounts:
             - mountPath: /root/.kube/config
               name: kube
