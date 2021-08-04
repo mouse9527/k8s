@@ -13,9 +13,8 @@ then
     echo "No arkserver!"
     return -1
 else
-    echo "Starting arkserver"
-    bash arkserver start -automanagedmods
-    yes | arkserver c
+    echo "Starting game server"
+    bash /app/start.sh
 fi
 
 # with no command, just spawn a running container suitable for exec's
