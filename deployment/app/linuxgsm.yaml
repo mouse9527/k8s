@@ -110,9 +110,10 @@ spec:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
               command:
-                - kubectl
-              args:
-                - exec -it -n app `kubectl get pods -n app -l app=linuxgsm | grep linuxgsm |awk '{print $1}'` -- arkserver force-update
+                - kubeexec
+                - app
+                - linuxgsm
+                - "arkserver force-update"
               volumeMounts:
                 - mountPath: /root/.kube/config
                   name: kube
@@ -127,7 +128,7 @@ spec:
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: monitor
+  name: linuxgsm-monitor
   namespace: app
 spec:
   jobTemplate:
@@ -139,9 +140,10 @@ spec:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
               command:
-                - kubectl
-              args:
-                - exec -it -n app `kubectl get pods -n app -l app=linuxgsm | grep linuxgsm |awk '{print $1}'` -- arkserver monitor
+                - kubeexec
+                - app
+                - linuxgsm
+                - "arkserver m"
               volumeMounts:
                 - mountPath: /root/.kube/config
                   name: kube
@@ -151,3 +153,93 @@ spec:
               secret:
                 secretName: kubectl-secret
   schedule: "*/5 * * * *"
+
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: linuxgsm-check-update
+  namespace: app
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: registry.mouse.center:1443/kubectl
+              command:
+                - kubeexec
+                - app
+                - linuxgsm
+                - "arkserver check-update"
+              volumeMounts:
+                - mountPath: /root/.kube/config
+                  name: kube
+                  subPath: config
+          volumes:
+            - name: kube
+              secret:
+                secretName: kubectl-secret
+  schedule: "*/30 * * * *"
+
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: linuxgsm-update
+  namespace: app
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: registry.mouse.center:1443/kubectl
+              command:
+                - kubeexec
+                - app
+                - linuxgsm
+                - "arkserver update"
+              volumeMounts:
+                - mountPath: /root/.kube/config
+                  name: kube
+                  subPath: config
+          volumes:
+            - name: kube
+              secret:
+                secretName: kubectl-secret
+  schedule: "0 4 * * *"
+
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: linuxgsm-update-lgsm
+  namespace: app
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: registry.mouse.center:1443/kubectl
+              command:
+                - kubeexec
+                - app
+                - linuxgsm
+                - "arkserver update-lgsm"
+              volumeMounts:
+                - mountPath: /root/.kube/config
+                  name: kube
+                  subPath: config
+          volumes:
+            - name: kube
+              secret:
+                secretName: kubectl-secret
+  schedule: "0 0 * * 0"
