@@ -98,7 +98,7 @@ spec:
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: linuxgsm-monitor
+  name: monitor-linuxgsm
   namespace: app
 spec:
   successfulJobsHistoryLimit: 1
@@ -130,7 +130,7 @@ spec:
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: linuxgsm-check-update
+  name: check-update-linuxgsm
   namespace: app
 spec:
   successfulJobsHistoryLimit: 1
@@ -162,7 +162,7 @@ spec:
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: linuxgsm-update
+  name: update-linuxgsm
   namespace: app
 spec:
   successfulJobsHistoryLimit: 1
@@ -194,7 +194,7 @@ spec:
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: linuxgsm-update-lgsm
+  name: update-lgsm-linuxgsm
   namespace: app
 spec:
   successfulJobsHistoryLimit: 1
