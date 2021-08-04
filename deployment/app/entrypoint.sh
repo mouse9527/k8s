@@ -15,7 +15,6 @@ then
 else
     echo "Starting arkserver"
     bash arkserver start -automanagedmods
-    bash arkserver console
 fi
 
 # with no command, just spawn a running container suitable for exec's
