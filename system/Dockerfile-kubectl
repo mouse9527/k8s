@@ -11,3 +11,5 @@ COPY --from=build /home/curl_user/kubectl /usr/sbin/
 COPY ./exec /usr/sbin/exec
 
 RUN chmod +x /usr/sbin/kubectl
+
+CMD ["sh"]
