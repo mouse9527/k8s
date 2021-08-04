@@ -109,7 +109,7 @@ spec:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
               command:
-                - kubectl exec -it -n app `kubectl get pods -n app -l app=linuxgsm | grep linuxgsm |awk '{print $1}'` arkserver force-updat
+                - kubectl exec -it -n app `kubectl get pods -n app -l app=linuxgsm | grep linuxgsm |awk '{print $1}'` arkserver force-update
               volumeMounts:
                 - mountPath: /root/.kube/config
                   name: kube
@@ -118,5 +118,30 @@ spec:
             - name: kube
               secret:
                 secretName: kubectl-secret
-
   schedule: "0 4 * * *"
+
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: monitor
+  namespace: app
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: kubectl
+              image: registry.mouse.center:1443/kubectl
+              command:
+                - kubectl exec -it -n app `kubectl get pods -n app -l app=linuxgsm | grep linuxgsm |awk '{print $1}'` arkserver monitor
+              volumeMounts:
+                - mountPath: /root/.kube/config
+                  name: kube
+                  subPath: config
+          volumes:
+            - name: kube
+              secret:
+                secretName: kubectl-secret
+  schedule: "*/5 * * * *"
