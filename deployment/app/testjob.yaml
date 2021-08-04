@@ -12,7 +12,7 @@ spec:
           image: registry.mouse.center:1443/kubectl
           imagePullPolicy: Always
           command:
-            - kubeexec
+            - exec
             - app
             - linuxgsm
             - "arkserver monitor"
