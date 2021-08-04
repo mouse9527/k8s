@@ -13,7 +13,7 @@ spec:
           imagePullPolicy: Always
           command:
             - sh
-            - exec
+            - /usr/sbin/exec
             - app
             - linuxgsm
             - "arkserver monitor"
