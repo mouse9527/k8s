@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 NAMESPACE=$1
 SERVICE=$2
 COMMAND=$3
