@@ -1,0 +1,11 @@
+FROM curlimages/curl as build
+
+WORKDIR /home/curl_user
+
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+FROM busybox
+
+COPY --from=build /home/curl_user/kubectl /usr/sbin/
+
+RUN chmod +x /usr/sbin/kubectl
