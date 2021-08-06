@@ -29,12 +29,6 @@ spec:
             - containerPort: 27020
               name: rcon
               protocol: TCP
-          livenessProbe:
-            tcpSocket:
-              port: 27020
-            initialDelaySeconds: 40
-            periodSeconds: 20
-            failureThreshold: 10
           readinessProbe:
             tcpSocket:
               port: 27020
