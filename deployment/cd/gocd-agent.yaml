@@ -32,5 +32,6 @@ spec:
       hostPath:
         path: /root/.gradle
     - name: ssh
-      persistentVolumeClaim:
-        claimName: gohome-pvc
+      nfs:
+        path: /volume2/k8s/gocd/go
+        server: nas
