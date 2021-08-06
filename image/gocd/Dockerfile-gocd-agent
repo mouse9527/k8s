@@ -17,8 +17,8 @@ USER root
 
 RUN yum install epel-release -y && yum install -y nodejs docker-client
 
-COPY --from=build /home/curl_user/jdk-14.0.2+12 /opt/java
-COPY --from=build /home/curl_user/gradle-7.1.1 /opt/gradle
+COPY --from=build /home/curl_user/jdk-14.0.2+12 /opt/java/
+COPY --from=build /home/curl_user/gradle-7.1.1 /opt/gradle/
 
 RUN ls -l /opt/java \
  && ls -l /opt/gradle
