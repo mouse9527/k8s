@@ -4,6 +4,8 @@ USER root
 
 RUN yum install epel-release -y && yum install -y java-latest-openjdk nodejs docker-client wget unzip
 
+RUN java --version
+
 ENV TZ=Asia/Shanghai
 ENV JAVA_HOME=/usr/lib/jvm/jre-14-openjdk
 
