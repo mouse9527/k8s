@@ -30,6 +30,6 @@ ENV GRADLE_VERSION=7.1.1
 
 RUN ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
   && gradle --version \
-  && ln --symbolic "${GRADLE_HOME}/bin/java" /usr/bin/java \
+  && ln --symbolic "${JAVA_HOME}/bin/java" /usr/bin/java \
   && java --version \
   && node -v
