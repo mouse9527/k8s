@@ -16,17 +16,12 @@ FROM gocd/gocd-agent-centos-7:v21.1.0
 USER root
 
 RUN yum install epel-release -y && yum install -y nodejs docker-client
-
-COPY --from=build /home/curl_user/jdk-14.0.2+12 /opt/java/jdk-14.0.2+12
-COPY --from=build /home/curl_user/gradle-7.1.1 /opt/gradle/gradle-7.1.1
-
-RUN ls -l /opt/java \
- && ls -l /opt/gradle
-
 ENV GRADLE_HOME=/opt/gradle/gradle-7.1.1
 ENV JAVA_HOME=/opt/java/jdk-14.0.2+12
 ENV TZ=Asia/Shanghai
-ENV GRADLE_VERSION=7.1.1
+
+COPY --from=build /home/curl_user/jdk-14.0.2+12 $JAVA_HOME
+COPY --from=build /home/curl_user/gradle-7.1.1 $GRADLE_HOME
 
 RUN ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
   && gradle --version \
