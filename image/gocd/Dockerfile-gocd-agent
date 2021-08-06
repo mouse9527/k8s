@@ -1,20 +1,32 @@
+FROM curlimages/curl as build
+
+WORKDIR /home/curl_user
+
+ENV URL_PREFIX=https://registry.mouse.center:1443/repository/raw-group
+
+RUN curl -LO  "$URL_PREFIX/openjdk/OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz"
+RUN tar -zxvf OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz
+
+RUN curl -LO "$URL_PREFIX/gradle/gradle-7.1.1.tar.gz"
+RUN tar -zxvf gradle-7.1.1.tar.gz
+
+
 FROM gocd/gocd-agent-centos-7:v21.1.0
 
 USER root
 
-RUN yum install epel-release -y && yum install -y java-latest-openjdk nodejs docker-client wget unzip
+RUN yum install epel-release -y && yum install -y nodejs docker-client unzip
 
-RUN echo $JAVA_HOME
+COPY --from=build /home/curl_user/jdk-14.0.2+12 /opt/java
+COPY --from=build /home/curl_user/gradle-7.1.1 /opt/gradle
 
+ENV GRADLE_HOME=/opt/gradle/gradle-7.1.1
+ENV JAVA_HOME=/opt/java/jdk-14.0.2+12
 ENV TZ=Asia/Shanghai
-ENV JAVA_HOME=/usr/lib/jvm/jre-14-openjdk
+ENV GRADLE_VERSION=7.1.1
 
-ENV GRADLE_HOME=/opt/gradle
-ENV GRADLE_VERSION=6.6.1
-
-RUN wget --no-verbose --output-document=gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
-    && unzip gradle.zip \
-    && mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
-    && rm gradle.zip \
-    && ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
-    && gradle --version
+RUN ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
+  && gradle --version \
+  && ln --symbolic "${GRADLE_HOME}/bin/java" /usr/bin/java \
+  && java --version \
+  && node -v
