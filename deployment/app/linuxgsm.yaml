@@ -143,6 +143,7 @@ spec:
           containers:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
+              imagePullPolicy: Always
               command:
                 - kubeexec
                 - app
@@ -175,6 +176,7 @@ spec:
           containers:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
+              imagePullPolicy: Always
               command:
                 - kubeexec
                 - app
@@ -207,6 +209,7 @@ spec:
           containers:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
+              imagePullPolicy: Always
               command:
                 - kubeexec
                 - app
@@ -239,6 +242,7 @@ spec:
           containers:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
+              imagePullPolicy: Always
               command:
                 - kubeexec
                 - app
