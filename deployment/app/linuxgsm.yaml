@@ -16,7 +16,6 @@ spec:
       containers:
         - name: arkserver
           image: registry.mouse.center:1443/linuxgsm
-          imagePullPolicy: Always
           ports:
             - containerPort: 7777
               name: game
