@@ -4,6 +4,8 @@ metadata:
   name: linuxgsm
   namespace: app
 spec:
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: linuxgsm
