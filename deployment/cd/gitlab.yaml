@@ -72,10 +72,13 @@ metadata:
   namespace: cd
   name: backup-gitlab
 spec:
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
         spec:
+          restartPolicy: OnFailure
           containers:
             - name: kubectl
               image: registry.mouse.center:1443/kubectl
