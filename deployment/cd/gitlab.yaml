@@ -4,18 +4,18 @@ metadata:
   name: gitlab
   namespace: cd
   labels:
-    k8s-app: gitlab
+    app: gitlab
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      k8s-app: gitlab
+      app: gitlab
   replicas: 1
   template:
     metadata:
       labels:
-        k8s-app: gitlab
+        app: gitlab
       namespace: cd
       name: gitlab
     spec:
@@ -104,7 +104,7 @@ metadata:
   name: gitlab
   namespace: cd
   labels:
-    k8s-app: gitlab
+    app: gitlab
 spec:
   type: NodePort
   ports:
@@ -116,7 +116,7 @@ spec:
       targetPort: 22
       nodePort: 30022
   selector:
-    k8s-app: gitlab
+    app: gitlab
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
