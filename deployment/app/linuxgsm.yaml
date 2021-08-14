@@ -126,7 +126,7 @@ spec:
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: check-update-linuxgsm
+  name: force-update-linuxgsm
   namespace: app
 spec:
   successfulJobsHistoryLimit: 1
@@ -144,7 +144,7 @@ spec:
                 - kubeexec
                 - app
                 - linuxgsm
-                - "arkserver check-update"
+                - "arkserver force-update"
               volumeMounts:
                 - mountPath: /root/.kube/config
                   name: kube
@@ -153,40 +153,7 @@ spec:
             - name: kube
               secret:
                 secretName: kubectl-secret
-  schedule: "*/30 * * * *"
-
----
-kind: CronJob
-apiVersion: batch/v1
-metadata:
-  name: update-linuxgsm
-  namespace: app
-spec:
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 3
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-            - name: kubectl
-              image: registry.mouse.center:1443/kubectl
-              imagePullPolicy: Always
-              command:
-                - kubeexec
-                - app
-                - linuxgsm
-                - "arkserver update"
-              volumeMounts:
-                - mountPath: /root/.kube/config
-                  name: kube
-                  subPath: config
-          volumes:
-            - name: kube
-              secret:
-                secretName: kubectl-secret
-  schedule: "0 4 * * *"
+  schedule: "0 6 * * *"
 
 ---
 kind: CronJob
@@ -219,7 +186,7 @@ spec:
             - name: kube
               secret:
                 secretName: kubectl-secret
-  schedule: "0 2 * * *"
+  schedule: "0 5 * * *"
 ---
 
 kind: CronJob
@@ -252,4 +219,4 @@ spec:
             - name: kube
               secret:
                 secretName: kubectl-secret
-  schedule: "*/20 * * * *"
+  schedule: "*/30 * * * *"
