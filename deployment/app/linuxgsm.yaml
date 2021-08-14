@@ -191,36 +191,3 @@ spec:
               secret:
                 secretName: kubectl-secret
   schedule: "0 5 * * *"
----
-
-kind: CronJob
-apiVersion: batch/v1
-metadata:
-  name: backup-linuxgsm
-  namespace: app
-spec:
-  successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 3
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-            - name: kubectl
-              image: registry.mouse.center:1443/kubectl
-              imagePullPolicy: Always
-              command:
-                - kubeexec
-                - app
-                - linuxgsm
-                - "arkserver backup"
-              volumeMounts:
-                - mountPath: /root/.kube/config
-                  name: kube
-                  subPath: config
-          volumes:
-            - name: kube
-              secret:
-                secretName: kubectl-secret
-  schedule: "*/30 * * * *"
