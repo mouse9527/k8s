@@ -34,7 +34,7 @@ spec:
           lifecycle:
             preStop:
               exec:
-                command: [ 'arkserver', 'stop' ]
+                command: [ 'bash', '-c', 'arkserver', 'stop' ]
           readinessProbe:
             tcpSocket:
               port: 27020
