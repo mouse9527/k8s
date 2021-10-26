@@ -40,6 +40,8 @@ spec:
               value: "http://win10:7890"
             - name: all_proxy
               value: "socks5://win10:7890"
+            - name: TZ
+              value: Asia/Shanghai
           volumeMounts:
             - mountPath: /config
               name: config
