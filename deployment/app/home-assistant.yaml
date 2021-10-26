@@ -33,6 +33,13 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 10
             failureThreshold: 6
+          env:
+            - name: http_proxy
+              value: "http://win10:7890"
+            - name: https_proxy
+              value: "http://win10:7890"
+            - name: all_proxy
+              value: "socks5://win10:7890"
           volumeMounts:
             - mountPath: /config
               name: config
