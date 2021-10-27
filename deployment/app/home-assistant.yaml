@@ -21,6 +21,9 @@ spec:
             - containerPort: 8123
               name: http
               protocol: TCP
+            - containerPort: 21064
+              name: homekit
+              protocol: TCP
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -63,7 +66,9 @@ spec:
     - port: 80
       name: web
       targetPort: http
-
+    - port: 64
+      nodePort: 30064
+      targetPort: homekit
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
