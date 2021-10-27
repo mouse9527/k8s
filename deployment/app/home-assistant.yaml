@@ -66,6 +66,17 @@ spec:
     - port: 80
       name: web
       targetPort: http
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: homekit
+  namespace: app
+spec:
+  type: NodePort
+  selector:
+    app: home-assistant
+  ports:
     - port: 64
       nodePort: 30064
       targetPort: homekit
