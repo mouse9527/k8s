@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
     - name: gocd-agent-container
-      image: registry.mouse.center:1443/gocd-agent-java14-node-docker
+      image: registry.mouse.center:1443/gocd-agent-java-node-docker:java17_gradle7.2
       securityContext:
         privileged: true
       volumeMounts:
