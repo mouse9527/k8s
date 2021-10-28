@@ -17,8 +17,6 @@ spec:
         - mountPath: /root/.ssh
           name: ssh
           subPath: .ssh
-        - mountPath: /root/.gradle
-          name: gradle-cache
         - mountPath: /root/.docker
           name: docker-config
   volumes:
@@ -28,9 +26,6 @@ spec:
     - name: docker-config
       hostPath:
         path: /root/.docker
-    - name: gradle-cache
-      hostPath:
-        path: /root/.gradle
     - name: ssh
       nfs:
         path: /volume2/k8s/gocd/go
