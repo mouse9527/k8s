@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-docker build -t registry.mouse.center:1443/gocd-agent-java14-node-docker -f ./Dockerfile-gocd-agent .
-docker push registry.mouse.center:1443/gocd-agent-java14-node-docker
+docker build -t registry.mouse.center:1443/gocd-agent-java-node-docker:java17_gradle7.2 -f ./Dockerfile-gocd-agent .
+docker push registry.mouse.center:1443/gocd-agent-java-node-docker:java17_gradle7.2
 
 docker build -t registry.mouse.center:1443/gocd-server:v21.1.0 -f ./Dockerfile-gocd-server .
 docker push registry.mouse.center:1443/gocd-server:v21.1.0
