@@ -4,24 +4,23 @@ WORKDIR /home/curl_user
 
 ENV URL_PREFIX=https://registry.mouse.center:1443/repository/raw-group
 
-RUN curl -LO  "$URL_PREFIX/openjdk/OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz"
-RUN tar -zxvf OpenJDK14U-jdk_x64_linux_hotspot_14.0.2_12.tar.gz
+RUN curl -LO  "$URL_PREFIX/openjdk/openjdk-17.0.1_linux-x64_bin.tar.gz"
+RUN tar -zxvf openjdk-17.0.1_linux-x64_bin.tar.gz
 
-RUN curl -LO "$URL_PREFIX/gradle/gradle-7.1.1.tar.gz"
-RUN tar -zxvf gradle-7.1.1.tar.gz
-
+RUN curl -LO "$URL_PREFIX/gradle/gradle-7.2-bin.zip"
+RUN unzip gradle-7.2-bin.zip
 
 FROM gocd/gocd-agent-centos-7:v21.1.0
 
 USER root
 
 RUN yum install epel-release -y && yum install -y nodejs docker-client
-ENV GRADLE_HOME=/opt/gradle/gradle-7.1.1
-ENV JAVA_HOME=/opt/java/jdk-14.0.2+12
+ENV GRADLE_HOME=/opt/gradle/gradle-7.2
+ENV JAVA_HOME=/opt/java/jdk-17.0.1
 ENV TZ=Asia/Shanghai
 
-COPY --from=build /home/curl_user/jdk-14.0.2+12 $JAVA_HOME
-COPY --from=build /home/curl_user/gradle-7.1.1 $GRADLE_HOME
+COPY --from=build /home/curl_user/jdk-17.0.1 $JAVA_HOME
+COPY --from=build /home/curl_user/gradle-7.2 $GRADLE_HOME
 
 RUN ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
   && gradle --version \
