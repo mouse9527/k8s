@@ -7,23 +7,15 @@ ENV URL_PREFIX=https://registry.mouse.center:1443/repository/raw-group
 RUN curl -LO  "$URL_PREFIX/openjdk/openjdk-17.0.1_linux-x64_bin.tar.gz"
 RUN tar -zxvf openjdk-17.0.1_linux-x64_bin.tar.gz
 
-RUN curl -LO "$URL_PREFIX/gradle/gradle-7.2-bin.zip"
-RUN unzip gradle-7.2-bin.zip
-
 FROM gocd/gocd-agent-centos-7:v21.3.0
 
 USER root
 
-RUN yum install epel-release -y && yum install -y nodejs docker-client
-ENV GRADLE_HOME=/opt/gradle/gradle-7.2
+RUN yum install epel-release -y && yum install -y docker-client
 ENV JAVA_HOME=/opt/java/jdk-17.0.1
 ENV TZ=Asia/Shanghai
 
 COPY --from=build /home/curl_user/jdk-17.0.1 $JAVA_HOME
-COPY --from=build /home/curl_user/gradle-7.2 $GRADLE_HOME
 
-RUN ln --symbolic "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
-  && gradle --version \
-  && ln --symbolic "${JAVA_HOME}/bin/java" /usr/bin/java \
-  && java --version \
-  && node -v
+RUN  ln --symbolic "${JAVA_HOME}/bin/java" /usr/bin/java \
+  && java --version

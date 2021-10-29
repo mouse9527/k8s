@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: gocd-agent-java17
-          image: registry.mouse.center:1443/gocd-agent-java-node-docker:java17_gradle7.2
+          image: registry.mouse.center:1443/gocd-agent-java17:v21.3.0
           env:
             - name: AGENT_AUTO_REGISTER_RESOURCES
               value: java17,node
@@ -78,7 +78,7 @@ spec:
     spec:
       containers:
         - name: gocd-agent-kubectl
-          image: registry.mouse.center:1443/gocd-agent-kubectl
+          image: registry.mouse.center:1443/gocd-agent-kubectl:v21.3.0
           env:
             - name: AGENT_AUTO_REGISTER_RESOURCES
               value: kubectl
