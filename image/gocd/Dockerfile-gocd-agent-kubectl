@@ -5,7 +5,7 @@ WORKDIR /home/curl_user
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 RUN chmod +x /home/curl_user/kubectl
 
-FROM gocd/gocd-agent-centos-7:v21.1.0
+FROM gocd/gocd-agent-centos-7:v21.3.0
 
 USER root
 
