@@ -7,8 +7,8 @@ ENV URL_PREFIX=https://registry.mouse.center:1443/repository/raw-group
 RUN curl -LO  "$URL_PREFIX/openjdk/openjdk-17.0.1_linux-x64_bin.tar.gz"
 RUN tar -zxvf openjdk-17.0.1_linux-x64_bin.tar.gz
 
-FROM gocd/gocd-agent-centos-7:v21.3.0
 
+FROM gocd/gocd-agent-centos-7:v21.3.0
 USER root
 
 RUN yum install epel-release -y && yum install -y docker-client
