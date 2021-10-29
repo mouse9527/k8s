@@ -4,9 +4,10 @@ metadata:
   namespace: cd
   name: gocd-agent-config
 data:
-  GO_EA_SERVER_URL: "https://cd.mouse.center:1443/go"
+  GO_EA_SERVER_URL: "http://gocd/go"
   AGENT_AUTO_REGISTER_KEY: "7cfc9db5-0925-4cab-a111-9ea52b9fdd83"
   AGENT_AUTO_REGISTER_ENVIRONMENTS: "k8s"
+  AGENT_BOOTSTRAPPER_ARGS: "-sslVerificationMode NONE"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,7 +20,7 @@ spec:
   selector:
     matchLabels:
       app: gocd-agent-java17
-  replicas: 4
+  replicas: 2
   template:
     metadata:
       name: gocd-agent-java17
@@ -65,7 +66,7 @@ metadata:
   name: gocd-agent-kubectl
   namespace: cd
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: gocd-agent-kubectl
