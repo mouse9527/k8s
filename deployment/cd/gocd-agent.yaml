@@ -4,8 +4,8 @@ metadata:
   namespace: cd
   name: gocd-agent-config
 data:
-  AGENT_AUTO_REGISTER_KEY: "7cfc9db5-0925-4cab-a111-9ea52b9fdd83"
   GO_EA_SERVER_URL: "https://cd.mouse.center:1443/go"
+  AGENT_AUTO_REGISTER_KEY: "7cfc9db5-0925-4cab-a111-9ea52b9fdd83"
   AGENT_AUTO_REGISTER_ENVIRONMENTS: "k8s"
 ---
 apiVersion: apps/v1
@@ -32,7 +32,7 @@ spec:
           image: registry.mouse.center:1443/gocd-agent-java17:v21.3.0
           env:
             - name: AGENT_AUTO_REGISTER_RESOURCES
-              value: java17,node
+              value: java17
           envFrom:
             - configMapRef:
                 name: gocd-agent-config
