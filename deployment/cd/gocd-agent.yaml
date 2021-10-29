@@ -12,23 +12,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: cd
-  name: gocd-agent-java17-gradle7.2-node
+  name: gocd-agent-java17
   labels:
-    app: gocd-agent-java17-gradle7.2-node
+    app: gocd-agent-java17
 spec:
   selector:
     matchLabels:
-      app: gocd-agent-java17-gradle7.2-node
+      app: gocd-agent-java17
   replicas: 4
   template:
     metadata:
-      name: gocd-agent-java17-gradle7.2-node
+      name: gocd-agent-java17
       namespace: cd
       labels:
-        app: gocd-agent-java17-gradle7.2-node
+        app: gocd-agent-java17
     spec:
       containers:
-        - name: gocd-agent-java17-gradle7.2-node
+        - name: gocd-agent-java17
           image: registry.mouse.center:1443/gocd-agent-java-node-docker:java17_gradle7.2
           envFrom:
             - configMapRef:
