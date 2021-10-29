@@ -42,9 +42,6 @@ spec:
           env:
             - name: AGENT_AUTO_REGISTER_RESOURCES
               value: java17
-          envFrom:
-            - configMapRef:
-                name: gocd-agent-config
           securityContext:
             privileged: true
           volumeMounts:
