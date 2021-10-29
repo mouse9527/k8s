@@ -5,9 +5,17 @@ metadata:
   name: gocd-agent-config
 data:
   GO_EA_SERVER_URL: https://cd.mouse.center:1443/go
-  AGENT_AUTO_REGISTER_KEY: 7cfc9db5-0925-4cab-a111-9ea52b9fdd83
-  AGENT_AUTO_REGISTER_ENVIRONMENTS: k8s
-  AGENT_BOOTSTRAPPER_ARGS: "-sslVerificationMode NONE"
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: cd
+  name: gocd-agent-java-cfg
+data:
+  "autoregister.properties": |
+    agent.auto.register.key=7cfc9db5-0925-4cab-a111-9ea52b9fdd83
+    agent.auto.register.environments=k8s
+    agent.auto.register.resources=java17,centos7
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -47,6 +55,9 @@ spec:
               subPath: .ssh
             - mountPath: /root/.docker
               name: docker-config
+            - mountPath: /godata/config/autoregister.properties
+              name: gocd-agent-java-cfg
+              subPath: autoregister.properties
       volumes:
         - name: dockersock
           hostPath:
@@ -58,7 +69,9 @@ spec:
           nfs:
             server: nas
             path: /volume2/k8s/gocd/go
-
+        - name: gocd-agent-java-cfg
+          configMap:
+            name: gocd-agent-java-cfg
 ---
 kind: Deployment
 apiVersion: apps/v1
