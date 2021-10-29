@@ -35,7 +35,7 @@ spec:
                 name: gocd-agent-config
           env:
             - name: AGENT_AUTO_REGISTER_RESOURCES
-              value: "java17,gradle7.2,node"
+              value: java17,node
           securityContext:
             privileged: true
           volumeMounts:
@@ -57,3 +57,39 @@ spec:
           nfs:
             server: nas
             path: /volume2/k8s/gocd/go
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gocd-agent-kubectl
+  namespace: cd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gocd-agent-kubectl
+  template:
+    metadata:
+      namespace: cd
+      name: gocd-agent-kubectl
+      labels:
+        app: gocd-agent-kubectl
+    spec:
+      containers:
+        - name: gocd-agent-kubectl
+          image: registry.mouse.center:1443/gocd-agent-kubectl
+          envFrom:
+            - configMapRef:
+                name: gocd-agent-config
+          env:
+            - name: AGENT_AUTO_REGISTER_RESOURCES
+              value: kubectl
+          volumeMounts:
+            - mountPath: /root/.kube/config
+              name: gocd-agent-config
+              subPath: config
+      volumes:
+        - name: gocd-agent-config
+          secret:
+            secretName: gocd-agent-kubectl-secret
