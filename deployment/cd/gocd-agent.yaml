@@ -40,8 +40,8 @@ spec:
         - name: gocd-agent-java17
           image: registry.mouse.center:1443/gocd-agent-java17:v21.3.0
           env:
-            - name: AGENT_AUTO_REGISTER_RESOURCES
-              value: java17
+            - name: GO_EA_SERVER_URL
+              value: https://cd.mouse.center:1443/go
           securityContext:
             privileged: true
           volumeMounts:
