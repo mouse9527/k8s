@@ -1,32 +1,59 @@
 apiVersion: v1
-kind: Pod
+kind: ConfigMap
 metadata:
-  name: gocd-agent-centos7
   namespace: cd
+  name: gocd-agent-config
+data:
+  AGENT_AUTO_REGISTER_KEY: "7cfc9db5-0925-4cab-a111-9ea52b9fdd83"
+  GO_EA_SERVER_URL: "https://cd.mouse.center:1443/go"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: cd
+  name: gocd-agent-java17-gradle7.2-node
   labels:
-    app: gocd-agent
+    app: gocd-agent-java17-gradle7.2-node
 spec:
-  containers:
-    - name: gocd-agent-container
-      image: registry.mouse.center:1443/gocd-agent-java-node-docker:java17_gradle7.2
-      securityContext:
-        privileged: true
-      volumeMounts:
-        - mountPath: /var/run/docker.sock
-          name: dockersock
-        - mountPath: /root/.ssh
-          name: ssh
-          subPath: .ssh
-        - mountPath: /root/.docker
-          name: docker-config
-  volumes:
-    - name: dockersock
-      hostPath:
-        path: /var/run/docker.sock
-    - name: docker-config
-      hostPath:
-        path: /root/.docker
-    - name: ssh
-      nfs:
-        path: /volume2/k8s/gocd/go
-        server: nas
+  selector:
+    matchLabels:
+      app: gocd-agent-java17-gradle7.2-node
+  replicas: 4
+  template:
+    metadata:
+      name: gocd-agent-java17-gradle7.2-node
+      namespace: cd
+      labels:
+        app: gocd-agent-java17-gradle7.2-node
+    spec:
+      containers:
+        - name: gocd-agent-java17-gradle7.2-node
+          image: registry.mouse.center:1443/gocd-agent-java-node-docker:java17_gradle7.2
+          envFrom:
+            - configMapRef:
+                name: gocd-agent-config
+          env:
+            - name: AGENT_AUTO_REGISTER_RESOURCES
+              value: "java17,gradle7.2,node"
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: dockersock
+            - mountPath: /root/.ssh
+              name: ssh
+              subPath: .ssh
+            - mountPath: /root/.docker
+              name: docker-config
+      volumes:
+        - name: dockersock
+          hostPath:
+            path: /var/run/docker.sock
+        - name: docker-config
+          hostPath:
+            path: /root/.docker
+        - name: ssh
+          nfs:
+            server: nas
+            path: /volume2/k8s/gocd/go
