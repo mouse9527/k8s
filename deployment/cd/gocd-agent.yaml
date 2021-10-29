@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: cd
-  name: gocd-agent-config
+  name: go-server-url
 data:
   GO_EA_SERVER_URL: https://cd.mouse.center:1443/go
 ---
@@ -16,6 +16,19 @@ data:
     agent.auto.register.key=7cfc9db5-0925-4cab-a111-9ea52b9fdd83
     agent.auto.register.environments=k8s
     agent.auto.register.resources=java17,centos7
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: cd
+  name: gocd-agent-kubectl-cfg
+data:
+  "autoregister.properties": |
+    agent.auto.register.key=7cfc9db5-0925-4cab-a111-9ea52b9fdd83
+    agent.auto.register.environments=k8s
+    agent.auto.register.resources=kubectl,centos7
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -42,6 +55,9 @@ spec:
           env:
             - name: GO_EA_SERVER_URL
               value: https://cd.mouse.center:1443/go
+          envFrom:
+            - configMapRef:
+                name: go-server-url
           securityContext:
             privileged: true
           volumeMounts:
@@ -53,7 +69,7 @@ spec:
             - mountPath: /root/.docker
               name: docker-config
             - mountPath: /godata/config/autoregister.properties
-              name: gocd-agent-java-cfg
+              name: autoregister-properties
               subPath: autoregister.properties
       volumes:
         - name: dockersock
@@ -66,7 +82,7 @@ spec:
           nfs:
             server: nas
             path: /volume2/k8s/gocd/go
-        - name: gocd-agent-java-cfg
+        - name: autoregister-properties
           configMap:
             name: gocd-agent-java-cfg
 ---
@@ -90,17 +106,20 @@ spec:
       containers:
         - name: gocd-agent-kubectl
           image: registry.mouse.center:1443/gocd-agent-kubectl:v21.3.0
-          env:
-            - name: AGENT_AUTO_REGISTER_RESOURCES
-              value: kubectl
           envFrom:
             - configMapRef:
-                name: gocd-agent-config
+                name: go-server-url
           volumeMounts:
             - mountPath: /root/.kube/config
               name: gocd-agent-config
               subPath: config
+            - mountPath: /godata/config/autoregister.properties
+              name: autoregister-properties
+              subPath: autoregister.properties
       volumes:
         - name: gocd-agent-config
           secret:
             secretName: gocd-agent-kubectl-secret
+        - name: autoregister-properties
+          configMap:
+            name: gocd-agent-kubectl-cfg
