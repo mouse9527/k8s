@@ -4,9 +4,9 @@ metadata:
   namespace: cd
   name: gocd-agent-config
 data:
-  GO_EA_SERVER_URL: "http://gocd/go"
-  AGENT_AUTO_REGISTER_KEY: "7cfc9db5-0925-4cab-a111-9ea52b9fdd83"
-  AGENT_AUTO_REGISTER_ENVIRONMENTS: "k8s"
+  GO_EA_SERVER_URL: https://cd.mouse.center:1443/go
+  AGENT_AUTO_REGISTER_KEY: 7cfc9db5-0925-4cab-a111-9ea52b9fdd83
+  AGENT_AUTO_REGISTER_ENVIRONMENTS: k8s
   AGENT_BOOTSTRAPPER_ARGS: "-sslVerificationMode NONE"
 ---
 apiVersion: apps/v1
