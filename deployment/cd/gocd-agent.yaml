@@ -85,7 +85,7 @@ spec:
         - name: autoregister-properties
           configMap:
             name: gocd-agent-java-cfg
-            defaultMode: 0666
+            defaultMode: 511
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -124,7 +124,7 @@ spec:
         - name: autoregister-properties
           configMap:
             name: gocd-agent-kubectl-cfg
-            defaultMode: 0666
+            defaultMode: 511
 
 ---
 kind: ConfigMap
