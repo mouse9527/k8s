@@ -5,7 +5,7 @@ RUN unzip glowroot-central-0.14.0-beta-dist.zip
 
 FROM registry.mouse.center:1443/openjdk:16
 ENV TZ=Asia/Shanghai
-COPY --from=build /home/curl_user/glowroot-central /apps
+COPY --from=build /home/curl_user/glowroot-central /glowroot-central
 WORKDIR /glowroot-central
 EXPOSE 4000 8181
 CMD ["java", "-jar", "/glowroot-central/glowroot-central.jar", "$JAVA_ARGS"]
