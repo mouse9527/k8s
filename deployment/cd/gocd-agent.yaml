@@ -151,7 +151,10 @@ spec:
           containers:
             - name: agent-cleanup
               image: registry.mouse.center:1443/gocd-agent-cleanup
+              command:
+                - sh
+                - /cleanup.sh
               envFrom:
                 - configMapRef:
                     name: gocd-agent-cleanup
-  schedule: "0 5 * * *"
+  schedule: "0 0/5 * * *"
