@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: app
+  namespace: dev
   name: users
 spec:
   selector:
@@ -14,7 +14,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: users
-  namespace: app
+  namespace: dev
   labels:
     app: users
 spec:
@@ -24,7 +24,7 @@ spec:
       app: users
   template:
     metadata:
-      namespace: app
+      namespace: dev
       name: users
       labels:
         app: users
@@ -65,7 +65,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: users-ingress
-  namespace: app
+  namespace: dev
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
