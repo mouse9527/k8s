@@ -39,6 +39,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: application-test-cfg
+            - configMapRef:
+                name: java-args-cfg
           livenessProbe:
             tcpSocket:
               port: 8080
