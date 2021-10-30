@@ -9,3 +9,6 @@ docker push registry.mouse.center:1443/gocd-server:$VERSION
 
 docker build -t registry.mouse.center:1443/gocd-agent-kubectl:$VERSION -f ./Dockerfile-gocd-agent-kubectl .
 docker push registry.mouse.center:1443/gocd-agent-kubectl:$VERSION
+
+docker build -t registry.mouse.center:1443/gocd-agent-cleanup -f ./Dockerfile-gocd-agent-cleanup
+docker push registry.mouse.center:1443/gocd-agent-cleanup

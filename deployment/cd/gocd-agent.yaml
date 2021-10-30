@@ -125,18 +125,14 @@ spec:
             name: gocd-agent-kubectl-cfg
 
 ---
-kind: ConfigMap
+kind: Secret
 apiVersion: v1
 metadata:
   namespace: cd
-  name: cleanup-script
+  name: gocd-agent-cleanup
 data:
-  "cleanup.sh": |
-    #!/bin/sh
-    set -e
-    API_URL="https://cd.mouse.center:1443/go/api"
-    TOKEN="82615b2d8f5bf7c3b4babd5a073a7163165c21ee"
-
+  API_URL: "https://cd.mouse.center:1443/go/api"
+  TOKEN: "82615b2d8f5bf7c3b4babd5a073a7163165c21ee"
 ---
 kind: CronJob
 apiVersion: batch/v1
@@ -150,16 +146,8 @@ spec:
         spec:
           containers:
             - name: agent-cleanup
-              image: registry.mouse.center:1443/curlimages/curl
-              command:
-                - sh
-                - cleanup.sh
-              volumeMounts:
-                - mountPath: /cleanup.sh
-                  name: cleanup-script
-                  subPath: cleanup.sh
-          volumes:
-            - name: cleanup-script
-              configMap:
-                name: cleanup-script
+              image: registry.mouse.center:1443/gocd-agent-cleanup
+              envFrom:
+                - secretRef:
+                    name: gocd-agent-cleanup
   schedule: "0 5 * * *"
