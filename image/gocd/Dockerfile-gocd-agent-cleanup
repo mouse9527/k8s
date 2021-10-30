@@ -8,5 +8,6 @@ RUN chmod +x jq-linux64 && mv jq-linux64 /jq
 
 COPY ./cleanup.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
+RUN chmod 755 /jq
 
 ENTRYPOINT ["sh" "/entrypoint.sh"]
