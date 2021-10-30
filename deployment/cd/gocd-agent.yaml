@@ -125,7 +125,7 @@ spec:
             name: gocd-agent-kubectl-cfg
 
 ---
-kind: Secret
+kind: ConfigMap
 apiVersion: v1
 metadata:
   namespace: cd
@@ -151,6 +151,6 @@ spec:
             - name: agent-cleanup
               image: registry.mouse.center:1443/gocd-agent-cleanup
               envFrom:
-                - secretRef:
+                - configMapRef:
                     name: gocd-agent-cleanup
   schedule: "0 5 * * *"
