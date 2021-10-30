@@ -50,17 +50,14 @@ spec:
     spec:
       initContainers:
         - name: autoregister-properties
-          image: registry.mouse.center:1443/centos:7
+          image: registry.mouse.center:1443/curlimages/curl
           command:
-            - sh
-            - -c
             - cp
             - /cfg/*
             - /confg/
           volumeMounts:
             - mountPath: /cfg
               name: autoregister-cfg
-              subPath: autoregister.properties
             - mountPath: /config
               name: autoregister-properties
       containers:
@@ -122,17 +119,14 @@ spec:
     spec:
       initContainers:
         - name: autoregister-properties
-          image: registry.mouse.center:1443/centos:7
+          image: registry.mouse.center:1443/curlimages/curl
           command:
-            - sh
-            - -c
             - cp
             - /cfg/*
             - /confg/
           volumeMounts:
             - mountPath: /cfg
               name: autoregister-cfg
-              subPath: autoregister.properties
             - mountPath: /config
               name: autoregister-properties
       containers:
