@@ -50,8 +50,10 @@ spec:
     spec:
       initContainers:
         - name: autoregister-properties
-          image: registry.mouse.center:1443/curlimages/curl
+          image: registry.mouse.center:1443/centos:7
           command:
+            - sh
+            - -c
             - cp
             - /cfg/*
             - /confg/
@@ -99,6 +101,7 @@ spec:
             name: gocd-agent-java-cfg
         - name: autoregister-properties
           emptyDir: {}
+
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -119,8 +122,10 @@ spec:
     spec:
       initContainers:
         - name: autoregister-properties
-          image: registry.mouse.center:1443/curlimages/curl
+          image: registry.mouse.center:1443/centos:7
           command:
+            - sh
+            - -c
             - cp
             - /cfg/*
             - /confg/
