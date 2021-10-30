@@ -80,13 +80,3 @@ spec:
                 name: glowroot-central
                 port:
                   name: web
-    - host: glowroot.api.mouse.center
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: glowroot-central
-                port:
-                  name: api
