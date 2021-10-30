@@ -152,7 +152,7 @@ spec:
             - name: agent-cleanup
               image: registry.mouse.center:1443/gocd-agent-cleanup
               command:
-                - sh
+                - bash
                 - /cleanup.sh
               envFrom:
                 - configMapRef:
