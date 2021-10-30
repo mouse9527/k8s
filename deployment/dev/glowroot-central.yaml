@@ -1,21 +1,21 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: glowroot-control
+  name: glowroot-central
   namespace: dev
 spec:
   selector:
     matchLabels:
-      app: glowroot-control
+      app: glowroot-central
   template:
     metadata:
       namespace: dev
-      name: glowroot-control
+      name: glowroot-central
       labels:
-        app: glowroot-control
+        app: glowroot-central
     spec:
       containers:
-        - name: glowroot-control
+        - name: glowroot-central
           image: registry.mouse.center:1443/glowroot/glowroot-central:0.14.0-beta
           ports:
             - containerPort: 4000
@@ -29,11 +29,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: glowroot-control
+  name: glowroot-central
   namespace: dev
 spec:
   selector:
-    app: glowroot-control
+    app: glowroot-central
   ports:
     - port: 80
       name: web
@@ -46,7 +46,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: glowroot-control-ingress
+  name: glowroot-central-ingress
   namespace: dev
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -59,6 +59,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: glowroot-control
+                name: glowroot-central
                 port:
                   name: web
