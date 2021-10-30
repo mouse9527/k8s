@@ -24,6 +24,10 @@ spec:
               name: db
         - name: glowroot-central
           image: registry.mouse.center:1443/openjdk:16
+          command:
+            - bash
+            - -c
+            - "java -jar /apps/glowroot-central/glowroot-central.jar"
           ports:
             - containerPort: 4000
               name: web
