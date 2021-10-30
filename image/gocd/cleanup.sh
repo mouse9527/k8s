@@ -1,4 +1,5 @@
 #!/bin/sh
+
 set -e
 gocd() {
   curl -s -X $1 "$API_URL/$2" \
