@@ -1,6 +1,5 @@
-FROM curlimages/curl
+FROM centos:7
 USER root
-WORKDIR /home/curl_user
 
 RUN curl -LO https://registry.mouse.center:1443/repository/raw-hosted/jq/jq-linux64
 

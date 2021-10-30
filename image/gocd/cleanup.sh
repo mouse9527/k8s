@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 gocd() {
@@ -39,6 +39,6 @@ export -f get_agents
 export -f delete
 export -f get
 export -f gocd
-get_agents | /jq -c '._embedded.agents[] | select(.agent_state | contains("LostContact")) | .uuid' | xargs -r -n 1 sh -i -c 'delete_agent $@' _
+get_agents | /jq -c '._embedded.agents[] | select(.agent_state | contains("LostContact")) | .uuid' | xargs -r -n 1 bash -i -c 'delete_agent $@' _
 echo "Cleanup complete."
 exit 0
