@@ -140,6 +140,8 @@ metadata:
   namespace: cd
   name: agent-cleanup
 spec:
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
   jobTemplate:
     spec:
       template:
