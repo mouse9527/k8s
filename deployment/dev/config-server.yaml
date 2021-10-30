@@ -36,7 +36,7 @@ spec:
           command:
             - bash
             - -c
-            - "java -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-control:8181 -jar /apps/app.jar"
+            - "java -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-control.dev:8181 -jar /apps/app.jar"
           ports:
             - containerPort: 8080
               name: web
