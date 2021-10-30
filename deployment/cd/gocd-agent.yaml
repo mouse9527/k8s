@@ -62,11 +62,6 @@ spec:
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: dockersock
-            - mountPath: /root/.ssh
-              name: ssh
-              subPath: .ssh
-            - mountPath: /root/.docker
-              name: docker-config
             - mountPath: /godata/config/autoregister.properties
               name: autoregister-properties
               subPath: autoregister.properties
@@ -74,13 +69,6 @@ spec:
         - name: dockersock
           hostPath:
             path: /var/run/docker.sock
-        - name: docker-config
-          hostPath:
-            path: /root/.docker
-        - name: ssh
-          nfs:
-            server: nas
-            path: /volume2/k8s/gocd/go
         - name: autoregister-properties
           configMap:
             name: gocd-agent-java-cfg
