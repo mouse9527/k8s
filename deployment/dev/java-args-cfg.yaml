@@ -1,7 +1,0 @@
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: java-args-cfg
-  namespace: dev
-data:
-  JAVA_ARGS: -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-control:8181

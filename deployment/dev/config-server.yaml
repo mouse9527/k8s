@@ -33,9 +33,10 @@ spec:
         - name: config-server
           image: registry.mouse.center:1443/config-server
           imagePullPolicy: Always
-          envFrom:
-            - configMapRef:
-                name: java-args-cfg
+          command:
+            - bash
+            - -c
+            - "java -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-control:8181 /apps/app.jar"
           ports:
             - containerPort: 8080
               name: web
