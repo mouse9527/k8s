@@ -28,7 +28,6 @@ data:
     agent.auto.register.key=7cfc9db5-0925-4cab-a111-9ea52b9fdd83
     agent.auto.register.environments=k8s
     agent.auto.register.resources=kubectl,centos7
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -49,6 +48,21 @@ spec:
       labels:
         app: gocd-agent-java17
     spec:
+      initContainers:
+        - name: autoregister-properties
+          image: registry.mouse.center:1443/curlimages/curl
+          command:
+            - sh
+            - -c
+            - cp
+            - /cfg/autoregister.properties
+            - /confg/autoregister.properties
+          volumeMounts:
+            - mountPath: /cfg
+              name: autoregister-cfg
+              subPath: autoregister.properties
+            - mountPath: /config
+              name: autoregister-properties
       containers:
         - name: gocd-agent-java17
           image: registry.mouse.center:1443/gocd-agent-java17:v21.3.0
@@ -82,10 +96,11 @@ spec:
           nfs:
             server: nas
             path: /volume2/k8s/gocd/go
-        - name: autoregister-properties
+        - name: autoregister-cfg
           configMap:
             name: gocd-agent-java-cfg
-            defaultMode: 511
+        - name: autoregister-properties
+          emptyDir: {}
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -104,6 +119,21 @@ spec:
       labels:
         app: gocd-agent-kubectl
     spec:
+      initContainers:
+        - name: autoregister-properties
+          image: registry.mouse.center:1443/curlimages/curl
+          command:
+            - sh
+            - -c
+            - cp
+            - /cfg/autoregister.properties
+            - /confg/autoregister.properties
+          volumeMounts:
+            - mountPath: /cfg
+              name: autoregister-cfg
+              subPath: autoregister.properties
+            - mountPath: /config
+              name: autoregister-properties
       containers:
         - name: gocd-agent-kubectl
           image: registry.mouse.center:1443/gocd-agent-kubectl:v21.3.0
@@ -121,11 +151,11 @@ spec:
         - name: gocd-agent-config
           secret:
             secretName: gocd-agent-kubectl-secret
-        - name: autoregister-properties
+        - name: autoregister-cfg
           configMap:
             name: gocd-agent-kubectl-cfg
-            defaultMode: 511
-
+        - name: autoregister-properties
+          emptyDir: {}
 ---
 kind: ConfigMap
 apiVersion: v1
