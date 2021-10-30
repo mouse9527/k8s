@@ -6,8 +6,6 @@ RUN curl -LO https://registry.mouse.center:1443/repository/raw-hosted/jq/jq-linu
 
 RUN chmod +x jq-linux64 && mv jq-linux64 /jq
 
-COPY ./cleanup.sh /entrypoint.sh
-RUN chmod 755 /entrypoint.sh
+COPY ./cleanup.sh /cleanup.sh
+RUN chmod 755 /cleanup.sh
 RUN chmod 755 /jq
-
-ENTRYPOINT ["sh" "/entrypoint.sh"]
