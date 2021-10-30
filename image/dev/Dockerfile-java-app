@@ -1,0 +1,10 @@
+FROM curlimages/curl as build
+WORKDIR /home/curl_user
+RUN curl -LO https://registry.mouse.center:1443/repository/raw-hosted/glowroot/glowroot-0.14.0-beta-dist.zip
+RUN unzip glowroot-0.14.0-beta-dist.zip
+
+FROM registry.mouse.center:1443/openjdk:16
+RUN mkdir /apps
+WORKDIR /apps
+COPY --from=build /home/curl_user/glowroot /apps/glowroot
+EXPOSE 8080 4000
