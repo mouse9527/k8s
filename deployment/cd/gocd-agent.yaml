@@ -52,11 +52,9 @@ spec:
         - name: autoregister-properties
           image: registry.mouse.center:1443/curlimages/curl
           command:
-            - sh
-            - -c
             - cp
-            - /cfg/autoregister.properties
-            - /confg/autoregister.properties
+            - /cfg/*
+            - /confg/
           volumeMounts:
             - mountPath: /cfg
               name: autoregister-cfg
@@ -123,11 +121,9 @@ spec:
         - name: autoregister-properties
           image: registry.mouse.center:1443/curlimages/curl
           command:
-            - sh
-            - -c
             - cp
-            - /cfg/autoregister.properties
-            - /confg/autoregister.properties
+            - /cfg/*
+            - /confg/
           volumeMounts:
             - mountPath: /cfg
               name: autoregister-cfg
