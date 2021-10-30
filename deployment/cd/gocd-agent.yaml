@@ -146,6 +146,7 @@ spec:
     spec:
       template:
         spec:
+          restartPolicy: OnFailure
           containers:
             - name: agent-cleanup
               image: registry.mouse.center:1443/gocd-agent-cleanup
