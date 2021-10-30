@@ -33,12 +33,12 @@ get_agents() {
   get "agents"
 }
 
-export delete_agent
-export disable_agent
-export get_agents
-export delete
-export get
-export gocd
+export -f delete_agent
+export -f disable_agent
+export -f get_agents
+export -f delete
+export -f get
+export -f gocd
 get_agents | /jq -c '._embedded.agents[] | select(.agent_state | contains("LostContact")) | .uuid' | xargs -r -n 1 sh -i -c 'delete_agent $@' _
 echo "Cleanup complete."
 exit 0
