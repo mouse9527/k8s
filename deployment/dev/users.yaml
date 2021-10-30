@@ -39,7 +39,7 @@ spec:
           command:
             - bash
             - -c
-            - "java -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-control:8181 /apps/app.jar"
+            - "java -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-control:8181 -jar /apps/app.jar"
           envFrom:
             - configMapRef:
                 name: application-test-cfg
