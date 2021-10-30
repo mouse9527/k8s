@@ -51,10 +51,7 @@ spec:
       initContainers:
         - name: autoregister-properties
           image: registry.mouse.center:1443/curlimages/curl
-          command:
-            - sh
-            - -c
-            - "cp /cfg/* /config/"
+          command: ["sh", "-c", "cp /cfg/* /config/ && cat /config/autoregister.properties"]
           volumeMounts:
             - mountPath: /cfg
               name: autoregister-cfg
