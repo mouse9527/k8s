@@ -8,4 +8,4 @@ ENV TZ=Asia/Shanghai
 COPY --from=build /home/curl_user/glowroot-central /glowroot-central
 WORKDIR /glowroot-central
 EXPOSE 4000 8181
-CMD ["java", "-jar", "/glowroot-central/glowroot-central.jar", "$JAVA_ARGS"]
+CMD ["java", "-jar", "/glowroot-central/glowroot-central.jar"]
