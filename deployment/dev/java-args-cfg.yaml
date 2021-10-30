@@ -4,4 +4,4 @@ metadata:
   name: java-args-cfg
   namespace: dev
 data:
-  JAVA_ARGS:  -javaagent=/apps/glowroot.jar -Dglowroot.collector.address=http://glowroot-control:8181
+  JAVA_ARGS: -javaagent:/apps/glowroot.jar -Dglowroot.collector.address=http://glowroot-control:8181
