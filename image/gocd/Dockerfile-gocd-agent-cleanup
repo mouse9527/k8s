@@ -9,4 +9,4 @@ RUN chmod +x jq-linux64 && mv jq-linux64 /jq
 COPY ./cleanup.sh /cleanup.sh
 
 USER curl_user
-CMD [sh /cleanup.sh]
+ENTRYPOINT ["sh" "/cleanup.sh"]
