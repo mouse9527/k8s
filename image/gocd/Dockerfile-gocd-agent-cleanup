@@ -8,5 +8,4 @@ RUN chmod +x jq-linux64 && mv jq-linux64 /jq
 
 COPY ./cleanup.sh /entrypoint.sh
 
-USER curl_user
 ENTRYPOINT ["sh" "/entrypoint.sh"]
