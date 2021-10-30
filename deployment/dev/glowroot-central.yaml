@@ -19,9 +19,6 @@ spec:
           image: registry.mouse.center:1443/cassandra:4.0.1
           ports:
             - containerPort: 9042
-          volumeMounts:
-            - mountPath: /var/lib/cassandra
-              name: db
         - name: glowroot-central
           image: registry.mouse.center:1443/openjdk:16
           command:
@@ -39,10 +36,6 @@ spec:
             - mountPath: /apps
               name: glowroot-central
       volumes:
-        - name: db
-          nfs:
-            path: /volume2/k8s/glowroot-central/db
-            server: nas
         - name: glowroot-central
           nfs:
             path: /volume2/k8s/glowroot-central/apps
