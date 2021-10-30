@@ -15,8 +15,15 @@ spec:
         app: glowroot-central
     spec:
       containers:
+        - name: db
+          image: registry.mouse.center:1443/cassandra:4.0.1
+          ports:
+            - containerPort: 9042
+          volumeMounts:
+            - mountPath: /var/lib/cassandra
+              name: db
         - name: glowroot-central
-          image: registry.mouse.center:1443/glowroot/glowroot-central:0.14.0-beta
+          image: registry.mouse.center:1443/openjdk:16
           ports:
             - containerPort: 4000
               name: web
@@ -24,7 +31,18 @@ spec:
             - containerPort: 8181
               name: control
               protocol: TCP
-
+          volumeMounts:
+            - mountPath: /apps
+              name: glowroot-central
+      volumes:
+        - name: db
+          nfs:
+            path: /volume2/k8s/glowroot-central/db
+            server: nas
+        - name: glowroot-central
+          nfs:
+            path: /volume2/k8s/glowroot-central/apps
+            server: nas
 ---
 kind: Service
 apiVersion: v1
@@ -41,6 +59,9 @@ spec:
     - port: 8181
       name: central
       targetPort: 8181
+    - port: 9042
+      name: db
+      targetPort: 9042
 
 ---
 apiVersion: networking.k8s.io/v1
