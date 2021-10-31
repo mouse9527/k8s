@@ -11,6 +11,8 @@ spec:
     metadata:
       name: apm-backend
       namespace: dev
+      labels:
+        app: apm-backend
     spec:
       containers:
         - name: skywalking-oap-server
@@ -50,6 +52,8 @@ spec:
     metadata:
       namespace: dev
       name: apm-ui
+      labels:
+        app: apm-ui
     spec:
       containers:
         - name: skywalking-ui
