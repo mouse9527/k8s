@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cassandra
-          image:
+          image: registry.mouse.center:1443/cassandra:4.0.1
           ports:
             - containerPort: 9042
           volumeMounts:
