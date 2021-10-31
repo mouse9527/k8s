@@ -16,13 +16,15 @@ spec:
     spec:
       containers:
         - name: cassandra
-          image: registry.mouse.center:1443/google-samples/cassandra:v13
-          imagePullPolicy: Always
+          image: registry.mouse.center:1443/cassandra:4.0.1
           ports:
             - containerPort: 9042
           volumeMounts:
-            - mountPath: /cassandra_data
+            - mountPath: /opt/cassandra/data
               name: cassandra-data
+          resources:
+            requests:
+              memory: 2Gi
       volumes:
         - name: cassandra-data
           nfs:
