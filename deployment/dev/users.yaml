@@ -29,6 +29,14 @@ spec:
       labels:
         app: users
     spec:
+      initContainers:
+        - name: init
+          image: registry.mouse.center:1443/apache/skywalking-java-agent:8.7.0-alpine
+          command: [ "/bin/sh" ]
+          args: [ "-c", "cp -R /skywalking/agent/* /agent/" ]
+          volumeMounts:
+            - mountPath: /agent
+              name: agent
       containers:
         - name: users
           image: registry.mouse.center:1443/users/users
@@ -36,10 +44,13 @@ spec:
           ports:
             - containerPort: 8080
               name: web
-          command:
-            - bash
-            - -c
-            - "java -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-central.dev:8181 -jar /apps/app.jar"
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-javaagent:/agent/skywalking-agent.jar"
+            - name: SW_AGENT_NAME
+              value: users
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: apm-backend:11800
           envFrom:
             - configMapRef:
                 name: application-test-cfg
@@ -58,12 +69,17 @@ spec:
           volumeMounts:
             - mountPath: /app/cofnig
               name: users-key
+            - mountPath: /agent
+              name: agent
       volumes:
         - name: users-key
           nfs:
             server: nas
             path: /volume2/k8s/users
             readOnly: true
+        - name: agent
+          emptyDir:
+            {}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
