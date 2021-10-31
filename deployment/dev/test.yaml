@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test
+spec:
+  initContainers:
+    - name: init
+      image: registry.mouse.center:1443/apache/skywalking-java-agent:8.7.0-alpine
+      volumeMounts:
+        - name: agent
+          mountPath: /agent
+      command: [ "/bin/sh" ]
+      args: [ "-c", "cp -R /skywalking/agent /agent/" ]
+  containers:
+    - name: registry.mouse.center:1443/centos:7
+      command: ["/bin/sleep", "3650d"]
+      volumeMounts:
+        - mountPath: /tmp/agent
+          name: agent
+  volumes:
+    - name: agent
+      emptyDir:
+        {}

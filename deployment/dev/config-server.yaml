@@ -29,14 +29,21 @@ spec:
       labels:
         app: config-server
     spec:
+      initContainers:
+        - name: init
+          image: registry.mouse.center:1443/curlimages/curl
+          command: [ "/bin/sh" ]
+          args: [ "-c", "cp -R /skywalking/agent /agent/" ]
+          volumeMounts:
+            - mountPath: /agent
+              name: agent
       containers:
         - name: config-server
           image: registry.mouse.center:1443/config-server
           imagePullPolicy: Always
-          command:
-            - bash
-            - -c
-            - "java -javaagent:/apps/glowroot/glowroot.jar -Dglowroot.collector.address=http://glowroot-central.dev:8181 -jar /apps/app.jar"
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: ""
           ports:
             - containerPort: 8080
               name: web
@@ -52,3 +59,11 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 10
             failureThreshold: 6
+      volumes:
+        - name: agent
+          emptyDir:
+            {}
+        - name: agent-file
+          nfs:
+            path: /volume2/k8s/skywalking
+            server: nas
