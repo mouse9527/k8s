@@ -33,7 +33,7 @@ spec:
         - name: init
           image: registry.mouse.center:1443/curlimages/curl
           command: [ "/bin/sh" ]
-          args: [ "-c", "cp -R /skywalking/agent /agent/" ]
+          args: [ "-c", "cp -R /skywalking/agent/* /agent/" ]
           volumeMounts:
             - mountPath: /agent
               name: agent
@@ -43,7 +43,11 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: ""
+              value: "-javaagent:/agent/skywalking-agent.jar"
+            - name: SW_AGENT_NAME
+              value: config-service
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: apm-backend:11800
           ports:
             - containerPort: 8080
               name: web
@@ -59,6 +63,9 @@ spec:
             initialDelaySeconds: 20
             periodSeconds: 10
             failureThreshold: 6
+          volumeMounts:
+            - mountPath: /agent
+              name: agent
       volumes:
         - name: agent
           emptyDir:
