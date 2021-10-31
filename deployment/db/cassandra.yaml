@@ -20,6 +20,9 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 9042
+          volumeMounts:
+            - mountPath: /opt/cassandra/data
+              name: cassandra-data
       volumes:
         - name: cassandra-data
           nfs:
