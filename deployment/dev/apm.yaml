@@ -5,7 +5,7 @@ metadata:
   namespace: dev
 data:
   SW_STORAGE: mysql
-  SW_JDBC_URL: "jdbc:postgresql://postgresql.db:5432/skywalking"
+  SW_JDBC_URL: "jdbc:mysql://mysql.db:3306/skywalking?rewriteBatchedStatements=true"
   SW_DATA_SOURCE_USER: "postgres"
   SW_DATA_SOURCE_PASSWORD: "970210"
 
