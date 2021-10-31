@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apm-backend-cfg
+  namespace: dev
+data:
+  SW_STORAGE: mysql
+  SW_JDBC_URL: "jdbc:mysql://localhost:3306/swtest?rewriteBatchedStatements=true"
+  SW_DATA_SOURCE_USER: ""
+  SW_DATA_SOURCE_PASSWORD: ""
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,6 +29,9 @@ spec:
       containers:
         - name: skywalking-oap-server
           image: registry.mouse.center:1443/apache/skywalking-oap-server:8.8.1
+          envFrom:
+            - configMapRef:
+                name: apm-backend-cfg
           ports:
             - containerPort: 11800
               name: grpc

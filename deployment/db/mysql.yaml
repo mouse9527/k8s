@@ -98,7 +98,7 @@ spec:
             periodSeconds: 20
             failureThreshold: 6
           volumeMounts:
-            - mountPath: /var/lib/mysql
+            - mountPath: /var/lib/mysql/
               name: mysql-data
             - mountPath: /etc/mysql/conf.d/mysql.cnf
               name: mysql-cnf
@@ -113,7 +113,7 @@ spec:
       volumes:
         - name: mysql-data
           nfs:
-            path: /volume2/k8s/mysql/data
+            path: /volume2/k8s/mysql
             server: nas
         - name: mysql-cnf
           configMap:
