@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cassandra
+  namespace: db
+spec:
+  selector:
+    matchLabels:
+      db: cassandra
+  template:
+    metadata:
+      namespace: db
+      name: cassandra
+      labels:
+        db: cassandra
+    spec:
+      containers:
+        - name: cassandra
+          image: registry.mouse.center:1443/cassandra:4.0.1
+          ports:
+            - containerPort: 9042
+          volumeMounts:
+            - mountPath: /var/lib/cassandra
+              name: cassandra-data
+      volumes:
+        - name: cassandra-data
+          nfs:
+            path: /volume2/k8s/cassandra
+            server: nas
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: cassandra
+  namespace: db
+spec:
+  selector:
+    db: cassandra
+  ports:
+    - port: 9042
+      targetPort: 9042
