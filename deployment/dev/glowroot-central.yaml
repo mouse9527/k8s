@@ -5,7 +5,7 @@ metadata:
   namespace: dev
 data:
   "glowroot-central.properties": |
-    cassandra.contactPoints=glowroot-central
+    cassandra.contactPoints=cassandra.db
     cassandra.port=
     cassandra.username=
     cassandra.password=
@@ -39,13 +39,6 @@ spec:
         app: glowroot-central
     spec:
       containers:
-        - name: glowroot-db
-          image: registry.mouse.center:1443/cassandra:4.0.1
-          ports:
-            - containerPort: 9042
-          volumeMounts:
-            - mountPath: /opt/cassandra/data
-              name: glowroot-db
         - name: glowroot-central
           image: registry.mouse.center:1443/glowroot-central:0.13.6
           ports:
@@ -63,10 +56,6 @@ spec:
         - name: glowroot-central-cfg
           configMap:
             name: glowroot-central-cfg
-        - name: glowroot-db
-          nfs:
-            path: /volume2/k8s/glowroot-data
-            server: nas
 ---
 kind: Service
 apiVersion: v1

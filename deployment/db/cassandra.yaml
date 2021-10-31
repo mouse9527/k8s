@@ -20,7 +20,7 @@ spec:
           ports:
             - containerPort: 9042
           volumeMounts:
-            - mountPath: /var/lib/cassandra
+            - mountPath: /opt/cassandra/data
               name: cassandra-data
       volumes:
         - name: cassandra-data
