@@ -1,0 +1,7 @@
+FROM curlimages/curl as build
+WORKDIR /home/curl_user
+RUN curl -LO https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.27/mysql-connector-java-8.0.27.jar
+
+FROM registry.mouse.center:1443/apache/skywalking-oap-server:8.8.1
+
+COPY --from=build /home/curl_user/mysql-connector-java-8.0.27.jar /skywalking/oap-libs/

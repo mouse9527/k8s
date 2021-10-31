@@ -5,3 +5,6 @@ docker push registry.mouse.center:1443/glowroot-central:0.14.0-beta
 
 docker build -t registry.mouse.center:1443/java-app:16 -f ./Dockerfile-java-app .
 docker push registry.mouse.center:1443/java-app:16
+
+docker build -t registry.mouse.center:1443/skywalking:8.8.1 -f ./Dockerfile-skywalking .
+docker push registry.mouse.center:1443/skywalking:8.8.1
