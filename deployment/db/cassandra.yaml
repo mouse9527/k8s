@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: cassandra
-          image: cassandra:4.0.1
+          image: registry.mouse.center:1443/google-samples/cassandra:v13
           imagePullPolicy: Always
           ports:
             - containerPort: 9042
