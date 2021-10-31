@@ -46,11 +46,7 @@ spec:
               name: web
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-javaagent:/agent/glowroot.jar"
-            - name: SW_AGENT_NAME
-              value: users
-            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-              value: apm-backend:11800
+              value: "-javaagent:/agent/glowroot.jar -Dglowroot.collector.address=glowroot-central:8181"
           envFrom:
             - configMapRef:
                 name: application-test-cfg
