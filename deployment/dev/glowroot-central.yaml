@@ -44,7 +44,7 @@ spec:
           ports:
             - containerPort: 9042
           volumeMounts:
-            - mountPath: /opt/cassandra/data
+            - mountPath: /var/lib/cassandra
               name: glowroot-db
         - name: glowroot-central
           image: registry.mouse.center:1443/glowroot-central:0.13.6
