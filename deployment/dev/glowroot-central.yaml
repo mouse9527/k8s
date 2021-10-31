@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: glowroot-db
-          image: registry.mouse.center:1443/cassandra:4.0.1
+          image: registry.mouse.center:1443/cassandra:4.0
           ports:
             - containerPort: 9042
           volumeMounts:
