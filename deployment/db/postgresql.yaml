@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: db
+spec:
+  selector:
+    matchLabels:
+      db: postgresql
+  template:
+    metadata:
+      namespace: db
+      name: postgresql
+      labels:
+        db: postgresql
+    spec:
+      containers:
+        - name: postgresql
+          image: registry.mouse.center:1443/postgres:9.6.23
+          env:
+            - name: POSTGRES_PASSWORD
+              value: "970210"
+          ports:
+            - containerPort: 5432
+              name: postgresql
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresql-data
+      volumes:
+        - name: postgresql-data
+          nfs:
+            path: /volume2/k8s/postgresql
+            server: nas
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: postgresql
+  namespace: db
+spec:
+  selector:
+    db: postgresql
+  ports:
+    - port: 5432
+      name: postgresql
+      targetPort: 5432
