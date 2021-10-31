@@ -1,9 +1,9 @@
 FROM curlimages/curl as build
 WORKDIR /home/curl_user
-RUN curl -LO https://registry.mouse.center:1443/repository/raw-hosted/glowroot/glowroot-central-0.14.0-beta-dist.zip
-RUN unzip glowroot-central-0.14.0-beta-dist.zip
+RUN curl -LO https://registry.mouse.center:1443/repository/raw-hosted/glowroot/glowroot-central-0.13.6-dist.zip
+RUN unzip glowroot-central-0.13.6-dist.zip
 
-FROM registry.mouse.center:1443/openjdk:16
+FROM registry.mouse.center:1443/openjdk:11
 ENV TZ=Asia/Shanghai
 COPY --from=build /home/curl_user/glowroot-central /glowroot-central
 WORKDIR /glowroot-central
