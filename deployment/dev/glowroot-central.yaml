@@ -47,7 +47,7 @@ spec:
             - mountPath: /opt/cassandra/data
               name: glowroot-db
         - name: glowroot-central
-          image: registry.mouse.center:1443/glowroot/glowroot-central:0.13.6
+          image: registry.mouse.center:1443/glowroot-central:0.13.6
           ports:
             - containerPort: 4000
               name: web
