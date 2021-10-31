@@ -4,7 +4,7 @@ metadata:
   name: apm-backend-cfg
   namespace: dev
 data:
-  SW_STORAGE: mysql
+  SW_STORAGE: "mysql"
   SW_JDBC_URL: "jdbc:mysql://mysql.db:3306/skywalking?rewriteBatchedStatements=true"
   SW_DATA_SOURCE_USER: "root"
   SW_DATA_SOURCE_PASSWORD: "970210"
@@ -29,9 +29,6 @@ spec:
       containers:
         - name: skywalking-oap-server
           image: registry.mouse.center:1443/apache/skywalking-oap-server:8.8.1
-          envFrom:
-            - configMapRef:
-                name: apm-backend-cfg
           ports:
             - containerPort: 11800
               name: grpc
