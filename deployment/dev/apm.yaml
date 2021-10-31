@@ -30,6 +30,8 @@ metadata:
   name: apm-backend
   namespace: dev
 spec:
+  selector:
+    app: apm-backend
   ports:
     - port: 12800
       name: rest
@@ -72,6 +74,8 @@ metadata:
   name: apm-ui
   namespace: dev
 spec:
+  selector:
+    app: apm-ui
   ports:
     - port: 80
       name: web
