@@ -31,9 +31,9 @@ spec:
     spec:
       initContainers:
         - name: init
-          image: registry.mouse.center:1443/apache/skywalking-java-agent:8.7.0-alpine
+          image: registry.mouse.center:1443/glowroot:0.13.6
           command: [ "/bin/sh" ]
-          args: [ "-c", "cp -R /skywalking/agent/* /agent/" ]
+          args: [ "-c", "cp -R /glowroot/* /agent/" ]
           volumeMounts:
             - mountPath: /agent
               name: agent
@@ -43,11 +43,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_TOOL_OPTIONS
-              value: "-javaagent:/agent/skywalking-agent.jar"
-            - name: SW_AGENT_NAME
-              value: config-service
-            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-              value: apm-backend:11800
+              value: "-javaagent:/agent/glowroot-agent.jar -Dglowroot.collector.address=glowroot-central:8181"
           ports:
             - containerPort: 8080
               name: web
@@ -70,7 +66,3 @@ spec:
         - name: agent
           emptyDir:
             {}
-        - name: agent-file
-          nfs:
-            path: /volume2/k8s/skywalking
-            server: nas

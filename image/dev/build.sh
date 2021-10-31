@@ -1,7 +1,10 @@
 #!/bin/bash
 
-docker build -t registry.mouse.center:1443/glowroot-central:0.14.0-beta -f ./Dockerfile-glowroot-central .
-docker push registry.mouse.center:1443/glowroot-central:0.14.0-beta
+docker build -t registry.mouse.center:1443/glowroot-central:0.13.6 -f ./Dockerfile-glowroot-central .
+docker push registry.mouse.center:1443/glowroot-central:0.13.6
+
+docker build -t registry.mouse.center:1443/glowroot:0.13.6 -f ./Dockerfile-glowroot .
+docker push registry.mouse.center:1443/glowroot:0.13.6
 
 docker build -t registry.mouse.center:1443/java-app:16 -f ./Dockerfile-java-app .
 docker push registry.mouse.center:1443/java-app:16
