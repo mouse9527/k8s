@@ -41,6 +41,7 @@ spec:
         - name: config-server
           image: registry.mouse.center:1443/config-server
           imagePullPolicy: Always
+          command: ["bash", "-c", "ls -l /agent"]
           env:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/agent/glowroot-agent.jar -Dglowroot.collector.address=glowroot-central:8181"
