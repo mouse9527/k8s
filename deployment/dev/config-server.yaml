@@ -31,7 +31,7 @@ spec:
     spec:
       initContainers:
         - name: init
-          image: registry.mouse.center:1443/curlimages/curl
+          image: registry.mouse.center:1443/apache/skywalking-java-agent:8.7.0-alpine
           command: [ "/bin/sh" ]
           args: [ "-c", "cp -R /skywalking/agent/* /agent/" ]
           volumeMounts:
