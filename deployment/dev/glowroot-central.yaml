@@ -39,13 +39,13 @@ spec:
         app: glowroot-central
     spec:
       containers:
-        - name: db
+        - name: glowroot-db
           image: registry.mouse.center:1443/cassandra:4.0.1
           ports:
             - containerPort: 9042
           volumeMounts:
             - mountPath: /var/lib/cassandra
-              name: db
+              name: glowroot-db
         - name: glowroot-central
           image: registry.mouse.center:1443/glowroot/glowroot-central:0.13.6
           ports:
@@ -63,6 +63,10 @@ spec:
         - name: glowroot-central-cfg
           configMap:
             name: glowroot-central-cfg
+        - name: glowroot-db
+          nfs:
+            path: /volume2/k8s/glowroot-data
+            server: nfs
 ---
 kind: Service
 apiVersion: v1
