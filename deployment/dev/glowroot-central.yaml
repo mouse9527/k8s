@@ -66,7 +66,7 @@ spec:
         - name: glowroot-db
           nfs:
             path: /volume2/k8s/glowroot-data
-            server: nfs
+            server: nas
 ---
 kind: Service
 apiVersion: v1
