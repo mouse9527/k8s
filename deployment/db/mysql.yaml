@@ -11,6 +11,7 @@ spec:
   ports:
     - port: 3306
       name: mysql
+      targetPort: 3306
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -76,7 +77,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: registry.mouse.center:1443/mysql:8.0
+          image: registry.mouse.center:1443/mysql:8.0.27
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
@@ -98,7 +99,7 @@ spec:
             periodSeconds: 20
             failureThreshold: 6
           volumeMounts:
-            - mountPath: /var/lib/mysql/
+            - mountPath: /var/lib/mysql
               name: mysql-data
             - mountPath: /etc/mysql/conf.d/mysql.cnf
               name: mysql-cnf
