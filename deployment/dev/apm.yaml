@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: dev
+  name: apm-backend
+spec:
+  selector:
+    matchLabels:
+      app: apm-backend
+  template:
+    metadata:
+      name: apm-backend
+      namespace: dev
+    spec:
+      containers:
+        - name: skywalking-oap-server
+          image: registry.mouse.center:1443/apache/skywalking-oap-server:8.8.1
+          ports:
+            - containerPort: 11800
+              name: grpc
+            - containerPort: 12800
+              name: rest
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: apm-backend
+  namespace: dev
+spec:
+  ports:
+    - port: 12800
+      name: rest
+      targetPort: 12800
+    - port: 11800
+      name: grpc
+      targetPort: 11800
+      
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: apm-ui
+  namespace: dev
+spec:
+  selector:
+    matchLabels:
+      app: apm-ui
+  template:
+    metadata:
+      namespace: dev
+      name: apm-ui
+    spec:
+      containers:
+        - name: skywalking-ui
+          image: registry.mouse.center:1443/apache/skywalking-ui:8.8.1
+          env:
+            - name: SW_OAP_ADDRESS
+              value: http://apm-backend:12800
+          ports:
+            - containerPort: 8080
+              name: web
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: apm-ui
+  namespace: dev
+spec:
+  ports:
+    - port: 80
+      name: web
+      targetPort: 8080
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: apm-ingress
+  namespace: dev
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: apm.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: apm-ui
+                port:
+                  name: web
