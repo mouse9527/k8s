@@ -8,6 +8,7 @@ spec:
     app: users
   ports:
     - port: 80
+      name: rest
       targetPort: 8080
 ---
 apiVersion: apps/v1
@@ -85,6 +86,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: users.mouse.center
       http:
@@ -95,4 +97,4 @@ spec:
               service:
                 name: users
                 port:
-                  number: 80
+                  name: rest

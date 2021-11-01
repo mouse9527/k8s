@@ -74,6 +74,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/proxy-body-size: 10240M
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: registry.mouse.center
       http:

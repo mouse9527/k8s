@@ -118,7 +118,7 @@ spec:
   type: NodePort
   ports:
     - port: 80
-      name: http
+      name: web
       targetPort: 6880
     - port: 6888
       name: bt
@@ -147,6 +147,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-secret: downloader-web-auth
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: downloader.mouse.center
       http:
@@ -157,11 +158,11 @@ spec:
               service:
                 name: downloader
                 port:
-                  number: 80
+                  name: web
           - path: /jsonrpc
             pathType: Prefix
             backend:
               service:
                 name: downloader
                 port:
-                  number: 6800
+                  name: rpc

@@ -80,6 +80,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: cd.mouse.center
       http:
