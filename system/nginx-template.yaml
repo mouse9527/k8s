@@ -1263,7 +1263,6 @@ data:
                 {{ $proxySetHeader }} X-Forwarded-Host       $best_http_host;
                 {{ $proxySetHeader }} X-Forwarded-Port       "1443";
                 {{ $proxySetHeader }} X-Forwarded-Proto      "https";
-                {{ $proxySetHeader }} X-Forwarded-Scheme     "https";
                 {{ if $all.Cfg.ProxyAddOriginalURIHeader }}
                 {{ $proxySetHeader }} X-Original-URI         $request_uri;
                 {{ end }}
