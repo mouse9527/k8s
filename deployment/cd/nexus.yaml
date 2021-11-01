@@ -58,31 +58,11 @@ metadata:
   labels:
     k8s-app: nexus3
 spec:
+  type: NodePort
   ports:
     - port: 80
       name: http
       targetPort: 8081
+      nodePort: 30081
   selector:
     k8s-app: nexus3
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: nexus3-ingress
-  namespace: cd
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/proxy-body-size: 10240M
-spec:
-  ingressClassName: "nginx"
-  rules:
-    - host: registry.mouse.center
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: nexus3
-                port:
-                  number: 80
