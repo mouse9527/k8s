@@ -67,7 +67,7 @@ metadata:
 spec:
   ports:
     - port: 80
-      name: http
+      name: web
       targetPort: 8153
   selector:
     k8s-app: gocd
@@ -89,6 +89,6 @@ spec:
               service:
                 name: gocd
                 port:
-                  number: 80
+                  name: web
             path: /
             pathType: Prefix
