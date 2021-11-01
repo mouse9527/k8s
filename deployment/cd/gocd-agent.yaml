@@ -121,7 +121,7 @@ metadata:
   namespace: cd
   name: gocd-agent-cleanup
 data:
-  API_URL: "https://cd.mouse.center:1443/go/api"
+  API_URL: "http://gocd/go/api"
   TOKEN: "82615b2d8f5bf7c3b4babd5a073a7163165c21ee"
 
 ---
