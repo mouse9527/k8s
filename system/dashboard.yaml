@@ -332,9 +332,8 @@ apiVersion: networking.k8s.io/v1
 metadata:
   name: k8s-dashboard-ingress
   namespace: kubernetes-dashboard
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: k8s.mouse.center
       http:
