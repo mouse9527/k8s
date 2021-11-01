@@ -401,9 +401,6 @@ spec:
             - name: webhook-cert
               mountPath: /usr/local/certificates/
               readOnly: true
-            - mountPath: /etc/nginx/template
-              name: nginx-template-volume
-              readOnly: true
           resources:
             requests:
               cpu: 100m
@@ -416,12 +413,6 @@ spec:
         - name: webhook-cert
           secret:
             secretName: ingress-nginx-admission
-        - name: nginx-template-volume
-          configMap:
-            name: nginx-template
-            items:
-              - key: nginx.tmpl
-                path: nginx.tmpl
 ---
 # Source: ingress-nginx/templates/controller-ingressclass.yaml
 # We don't support namespaced ingressClass yet
