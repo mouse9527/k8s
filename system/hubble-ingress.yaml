@@ -18,3 +18,10 @@ spec:
                   number: 8081
             path: /
             pathType: Prefix
+          - backend:
+              service:
+                name: hubble-relay
+                port:
+                  number: 4245
+            pathType: Prefix
+            path: /api
