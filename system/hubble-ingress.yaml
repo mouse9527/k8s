@@ -18,10 +18,3 @@ spec:
                   number: 8081
             path: /
             pathType: Prefix
-          - backend:
-              service:
-                name: hubble-ui
-                port:
-                  number: 8090
-            pathType: Prefix
-            path: /api
