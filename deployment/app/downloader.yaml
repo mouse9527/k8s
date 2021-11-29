@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: downloader
-  namespace: tool
+  namespace: app
   labels:
     k8s-app: downloader
 spec:
@@ -14,7 +14,7 @@ spec:
     metadata:
       labels:
         k8s-app: downloader
-      namespace: tool
+      namespace: app
       name: downloader
     spec:
       nodeSelector:
@@ -140,7 +140,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: downloader-ingress
-  namespace: tool
+  namespace: app
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/auth-type: basic
