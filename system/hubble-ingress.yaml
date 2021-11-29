@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: kube-system
+  name: hebble-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: hebble.mouse.center
+      http:
+        paths:
+          - backend:
+              service:
+                name: hubble-ui
+                port:
+                  number: 8081
+            path: /
+            pathType: Prefix
