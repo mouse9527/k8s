@@ -20,8 +20,8 @@ spec:
             pathType: Prefix
           - backend:
               service:
-                name: hubble-relay
+                name: hubble-ui
                 port:
-                  number: 4245
+                  number: 8090
             pathType: Prefix
             path: /api
