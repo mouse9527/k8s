@@ -75,6 +75,8 @@ spec:
               name: downloads-share
             - mountPath: /config
               name: downloader-config
+            - mountPath: /video-station
+              name: downloader-video-station
         - name: downloader-web
           image: registry.mouse.center:1443/p3terx/ariang
           ports:
@@ -102,6 +104,10 @@ spec:
           nfs:
             server: nas
             path: /volume2/video
+        - name: downloader-video-station
+          nfs:
+            path: /volume2/VideoStation
+            server: nas
         - name: downloads-share
           nfs:
             path: /volume2/share
