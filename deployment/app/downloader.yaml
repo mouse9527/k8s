@@ -22,6 +22,7 @@ spec:
       containers:
         - name: downloader
           image: registry.mouse.center:1443/p3terx/aria2-pro
+          imagePullPolicy: Always
           ports:
             - containerPort: 6800
               name: rpc
@@ -79,6 +80,7 @@ spec:
               name: downloader-video-station
         - name: downloader-web
           image: registry.mouse.center:1443/p3terx/ariang
+          imagePullPolicy: Always
           ports:
             - containerPort: 6880
               protocol: TCP
