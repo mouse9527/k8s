@@ -29,18 +29,6 @@ spec:
             - containerPort: 22
               name: ssh
               protocol: TCP
-          livenessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 15
-          readinessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 15
           env:
             - name: GITLAB_OMNIBUS_CONFIG
               value: |
