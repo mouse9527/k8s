@@ -29,15 +29,6 @@ spec:
             - containerPort: 22
               name: ssh
               protocol: TCP
-          env:
-            - name: GITLAB_OMNIBUS_CONFIG
-              value: |
-                gitlab_rails['gitlab_ssh_host'] = 'scm.mouse.center'
-                gitlab_rails['time_zone'] = 'GMT'
-                nginx['proxy_set_headers'] = {
-                 "X-Forwarded-Proto" => "https",
-                 "CUSTOM_HEADER" => "VALUE"
-                }
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
