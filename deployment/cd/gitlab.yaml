@@ -23,8 +23,8 @@ spec:
         - name: gitlab
           image: registry.mouse.center:1443/gitlab/gitlab-ce:14.1.2-ce.0
           ports:
-            - containerPort: 80
-              name: http
+            - containerPort: 1443
+              name: web
               protocol: TCP
             - containerPort: 22
               name: ssh
@@ -34,6 +34,10 @@ spec:
               value: |
                 gitlab_rails['gitlab_ssh_host'] = 'scm.mouse.center'
                 gitlab_rails['time_zone'] = 'GMT'
+                nginx['proxy_set_headers'] = {
+                 "X-Forwarded-Proto" => "https",
+                 "CUSTOM_HEADER" => "VALUE"
+                }
           volumeMounts:
             - mountPath: /etc/gitlab
               name: gitlab-config
@@ -91,9 +95,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 80
-      name: http
-      targetPort: 80
+    - port: 443
+      name: web
+      targetPort: 1443
     - port: 22
       name: ssh
       targetPort: 22
@@ -120,4 +124,4 @@ spec:
               service:
                 name: gitlab
                 port:
-                  number: 80
+                  name: web
