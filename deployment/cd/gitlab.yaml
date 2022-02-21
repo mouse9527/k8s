@@ -47,7 +47,6 @@ spec:
                 external_url = 'https://scm.mouse.center:1443'
                 gitlab_rails['gitlab_ssh_host'] = 'scm.mouse.center'
                 gitlab_rails['time_zone'] = 'GMT'
-                gitlab_rails['host'] = 'scm.mouse.center'
                 nginx['proxy_set_headers'] = {
                  "X-Forwarded-Proto" => "https",
                  "CUSTOM_HEADER" => "VALUE"
