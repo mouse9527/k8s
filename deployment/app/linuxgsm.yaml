@@ -45,9 +45,9 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 27020
-            initialDelaySeconds: 40
+            initialDelaySeconds: 60
             periodSeconds: 20
-            failureThreshold: 10
+            failureThreshold: 20
           volumeMounts:
             - mountPath: /app/
               name: lgsm
