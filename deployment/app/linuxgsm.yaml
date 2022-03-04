@@ -19,6 +19,13 @@ spec:
         - name: arkserver
           image: registry.mouse.center:1443/linuxgsm
           imagePullPolicy: Always
+          env:
+            - name: HTTP_PROXY
+              value: http://win10:7890
+            - name: HTTPS_PROXY
+              value: http://win10:7890
+            - name: ALL_PROXY
+              value: socks5://win10:7890
           ports:
             - containerPort: 7777
               name: game
