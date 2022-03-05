@@ -95,12 +95,12 @@ spec:
             - name: NFS_SERVER
               value: nas
             - name: NFS_PATH
-              value: /mnt/Database/k8s
+              value: /volume2/k8s
       volumes:
         - name: nfs-client-root
           nfs:
             server: nas
-            path: /mnt/Database/k8s
+            path: /volume2/k8s
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
