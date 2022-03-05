@@ -42,12 +42,6 @@ spec:
             preStop:
               exec:
                 command: [ 'bash', '-c', 'arkserver', 'stop' ]
-          readinessProbe:
-            tcpSocket:
-              port: 27020
-            initialDelaySeconds: 60
-            periodSeconds: 20
-            failureThreshold: 60
           volumeMounts:
             - mountPath: /app/
               name: lgsm
