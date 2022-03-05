@@ -47,7 +47,7 @@ spec:
               port: 27020
             initialDelaySeconds: 60
             periodSeconds: 20
-            failureThreshold: 20
+            failureThreshold: 60
           volumeMounts:
             - mountPath: /app/
               name: lgsm
