@@ -54,7 +54,7 @@ spec:
     - port: 11800
       name: grpc
       targetPort: 11800
-      
+
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -106,7 +106,7 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: apm.mouse.center
+    - host: skywalking.mouse.center
       http:
         paths:
           - path: /
