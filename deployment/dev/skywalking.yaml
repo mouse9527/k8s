@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: skywalking-oap-server
-          image: registry.mouse.center:1443/skywalking:8.8.1
+          image: registry.mouse.center:1443/skywalking:8.9.1
           envFrom:
             - configMapRef:
                 name: apm-backend-cfg
@@ -74,7 +74,7 @@ spec:
     spec:
       containers:
         - name: skywalking-ui
-          image: registry.mouse.center:1443/apache/skywalking-ui:8.8.1
+          image: registry.mouse.center:1443/apache/skywalking-ui:8.9.1
           env:
             - name: SW_OAP_ADDRESS
               value: http://apm-backend:12800
