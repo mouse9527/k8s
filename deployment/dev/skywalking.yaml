@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: apm-backend-cfg
+  name: skywalking-backend-cfg
   namespace: dev
 data:
   SW_STORAGE: "mysql"
@@ -14,24 +14,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: dev
-  name: apm-backend
+  name: skywalking-backend
 spec:
   selector:
     matchLabels:
-      app: apm-backend
+      app: skywalking-backend
   template:
     metadata:
-      name: apm-backend
+      name: skywalking-backend
       namespace: dev
       labels:
-        app: apm-backend
+        app: skywalking-backend
     spec:
       containers:
         - name: skywalking-oap-server
           image: registry.mouse.center:1443/skywalking:8.9.1
           envFrom:
             - configMapRef:
-                name: apm-backend-cfg
+                name: skywalking-backend-cfg
           ports:
             - containerPort: 11800
               name: grpc
@@ -42,11 +42,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: apm-backend
+  name: skywalking-backend
   namespace: dev
 spec:
   selector:
-    app: apm-backend
+    app: skywalking-backend
   ports:
     - port: 12800
       name: rest
@@ -59,25 +59,25 @@ spec:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: apm-ui
+  name: skywalking-ui
   namespace: dev
 spec:
   selector:
     matchLabels:
-      app: apm-ui
+      app: skywalking-ui
   template:
     metadata:
       namespace: dev
-      name: apm-ui
+      name: skywalking-ui
       labels:
-        app: apm-ui
+        app: skywalking-ui
     spec:
       containers:
         - name: skywalking-ui
           image: registry.mouse.center:1443/apache/skywalking-ui:8.9.1
           env:
             - name: SW_OAP_ADDRESS
-              value: http://apm-backend:12800
+              value: http://skywalking-backend:12800
           ports:
             - containerPort: 8080
               name: web
@@ -86,11 +86,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: apm-ui
+  name: skywalking-ui
   namespace: dev
 spec:
   selector:
-    app: apm-ui
+    app: skywalking-ui
   ports:
     - port: 80
       name: web
@@ -99,7 +99,7 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: apm-ingress
+  name: skywalking-ingress
   namespace: dev
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
@@ -113,6 +113,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: apm-ui
+                name: skywalking-ui
                 port:
                   name: web
