@@ -39,7 +39,7 @@ spec:
             - mountPath: /agent
               name: agent
         - name: skywalking
-          image: registry.mouse.center:1443/apache/skywalking-java-agent:8.9.0-java17
+          image: registry.mouse.center:1443/apache/skywalking-java-agent:8.8.0-java17
           command: [ "/bin/sh" ]
           args: [ "-c", "cp -R /skywalking/agent /agent/skywalking" ]
           volumeMounts:
