@@ -166,7 +166,6 @@ spec:
               service:
                 name: downloader
                 port:
-                  name: web
                   number: 80
           - path: /jsonrpc
             pathType: Prefix
@@ -174,5 +173,4 @@ spec:
               service:
                 name: downloader
                 port:
-                  name: rpc
                   number: 6800
