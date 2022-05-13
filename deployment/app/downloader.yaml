@@ -133,7 +133,7 @@ metadata:
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: downloader.mouse.center
+    - host: downloader1.mouse.center
       http:
         paths:
           - path: /
