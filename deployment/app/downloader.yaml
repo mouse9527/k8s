@@ -120,11 +120,12 @@ spec:
   selector:
     k8s-app: downloader
 ---
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: downloader-ingress
   namespace: app
+  name: downloader-ingress
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/auth-type: basic
@@ -136,17 +137,15 @@ spec:
     - host: downloader.mouse.center
       http:
         paths:
-          - path: /web
-            pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: downloader
                 port:
-                  number: 80
-          - path: /jsonrpc
+                  name: web
+            path: /
             pathType: Prefix
-            backend:
+          - backend:
               service:
                 name: downloader
-                port:
-                  number: 6800
+            path: /jsonrpc
+            pathType: Prefix
