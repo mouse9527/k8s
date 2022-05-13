@@ -33,18 +33,6 @@ spec:
             - containerPort: 6888
               name: dht
               protocol: UDP
-          livenessProbe:
-            tcpSocket:
-              port: 6800
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 6
-          readinessProbe:
-            tcpSocket:
-              port: 6800
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            failureThreshold: 6
           env:
             - name: PUID
               value: "1024"
@@ -85,18 +73,6 @@ spec:
             - containerPort: 6880
               protocol: TCP
               name: http
-          livenessProbe:
-            tcpSocket:
-              port: 6880
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 6
-          readinessProbe:
-            tcpSocket:
-              port: 6880
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 6
       volumes:
         - name: downloader-config
           nfs:
@@ -166,11 +142,11 @@ spec:
               service:
                 name: downloader
                 port:
-                  number: 80
+                  name: web
           - path: /jsonrpc
             pathType: Prefix
             backend:
               service:
                 name: downloader
                 port:
-                  number: 6800
+                  name: rpc
