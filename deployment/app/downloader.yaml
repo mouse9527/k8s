@@ -21,7 +21,7 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: downloader
-          image: registry.mouse.center:1443/p3terx/aria2-pro
+          image: registry.mouse.center:1443/p3terx/aria2-pro:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 6800
@@ -79,7 +79,7 @@ spec:
             - mountPath: /video-station
               name: downloader-video-station
         - name: downloader-web
-          image: registry.mouse.center:1443/p3terx/ariang
+          image: registry.mouse.center:1443/p3terx/ariang:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 6880
