@@ -147,5 +147,7 @@ spec:
           - backend:
               service:
                 name: downloader
+                port:
+                  name: rpc
             path: /jsonrpc
             pathType: Prefix
