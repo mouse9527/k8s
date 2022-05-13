@@ -104,6 +104,9 @@ spec:
     - port: 80
       name: web
       targetPort: 6880
+    - port: 6800
+      name: rpc
+      targetPort: 6800
     - port: 6888
       name: bt
       protocol: TCP
@@ -114,9 +117,6 @@ spec:
       protocol: UDP
       targetPort: 6888
       nodePort: 30688
-    - port: 6800
-      name: rpc
-      targetPort: 6800
   selector:
     k8s-app: downloader
 ---
