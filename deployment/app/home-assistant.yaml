@@ -78,7 +78,7 @@ spec:
   selector:
     app: home-assistant
   ports:
-    - port: 64
+    - port: 21064
       nodePort: 30064
       targetPort: homekit
 ---
