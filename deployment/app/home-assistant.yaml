@@ -46,6 +46,10 @@ spec:
               value: "socks5://win10:7890"
             - name: TZ
               value: Asia/Shanghai
+            - name: PUID
+              value: 1000
+            - name: PGID
+              value: 1000
           volumeMounts:
             - mountPath: /config
               name: config
