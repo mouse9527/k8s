@@ -119,6 +119,63 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   namespace: cd
+  name: gocd-agent-node16-cfg
+data:
+  "autoregister.properties": |
+    agent.auto.register.key=7cfc9db5-0925-4cab-a111-9ea52b9fdd83
+    agent.auto.register.environments=k8s
+    agent.auto.register.resources=node16,centos7
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gocd-agent-node16
+  namespace: cd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gocd-agent-node16
+  template:
+    metadata:
+      namespace: cd
+      name: gocd-agent-node16
+      labels:
+        app: gocd-agent-node16
+    spec:
+      containers:
+        - name: gocd-agent-node16
+          image: registry.mouse.center:1443/gocd-agent-node16:v21.3.0
+          envFrom:
+            - configMapRef:
+                name: go-server-url
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: dockersock
+            - mountPath: /root/.ssh
+              name: ssh
+              subPath: .ssh
+            - mountPath: /godata/config/autoregister.properties
+              name: autoregister-properties
+              subPath: autoregister.properties
+      volumes:
+        - name: dockersock
+          hostPath:
+            path: /var/run/docker.sock
+        - name: ssh
+          nfs:
+            server: nas
+            path: /volume2/k8s/gocd/go
+        - name: autoregister-properties
+          configMap:
+            name: gocd-agent-node16-cfg
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: cd
   name: gocd-agent-cleanup
 data:
   API_URL: "http://gocd/go/api"
