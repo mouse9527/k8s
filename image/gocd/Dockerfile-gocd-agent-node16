@@ -3,4 +3,4 @@ USER root
 
 ENV TZ=Asia/Shanghai
 RUN curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
-RUN yum update -y & yum install nodejs -y
+RUN yum install epel-release -y && yum install -y docker-client && yum install nodejs -y
