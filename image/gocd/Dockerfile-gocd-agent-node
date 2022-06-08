@@ -1,0 +1,6 @@
+FROM gocd/gocd-agent-centos-7:v21.3.0
+USER root
+
+ENV TZ=Asia/Shanghai
+
+RUN yum update -y & yum install nodejs -y
