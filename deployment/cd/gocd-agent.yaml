@@ -106,6 +106,9 @@ spec:
             - mountPath: /root/.kube/config
               name: gocd-agent-config
               subPath: config
+            - mountPath: /root/.ssh
+              name: ssh
+              subPath: .ssh
             - mountPath: /godata/config/autoregister.properties
               name: autoregister-properties
               subPath: autoregister.properties
@@ -116,6 +119,10 @@ spec:
         - name: autoregister-properties
           configMap:
             name: gocd-agent-kubectl-cfg
+        - name: ssh
+          nfs:
+            server: nas
+            path: /volume2/k8s/gocd/go
 ---
 kind: ConfigMap
 apiVersion: v1
