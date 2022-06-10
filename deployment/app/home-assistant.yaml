@@ -9,6 +9,7 @@ spec:
       "cniVersion": "0.3.0",
             "type": "macvlan",
             "master": "ens192",
+            "mode": "bridge",
             "ipam": {
                 "type": "static",
                 "addresses": [
