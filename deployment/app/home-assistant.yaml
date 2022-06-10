@@ -33,7 +33,10 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: home-assistant-macvlan
+        k8s.v1.cni.cncf.io/networks: '[{
+          "name": "home-assistant-macvlan",
+          "default-route": ["192.168.10.1"]
+        }]'
       namespace: app
       name: home-assistant
       labels:
