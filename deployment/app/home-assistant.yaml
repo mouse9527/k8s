@@ -2,6 +2,7 @@
 apiVersion: "k8s.cni.cncf.io/v1"
 kind: NetworkAttachmentDefinition
 metadata:
+  namespace: app
   name: home-assistant-macvlan
 spec:
   config: '{
