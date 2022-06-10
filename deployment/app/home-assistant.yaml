@@ -11,13 +11,7 @@ spec:
             "master": "ens192",
             "mode": "bridge",
             "ipam": {
-                "type": "static",
-                "addresses": [
-                    {
-                        "address": "192.168.10.60/24",
-                        "gateway": "192.168.10.1"
-                    }
-                ]
+                "type": "dhcp"
             }
     }'
 ---
