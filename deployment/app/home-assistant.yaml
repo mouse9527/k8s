@@ -8,27 +8,18 @@ spec:
   config: '{
       "cniVersion": "0.3.0",
       "name": "home-assistant-macvlan",
-      "plugins": [
-        {
-          "type": "macvlan",
-          "master": "ens192",
-          "ipam": {
-              "type": "static",
-              "addresses": [
-                  {
-                      "address": "192.168.10.60/24",
-                      "gateway": "192.168.10.1"
-                  }
-              ],
-              "dns": {
-                "nameservers" : ["10.0.30.1"]
-              }
-          }
-        },
-        {
-          "type": "sbr"
-        }
-      ]
+      "type": "ipvlan",
+      "master": "ens192",
+      "capabilities": {"ips": true},
+      "ipam": {
+        "type": "static",
+        "addresses": [
+            {
+                "address": "192.168.10.60/24",
+                "gateway": "192.168.10.1"
+            }
+        ],
+      }
     }'
 ---
 apiVersion: apps/v1
