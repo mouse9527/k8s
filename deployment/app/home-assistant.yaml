@@ -7,20 +7,28 @@ metadata:
 spec:
   config: '{
       "cniVersion": "0.3.0",
-            "type": "macvlan",
-            "master": "ens192",
-            "mode": "bridge",
-            "ipam": {
-                "type": "host-local",
-                "ranges": [
-                    [ {
-                         "subnet": "192.168.10.0/24",
-                         "rangeStart": "192.168.10.60",
-                         "rangeEnd": "192.168.10.60"
-                    } ]
-                ],
-                "gateway": "192.168.10.1"
-            }
+      "name": "home-assistant-macvlan",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "master": "ens192",
+          "ipam": {
+              "type": "static",
+              "addresses": [
+                  {
+                      "address": "192.168.10.60/24",
+                      "gateway": "192.168.10.1"
+                  }
+              ],
+              "dns": {
+                "nameservers" : ["10.0.30.1"]
+              }
+          }
+        },
+        {
+          "type": "sbr"
+        }
+      ]
     }'
 ---
 apiVersion: apps/v1
