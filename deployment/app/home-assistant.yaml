@@ -10,7 +10,6 @@ spec:
       "name": "home-assistant-macvlan",
       "type": "macvlan",
       "master": "ens192",
-      "capabilities": {"ips": true},
       "ipam": {
         "type": "static",
         "addresses": [
