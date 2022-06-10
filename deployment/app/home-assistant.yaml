@@ -18,17 +18,15 @@ spec:
         kubernetes.io/hostname: node1
       containers:
         - name: home-assistant
-          image: registry.mouse.center:1443/homeassistant/home-assistant
+          image: registry.mouse.center:1443/linuxserver/homeassistant
           imagePullPolicy: Always
           ports:
             - containerPort: 8123
               name: http
               protocol: TCP
-            - containerPort: 21063
+            - containerPort: 21064
               name: homekit
               protocol: TCP
-            - containerPort: 5353
-              protocol: UDP
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -42,12 +40,6 @@ spec:
             periodSeconds: 10
             failureThreshold: 6
           env:
-            - name: http_proxy
-              value: "http://win10:7890"
-            - name: https_proxy
-              value: "http://win10:7890"
-            - name: all_proxy
-              value: "socks5://win10:7890"
             - name: TZ
               value: Asia/Shanghai
           volumeMounts:
@@ -82,15 +74,10 @@ spec:
   selector:
     app: home-assistant
   ports:
-    - port: 21063
+    - port: 21064
       name: homekit-tcp
-      nodePort: 30063
-      targetPort: 21063
-    - port: 5353
-      name: homekit-udp
-      nodePort: 30053
-      protocol: UDP
-      targetPort: 5353
+      nodePort: 30064
+      targetPort: 21064
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
