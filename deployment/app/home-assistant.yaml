@@ -14,6 +14,8 @@ spec:
       labels:
         app: home-assistant
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: node1
       containers:
         - name: home-assistant
           image: registry.mouse.center:1443/homeassistant/home-assistant
@@ -22,9 +24,11 @@ spec:
             - containerPort: 8123
               name: http
               protocol: TCP
-            - containerPort: 21064
+            - containerPort: 21063
               name: homekit
               protocol: TCP
+            - containerPort: 5353
+              protocol: UDP
           livenessProbe:
             tcpSocket:
               port: 8123
@@ -78,9 +82,12 @@ spec:
   selector:
     app: home-assistant
   ports:
-    - port: 21064
-      nodePort: 30064
-      targetPort: homekit
+    - port: 21063
+      nodePort: 30063
+      targetPort: 21063
+    - port: 5353
+      nodePort: 30053
+      targetPort: 5353
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
