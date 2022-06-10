@@ -14,8 +14,6 @@ spec:
       labels:
         app: home-assistant
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: node1
       containers:
         - name: home-assistant
           image: registry.mouse.center:1443/linuxserver/homeassistant
