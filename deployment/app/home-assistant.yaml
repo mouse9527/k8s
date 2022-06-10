@@ -9,14 +9,12 @@ spec:
       "cniVersion": "0.3.0",
       "type": "macvlan",
       "master": "ens192",
-      "mode": "bridge",
+      "mode": "macvlan",
       "ipam": {
-        "type": "host-local",
-        "subnet": "192.168.10.0/24",
-        "rangeStart": "192.168.10.60",
-        "rangeEnd": "192.168.10.60",
-        "routes": [
-          { "dst": "0.0.0.0/0" }
+        "type": "static",
+        "addresses": [
+          "address": "192.168.10.60/24",
+          "gateway": "192.168.10.1"
         ],
         "gateway": "192.168.10.1"
       }
