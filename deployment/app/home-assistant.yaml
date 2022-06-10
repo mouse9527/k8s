@@ -9,8 +9,15 @@ spec:
       "cniVersion": "0.3.0",
             "type": "macvlan",
             "master": "ens192",
+            "mode": "bridge",
             "ipam": {
-                "type": "dhcp"
+                "type": "static",
+                "addresses": [
+                    {
+                        "address": "192.168.10.60/24",
+                        "gateway": "192.168.10.1"
+                    }
+                ]
             }
     }'
 ---
