@@ -11,14 +11,7 @@ spec:
       "master": "ens192",
       "mode": "bridge",
       "ipam": {
-        "type": "static",
-        "addresses": [
-          {
-            "address": "192.168.10.60/24",
-            "gateway": "192.168.10.1"
-          }
-        ],
-        "gateway": "192.168.10.1"
+        "type": "static"
       }
     }'
 ---
@@ -34,7 +27,12 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: home-assistant-macvlan
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "home-assistant-macvlan",
+            "ips": ["192.168.10.60/24"],
+            "gateway": "192.168.10.1"
+          }]
       namespace: app
       name: home-assistant
       labels:
