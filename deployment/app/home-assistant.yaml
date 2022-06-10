@@ -83,10 +83,13 @@ spec:
     app: home-assistant
   ports:
     - port: 21063
+      name: homekit-tcp
       nodePort: 30063
       targetPort: 21063
     - port: 5353
+      name: homekit-udp
       nodePort: 30053
+      protocol: UDP
       targetPort: 5353
 ---
 kind: Ingress
