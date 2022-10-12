@@ -40,11 +40,6 @@ spec:
               value: "100"
             - name: UMASK_SET
               value: "022"
-            - name: RPC_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: downloader-secret
-                  key: secret
             - name: RPC_PORT
               value: "6800"
             - name: LISTEN_PORT
