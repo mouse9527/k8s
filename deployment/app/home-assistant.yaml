@@ -41,7 +41,7 @@ spec:
       containers:
         - name: home-assistant
           image: registry.mouse.center:1443/linuxserver/homeassistant
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8123
               name: http
