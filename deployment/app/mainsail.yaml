@@ -16,6 +16,8 @@ spec:
       labels:
         k8s-app: mainsail
     spec:
+      nodeSelector:
+        usb.type: printer
       containers:
         - name: mainsail
           image: registry.mouse.center:1443/mainsail-crew/mainsail:v2.4.1
