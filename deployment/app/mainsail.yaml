@@ -1,0 +1,67 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mainsail
+  namespace: app
+  labels:
+    k8s-app: mainsail
+spec:
+  selector:
+    matchLabels:
+      k8s-app: mainsail
+  template:
+    metadata:
+      namespace: app
+      name: mainsail
+      labels:
+        k8s-app: mainsail
+    spec:
+      containers:
+        - name: mainsail
+          image: registry.mouse.center:1443/mainsail-crew/mainsail:v2.4.1
+          ports:
+            - containerPort: 80
+              name: web
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html/config.json
+              name: mainsail-config
+              subPath: config.json
+      volumes:
+        - name: mainsail-config
+          nfs:
+            server: nas
+            path: /volume2/k8s/mainsail
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: app
+  name: mainsail
+spec:
+  selector:
+    k8s-app: mainsail
+  ports:
+    - port: 80
+      name: web
+      targetPort: web
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: mainsail-ingress
+  namespace: app
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: mainsail.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mainsail
+                port:
+                  name: web
