@@ -87,6 +87,13 @@ spec:
     - host: printer.mouse.center
       http:
         paths:
+          - path: /klipper
+            pathType: Prefix
+            backend:
+              service:
+                name: printer
+                port:
+                  name: klipper
           - path: /
             pathType: Prefix
             backend:
