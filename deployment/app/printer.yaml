@@ -85,7 +85,7 @@ spec:
                 name: printer
                 port:
                   name: web
-    - host: printer.mouse.center
+    - host: klipper.mouse.center
       http:
         paths:
           - path: /
