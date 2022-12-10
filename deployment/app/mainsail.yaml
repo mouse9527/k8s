@@ -48,15 +48,15 @@ spec:
         - name: gcode_files
           nfs:
             server: nas
-            path: /volume2/k8s/printer/gcode_files
+            path: /volume2/k8s/printer/gcode
         - name: klipper_data
           nfs:
             server: nas
-            path: /volume2/k8s/printer/klipper_data
+            path: /volume2/k8s/printer/klipper
         - name: moonraker_data
           nfs:
             server: nas
-            path: /volume2/k8s/printer/moonraker_data
+            path: /volume2/k8s/printer/moonraker
 ---
 apiVersion: v1
 kind: Service
