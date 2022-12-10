@@ -34,29 +34,17 @@ spec:
             - containerPort: 7125
               name: klipper
           volumeMounts:
-            - mountPath: /home/klippy/gcode_files
-              name: gcode
-            - mountPath: /home/klippy/.config
+            - mountPath: /home/klippy/
               name: klipper
-            - mountPath: /home/klippy/.moonraker
-              name: moonraker
       volumes:
         - name: mainsail
           nfs:
             server: nas
             path: /volume2/k8s/printer/mainsail
-        - name: gcode
-          nfs:
-            server: nas
-            path: /volume2/k8s/printer/gcode
         - name: klipper
           nfs:
             server: nas
             path: /volume2/k8s/printer/klipper
-        - name: moonraker
-          nfs:
-            server: nas
-            path: /volume2/k8s/printer/moonraker
 ---
 apiVersion: v1
 kind: Service
