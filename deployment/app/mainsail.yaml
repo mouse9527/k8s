@@ -28,11 +28,35 @@ spec:
             - mountPath: /usr/share/nginx/html/config.json
               name: mainsail-config
               subPath: config.json
+        - name: klipper-moonraker
+          image: registry.mouse.center:1443/dimalo/klipper-moonraker
+          ports:
+            - containerPort: 7125
+              name: klipper
+          volumeMounts:
+            - mountPath: /home/klippy/gcode_files
+              name: gcode_files
+            - mountPath: /home/klippy/.config
+              name: klipper_data
+            - mountPath: /home/klippy/.moonraker
+              name: moonraker_data
       volumes:
         - name: mainsail-config
           nfs:
             server: nas
-            path: /volume2/k8s/mainsail
+            path: /volume2/k8s/printer/mainsail
+        - name: gcode_files
+          nfs:
+            server: nas
+            path: /volume2/k8s/printer/gcode_files
+        - name: klipper_data
+          nfs:
+            server: nas
+            path: /volume2/k8s/printer/klipper_data
+        - name: moonraker_data
+          nfs:
+            server: nas
+            path: /volume2/k8s/printer/moonraker_data
 ---
 apiVersion: v1
 kind: Service
@@ -46,6 +70,9 @@ spec:
     - port: 80
       name: web
       targetPort: web
+    - port: 7125
+      name: klipper
+      targetPort: klipper
 ---
 kind: Ingress
 apiVersion: networking.k8s.io/v1
