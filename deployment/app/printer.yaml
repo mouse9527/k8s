@@ -26,7 +26,7 @@ spec:
               name: web
           volumeMounts:
             - mountPath: /usr/share/nginx/html/config.json
-              name: mainsail-config
+              name: mainsail
               subPath: config.json
         - name: klipper-moonraker
           image: registry.mouse.center:1443/dimalo/klipper-moonraker
@@ -35,25 +35,25 @@ spec:
               name: klipper
           volumeMounts:
             - mountPath: /home/klippy/gcode_files
-              name: gcode_files
+              name: gcode
             - mountPath: /home/klippy/.config
-              name: klipper_data
+              name: klipper
             - mountPath: /home/klippy/.moonraker
-              name: moonraker_data
+              name: moonraker
       volumes:
-        - name: mainsail-config
+        - name: mainsail
           nfs:
             server: nas
             path: /volume2/k8s/printer/mainsail
-        - name: gcode_files
+        - name: gcode
           nfs:
             server: nas
             path: /volume2/k8s/printer/gcode
-        - name: klipper_data
+        - name: klipper
           nfs:
             server: nas
             path: /volume2/k8s/printer/klipper
-        - name: moonraker_data
+        - name: moonraker
           nfs:
             server: nas
             path: /volume2/k8s/printer/moonraker
