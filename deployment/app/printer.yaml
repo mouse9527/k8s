@@ -1,20 +1,20 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: mainsail
+  name: printer
   namespace: app
   labels:
-    k8s-app: mainsail
+    k8s-app: printer
 spec:
   selector:
     matchLabels:
-      k8s-app: mainsail
+      k8s-app: printer
   template:
     metadata:
       namespace: app
-      name: mainsail
+      name: printer
       labels:
-        k8s-app: mainsail
+        k8s-app: printer
     spec:
       nodeSelector:
         usb.type: printer
@@ -62,10 +62,10 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: app
-  name: mainsail
+  name: printer
 spec:
   selector:
-    k8s-app: mainsail
+    k8s-app: printer
   ports:
     - port: 80
       name: web
@@ -77,20 +77,20 @@ spec:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: mainsail-ingress
+  name: printer-ingress
   namespace: app
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: mainsail.mouse.center
+    - host: printer.mouse.center
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: mainsail
+                name: printer
                 port:
                   name: web
