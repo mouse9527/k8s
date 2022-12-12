@@ -33,6 +33,8 @@ spec:
           ports:
             - containerPort: 7125
               name: klipper
+          securityContext:
+            allowPrivilegeEscalation: true
           volumeMounts:
             - mountPath: /home/klippy/.config
               name: klipper
