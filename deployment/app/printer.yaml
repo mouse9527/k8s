@@ -82,6 +82,13 @@ spec:
     - host: printer.mouse.center
       http:
         paths:
+          - path: /websocket
+            pathType: Prefix
+            backend:
+              service:
+                name: printer
+                port:
+                  name: klipper
           - path: /
             pathType: Prefix
             backend:
@@ -89,13 +96,3 @@ spec:
                 name: printer
                 port:
                   name: web
-    - host: klipper.mouse.center
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: printer
-                port:
-                  name: klipper
