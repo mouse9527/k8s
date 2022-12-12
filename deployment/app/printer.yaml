@@ -45,6 +45,9 @@ spec:
               subPath: .moonraker
             - mountPath: /dev/ttyUSB0
               name: usb
+          volumeDevices:
+            - devicePath: /dev/ttyUSB0
+              name: usb
       volumes:
         - name: mainsail
           nfs:
