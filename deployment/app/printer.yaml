@@ -43,6 +43,8 @@ spec:
             - mountPath: /home/klippy/.moonraker
               name: klipper
               subPath: .moonraker
+            - mountPath: /dev/ttyUSB0
+              name: usb
       volumes:
         - name: mainsail
           nfs:
@@ -52,6 +54,9 @@ spec:
           nfs:
             server: nas
             path: /volume2/k8s/printer/klipper
+        - name: usb
+          hostPath:
+            path: /dev/ttyUSB0
 ---
 apiVersion: v1
 kind: Service
