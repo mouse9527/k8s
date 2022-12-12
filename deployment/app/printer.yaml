@@ -24,6 +24,12 @@ spec:
           ports:
             - containerPort: 80
               name: web
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 12
           volumeMounts:
             - mountPath: /usr/share/nginx/html/config.json
               name: mainsail
@@ -33,6 +39,12 @@ spec:
           ports:
             - containerPort: 7125
               name: klipper
+          livenessProbe:
+            tcpSocket:
+              port: 7125
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 12
           securityContext:
             allowPrivilegeEscalation: true
           volumeMounts:
