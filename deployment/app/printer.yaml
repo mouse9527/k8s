@@ -34,8 +34,15 @@ spec:
             - containerPort: 7125
               name: klipper
           volumeMounts:
-            - mountPath: /home/klippy
+            - mountPath: /home/klippy/.config
               name: klipper
+              subPath: .config
+            - mountPath: /home/klippy/gcode_files
+              name: klipper
+              subPath: gcode_files
+            - mountPath: /home/klippy/.moonraker
+              name: klipper
+              subPath: .moonraker
       volumes:
         - name: mainsail
           nfs:
