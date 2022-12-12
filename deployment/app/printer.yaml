@@ -43,8 +43,6 @@ spec:
             - mountPath: /home/klippy/.moonraker
               name: klipper
               subPath: .moonraker
-            - mountPath: /dev/ttyUSB0
-              name: usb
           volumeDevices:
             - devicePath: /dev/ttyUSB0
               name: usb
