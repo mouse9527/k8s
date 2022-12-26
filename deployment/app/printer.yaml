@@ -20,7 +20,7 @@ spec:
         usb.type: printer
       containers:
         - name: klipper-moonraker
-          image: registry.mouse.center:1443/dimalo/klipper-moonraker
+          image: registry.mouse.center:1443/klipper-moonraker:20221225-1347
           ports:
             - containerPort: 7125
               name: klipper
