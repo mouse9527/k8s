@@ -1,4 +1,6 @@
 FROM registry.mouse.center:1443/dimalo/klipper-moonraker:20221225-1347
 RUN apt-get update
-RUN apt-get install gcc make usbutils -y
+RUN apt-get install gcc -y
+RUN apt-get install make -y
+RUN apt-get install usbutils -y
 RUN usermod -a -G 18 root
