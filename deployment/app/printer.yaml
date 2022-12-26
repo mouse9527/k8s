@@ -60,6 +60,12 @@ spec:
             - mountPath: /home/klippy/printer_data/logs
               name: klipper
               subPath: logs
+            - mountPath: /home/klippy/printer_data/comms
+              name: klipper
+              subPath: comms
+            - mountPath: /home/klippy/printer_data/cert
+              name: klipper
+              subPath: cert
             - mountPath: /home/klippy/gcode_files
               name: klipper
               subPath: gcode_files
