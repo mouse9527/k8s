@@ -51,6 +51,15 @@ spec:
             - mountPath: /home/klippy/.config
               name: klipper
               subPath: .config
+            - mountPath: /home/klippy/printer_data/config
+              name: klipper
+              subPath: .config
+            - mountPath: /home/klippy/printer_data/gcodes
+              name: klipper
+              subPath: gcode_files
+            - mountPath: /home/klippy/printer_data/logs
+              name: klipper
+              subPath: logs
             - mountPath: /home/klippy/gcode_files
               name: klipper
               subPath: gcode_files
