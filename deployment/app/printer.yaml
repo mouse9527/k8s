@@ -36,10 +36,10 @@ spec:
           volumeMounts:
             - mountPath: /home/klippy/.config
               name: klipper
-              subPath: .config
+              subPath: config
             - mountPath: /home/klippy/printer_data/config
               name: klipper
-              subPath: .config
+              subPath: config
             - mountPath: /home/klippy/printer_data/gcodes
               name: klipper
               subPath: gcode_files
@@ -57,7 +57,7 @@ spec:
               subPath: gcode_files
             - mountPath: /home/klippy/.moonraker
               name: klipper
-              subPath: .moonraker
+              subPath: moonraker
             - mountPath: /dev
               name: usb
         - name: fluidd
