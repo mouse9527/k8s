@@ -1,5 +1,5 @@
 FROM registry.mouse.center:1443/dimalo/klipper-moonraker:20221225-1347
-
+RUN export https_proxy=http://win10:7890 http_proxy=http://win10:7890 all_proxy=socks5://win10:7890
 RUN apt-get update
-RUN apt-get install make usbutils -y
+RUN apt-get install make usbutils gcc -y
 RUN usermod -a -G 18 root
