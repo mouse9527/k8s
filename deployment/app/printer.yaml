@@ -19,21 +19,6 @@ spec:
       nodeSelector:
         usb.type: printer
       containers:
-        - name: mainsail
-          image: registry.mouse.center:1443/mainsail-crew/mainsail:v2.4.1
-          ports:
-            - containerPort: 80
-              name: web
-          livenessProbe:
-            tcpSocket:
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            failureThreshold: 12
-          volumeMounts:
-            - mountPath: /usr/share/nginx/html/config.json
-              name: mainsail
-              subPath: config.json
         - name: klipper-moonraker
           image: registry.mouse.center:1443/dimalo/klipper-moonraker
           ports:
@@ -74,6 +59,17 @@ spec:
               subPath: .moonraker
             - mountPath: /dev
               name: usb
+        - name: fluidd
+          image: registry.mouse.center:1443/dimalo/fluidd
+          ports:
+            - containerPort: 80
+              name: web
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 12
       volumes:
         - name: mainsail
           nfs:
