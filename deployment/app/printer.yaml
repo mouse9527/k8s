@@ -61,7 +61,7 @@ spec:
             - mountPath: /dev
               name: usb
         - name: mainsail
-          image: registry.mouse.center:1443/mainsail-crew/mainsail:v2.4.1
+          image: registry.mouse.center:1443/dimalo/mainsail:20221225-1345
           volumeMounts:
             - mountPath: /usr/share/nginx/html/config.json
               name: mainsail-config
