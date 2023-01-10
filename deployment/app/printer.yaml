@@ -58,6 +58,9 @@ spec:
             - mountPath: /home/klippy/.moonraker
               name: klipper
               subPath: moonraker
+            - mountPath: /home/klippy/.moonraker_database
+              name: klipper
+              subPath: moonraker_database
             - mountPath: /dev
               name: usb
         - name: mainsail
