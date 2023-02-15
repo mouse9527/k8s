@@ -1,3 +1,3 @@
 FROM registry.mouse.center:1443/dimalo/klipper-moonraker:20221225-1347
-RUN groupmod -g 18 dialout
-RUN usermod -a -G 18 root
+RUN groupmod -g 20 dialout
+RUN usermod -a -G 20 root
