@@ -4,7 +4,7 @@ metadata:
   name: application-test-cfg
   namespace: dev
 data:
-  spring.config.import: optional:configserver:http://config-server
-  spring.cloud.config.profile: test
+  spring.config.import: "optional:configserver:http://config-server"
+  spring.cloud.config.profile: "test"
   spring.cloud.config.fail-fast: 'true'
-  spring.profiles.active: test
+  spring.profiles.active: "test"
