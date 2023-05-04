@@ -10,6 +10,19 @@ spec:
     - port: 80
       targetPort: 8080
 ---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: dev
+  name: config-service-cfg
+data:
+  server.port: '80'
+  spring.cloud.config.server.git.url: 'https://scm.mouse.center:1443/mouse/config.git'
+  spring.cloud.config.server.git.username: 'config'
+  spring.cloud.config.server.git.password: 'Ab12345678'
+  spring.cloud.config.server.git.default-label: 'master'
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,6 +70,9 @@ spec:
               value: "dev"
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
               value: "skywalking-backend:11800"
+          envFrom:
+            - configMapRef:
+                name: config-service-cfg
           ports:
             - containerPort: 8080
               name: web
