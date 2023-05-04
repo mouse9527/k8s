@@ -69,7 +69,7 @@ spec:
                 - kubeexec
                 - cd
                 - gitlab
-                - "gitlab-rake gitlab:backup:create"
+                - "gitlab-backup create"
               volumeMounts:
                 - mountPath: /root/.kube/config
                   name: kube
