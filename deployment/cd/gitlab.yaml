@@ -55,6 +55,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          namespace: cd
+          name: backup-gitlab
         spec:
           restartPolicy: OnFailure
           containers:

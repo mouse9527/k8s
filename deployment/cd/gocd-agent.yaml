@@ -203,6 +203,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          name: agent-cleanup
+          namespace: cd
         spec:
           restartPolicy: OnFailure
           containers:
