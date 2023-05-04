@@ -50,8 +50,9 @@ metadata:
   namespace: cd
   name: backup-gitlab
 spec:
-  successfulJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
