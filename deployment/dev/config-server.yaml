@@ -17,6 +17,7 @@ metadata:
   name: config-service-cfg
 data:
   server.port: '8080'
+  spring.cloud.config.server.bootstrap: 'false'
   spring.cloud.config.server.git.url: 'https://scm.mouse.center:1443/mouse/config.git'
   spring.cloud.config.server.git.username: 'config'
   spring.cloud.config.server.git.password: 'Ab12345678'
