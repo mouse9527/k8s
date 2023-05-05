@@ -21,9 +21,9 @@ spec:
       name: signal-grpc
       nodePort: 30551
       targetPort: 5551
-    - port: 80
+    - port: 443
       name: ion-web-app
-      targetPort: 80
+      targetPort: 443
 ---
 
 kind: Service
@@ -317,6 +317,17 @@ spec:
                 name: nats
                 port:
                   name: web
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: ion-web-app-ingress
+  namespace: app
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: "nginx"
+  rules:
     - host: ion.mouse.center
       http:
         paths:
@@ -327,4 +338,3 @@ spec:
                 name: web-rtc-server
                 port:
                   name: ion-web-app
----
