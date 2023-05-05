@@ -21,9 +21,9 @@ spec:
       name: signal-grpc
       nodePort: 30551
       targetPort: 5551
-    - port: 443
+    - port: 80
       name: ion-web-app
-      targetPort: 443
+      targetPort: 80
 ---
 
 kind: Service
@@ -284,8 +284,8 @@ spec:
         - name: web-app
           image: pionwebrtc/ion-app-web:latest
           ports:
-            - containerPort: 443
-              name: https
+            - containerPort: 80
+              name: ion-web-app
           env:
             - name: WWW_URL
               value: ion.mouse.center
