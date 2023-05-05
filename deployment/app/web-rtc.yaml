@@ -18,15 +18,13 @@ spec:
       containers:
         - name: coturn
           image: registry.mouse.center:1443/coturn/coturn
-          env:
-            - name: min-port
-              value: "49152"
-            - name: max-port
-              value: "49162"
-            - name: web-admin-port
-              value: "8080"
-            - name: web-admin-ip
-              value: "127.0.0.1"
+          args:
+            - -n
+            - --log-file=stdout
+            - --min-port=49152
+            - --max-port=49162
+            - --web-admin-port=8080
+            - --web-admin-ip=127.0.0.1
           ports:
             - containerPort: 8080
               name: web
