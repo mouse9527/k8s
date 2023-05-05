@@ -19,6 +19,8 @@ spec:
         - name: coturn
           image: registry.mouse.center:1443/coturn/coturn
           ports:
+            - containerPort: 8080
+              name: web
             - containerPort: 3478
               name: turn
               protocol: TCP
@@ -75,6 +77,9 @@ metadata:
   namespace: app
 spec:
   ports:
+    - port: 80
+      name: web
+      targetPort: 8080
     - port: 3478
       name: turn
       targetPort: 3478
@@ -133,3 +138,28 @@ spec:
       targetPort: 49162
       nodePort: 30162
       protocol: UDP
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: app
+  name: coturn
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: downloader-web-auth
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: coturn.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-rtc-server
+                port:
+                  name: coturn
