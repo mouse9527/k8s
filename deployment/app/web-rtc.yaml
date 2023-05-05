@@ -337,4 +337,4 @@ spec:
               service:
                 name: web-rtc-server
                 port:
-                  name: ion-web-app
+                  number: 443
