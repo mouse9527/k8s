@@ -222,6 +222,19 @@ data:
     addrs = ["redis.db:6379"]
     password = ""
     db = 0
+  Caddyfile: |
+    {$WWW_URL} {
+      root * /app/dist
+      file_server
+      tls {$ADMIN_EMAIL}
+
+      # proxy to signal service
+      # check on line 99 of src/App.jsx that you aren't setting the 5551 port value. docker uses these proxies instead
+      reverse_proxy /room.RoomSignal/Signal signal:5551 {
+      }
+      reverse_proxy /rtc.RTC/Signal signal:5551 {
+      }
+    }
 
 ---
 apiVersion: apps/v1
@@ -286,9 +299,13 @@ spec:
           ports:
             - containerPort: 80
               name: ion-web-app
+          volumeMounts:
+            - mountPath: /etc/caddy/Caddyfile
+              name: web-rtc-cfg
+              subPath: Caddyfile
           env:
             - name: WWW_URL
-              value: ion.mouse.center
+              value: ion.mouse.center:1443
             - name: ADMIN_EMAIL
               value: m1689141525@gmail.com
       volumes:
