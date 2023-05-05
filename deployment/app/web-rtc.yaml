@@ -21,6 +21,9 @@ spec:
       name: signal-grpc
       nodePort: 30551
       targetPort: 5551
+    - port: 443
+      name: ion-web-app
+      targetPort: 443
 ---
 
 kind: Service
@@ -278,6 +281,16 @@ spec:
             - mountPath: /configs/signal.toml
               name: web-rtc-cfg
               subPath: signal.toml
+        - name: web-app
+          image: pionwebrtc/ion-app-web:latest
+          ports:
+            - containerPort: 443
+              name: https
+          env:
+            - name: WWW_URL
+              value: ion.mouse.center
+            - name: ADMIN_EMAIL
+              value: m1689141525@gmail.com
       volumes:
         - name: web-rtc-cfg
           configMap:
@@ -304,4 +317,14 @@ spec:
                 name: nats
                 port:
                   name: web
+    - host: ion.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web-rtc-server
+                port:
+                  name: ion-web-app
 ---
