@@ -18,6 +18,15 @@ spec:
       containers:
         - name: coturn
           image: registry.mouse.center:1443/coturn/coturn
+          env:
+            - name: min-port
+              value: "49152"
+            - name: max-port
+              value: "49162"
+            - name: web-admin-port
+              value: "8080"
+            - name: web-admin-ip
+              value: "127.0.0.1"
           ports:
             - containerPort: 8080
               name: web
@@ -56,9 +65,6 @@ spec:
             - containerPort: 49162
               protocol: UDP
           volumeMounts:
-            - mountPath: /etc/turnserver.conf
-              name: coturn
-              subPath: coturn/config/turnserver.conf
             - mountPath: /var/lib/coturn/
               name: coturn
               subPath: coturn/data
