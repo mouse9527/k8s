@@ -76,6 +76,7 @@ metadata:
   name: web-rtc-server
   namespace: app
 spec:
+  type: NodePort
   ports:
     - port: 80
       name: web
