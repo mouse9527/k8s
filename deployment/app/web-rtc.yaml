@@ -172,5 +172,4 @@ spec:
               service:
                 name: web-rtc-server
                 port:
-                  name: web
                   number: 80
