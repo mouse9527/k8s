@@ -96,46 +96,57 @@ spec:
       name: tls-turn-udp
       protocol: UDP
     - port: 49152
+      name: udp-49152
       targetPort: 49152
       nodePort: 30152
       protocol: UDP
     - port: 49153
+      name: udp-49153
       targetPort: 49153
       nodePort: 30153
       protocol: UDP
     - port: 49154
+      name: udp-49154
       targetPort: 49154
       nodePort: 30154
       protocol: UDP
     - port: 49155
+      name: udp-49155
       targetPort: 49155
       nodePort: 30155
       protocol: UDP
     - port: 49156
+      name: udp-49156
       targetPort: 49156
       nodePort: 30156
       protocol: UDP
     - port: 49157
+      name: udp-49157
       targetPort: 49157
       nodePort: 30157
       protocol: UDP
     - port: 49158
+      name: udp-49158
       targetPort: 49158
       nodePort: 30158
       protocol: UDP
     - port: 49159
+      name: udp-49159
       targetPort: 49159
       nodePort: 30159
       protocol: UDP
     - port: 49160
+      name: udp-49160
       targetPort: 49160
       nodePort: 30160
       protocol: UDP
     - port: 49161
+      name: udp-49161
       targetPort: 49161
       nodePort: 30161
       protocol: UDP
     - port: 49162
+      name: udp-49162
       targetPort: 49162
       nodePort: 30162
       protocol: UDP
