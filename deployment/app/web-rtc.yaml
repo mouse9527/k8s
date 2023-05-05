@@ -58,14 +58,14 @@ spec:
           volumeMounts:
             - mountPath: /etc/coturn/turnserver.conf
               name: coturn
-              subPath: config/turnserver.conf
+              subPath: coturn/config/turnserver.conf
             - mountPath: /var/lib/coturn/
               name: coturn
-              subPath: data
+              subPath: coturn/data
       volumes:
         - name: coturn
           nfs:
-            path: /volume2/k8s/web-rtc/coturn
+            path: /volume2/k8s/web-rtc
             server: nas
 ---
 kind: Service
