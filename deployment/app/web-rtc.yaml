@@ -296,7 +296,7 @@ spec:
         - name: web-app
           image: pionwebrtc/ion-app-web:latest
           ports:
-            - containerPort: 9090
+            - containerPort: 1443
               name: ion-web-app
           volumeMounts:
             - mountPath: /etc/caddy/Caddyfile
