@@ -21,9 +21,9 @@ spec:
       name: signal-grpc
       nodePort: 30551
       targetPort: 5551
-    - port: 80
+    - port: 443
       name: ion-web-app
-      targetPort: 80
+      targetPort: 443
 ---
 
 kind: Service
@@ -297,7 +297,7 @@ spec:
         - name: web-app
           image: pionwebrtc/ion-app-web:latest
           ports:
-            - containerPort: 80
+            - containerPort: 443
               name: ion-web-app
           volumeMounts:
             - mountPath: /etc/caddy/Caddyfile
@@ -341,7 +341,7 @@ metadata:
   name: ion-web-app-ingress
   namespace: app
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 spec:
   ingressClassName: "nginx"
   rules:
