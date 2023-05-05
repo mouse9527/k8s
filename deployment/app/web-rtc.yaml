@@ -57,18 +57,16 @@ spec:
               protocol: UDP
           volumeMounts:
             - mountPath: /etc/coturn/turnserver.conf
-              name: turn-cfg
-              subPath: turnserver.conf
+              name: coturn
+              subPath: config/turnserver.conf
+            - mountPath: /var/lib/coturn/
+              name: coturn
+              subPath: data
       volumes:
-        - name: turn-cfg
+        - name: coturn
           nfs:
-            path: /volume2/k8s/web-rtc/coturn/config
+            path: /volume2/k8s/web-rtc/coturn
             server: nas
-        - name: coturn-data
-          nfs:
-            path: /volume2/k8s/web-rtc/coturn/data
-            server: nas
-
 ---
 kind: Service
 apiVersion: v1
