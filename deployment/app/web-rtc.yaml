@@ -21,9 +21,9 @@ spec:
       name: signal-grpc
       nodePort: 30551
       targetPort: 5551
-    - port: 9090
+    - port: 1443
       name: ion-web-app
-      targetPort: 9090
+      targetPort: 1443
 ---
 
 kind: Service
@@ -223,7 +223,7 @@ data:
     password = ""
     db = 0
   Caddyfile: |
-    localhost:9090 {
+    {$WWW_URL} {
       root * /app/dist
       file_server
 
