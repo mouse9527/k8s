@@ -284,7 +284,7 @@ spec:
         - name: web-app
           image: pionwebrtc/ion-app-web:latest
           ports:
-            - containerPort: 80
+            - containerPort: 443
               name: ion-web-app
           env:
             - name: WWW_URL
