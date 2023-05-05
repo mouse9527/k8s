@@ -1,75 +1,3 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: app
-  name: web-rtc-server
-spec:
-  selector:
-    matchLabels:
-      k8s-app: web-rtc-server
-  replicas: 1
-  template:
-    metadata:
-      name: web-rtc-server
-      namespace: app
-      labels:
-        k8s-app: web-rtc-server
-    spec:
-      containers:
-        - name: coturn
-          image: registry.mouse.center:1443/coturn/coturn
-          args:
-            - -c /etc/coturn/turnserver.conf
-          ports:
-            - containerPort: 8080
-              name: web
-            - containerPort: 3478
-              name: turn
-              protocol: TCP
-            - containerPort: 3478
-              name: turn-udp
-              protocol: UDP
-            - containerPort: 5349
-              name: tls-turn
-              protocol: TCP
-            - containerPort: 5349
-              name: tls-turn-udp
-              protocol: UDP
-            - containerPort: 49152
-              protocol: UDP
-            - containerPort: 49153
-              protocol: UDP
-            - containerPort: 49154
-              protocol: UDP
-            - containerPort: 49155
-              protocol: UDP
-            - containerPort: 49156
-              protocol: UDP
-            - containerPort: 49157
-              protocol: UDP
-            - containerPort: 49158
-              protocol: UDP
-            - containerPort: 49159
-              protocol: UDP
-            - containerPort: 49160
-              protocol: UDP
-            - containerPort: 49161
-              protocol: UDP
-            - containerPort: 49162
-              protocol: UDP
-          volumeMounts:
-            - mountPath: /etc/coturn/turnserver.conf
-              name: coturn
-              subPath: coturn/config/turnserver.conf
-            - mountPath: /var/lib/coturn/
-              name: coturn
-              subPath: coturn/data
-      volumes:
-        - name: coturn
-          nfs:
-            path: /volume2/k8s/web-rtc
-            server: nas
----
 kind: Service
 apiVersion: v1
 metadata:
@@ -77,101 +5,303 @@ metadata:
   namespace: app
 spec:
   type: NodePort
+  selector:
+    app: web-rtc-server
   ports:
-    - port: 80
-      name: web
-      targetPort: 8080
+    - port: 5000
+      name: webrtc
+      targetPort: 5000
+      nodePort: 30500
+      protocol: UDP
     - port: 3478
       name: turn
+      nodePort: 30478
       targetPort: 3478
-      protocol: TCP
-    - port: 3478
-      name: turn-udp
-      targetPort: 3478
-      protocol: UDP
-    - port: 5349
-      name: tls-turn
-      protocol: TCP
-    - port: 5349
-      name: tls-turn-udp
-      protocol: UDP
-    - port: 49152
-      name: udp-49152
-      targetPort: 49152
-      nodePort: 30152
-      protocol: UDP
-    - port: 49153
-      name: udp-49153
-      targetPort: 49153
-      nodePort: 30153
-      protocol: UDP
-    - port: 49154
-      name: udp-49154
-      targetPort: 49154
-      nodePort: 30154
-      protocol: UDP
-    - port: 49155
-      name: udp-49155
-      targetPort: 49155
-      nodePort: 30155
-      protocol: UDP
-    - port: 49156
-      name: udp-49156
-      targetPort: 49156
-      nodePort: 30156
-      protocol: UDP
-    - port: 49157
-      name: udp-49157
-      targetPort: 49157
-      nodePort: 30157
-      protocol: UDP
-    - port: 49158
-      name: udp-49158
-      targetPort: 49158
-      nodePort: 30158
-      protocol: UDP
-    - port: 49159
-      name: udp-49159
-      targetPort: 49159
-      nodePort: 30159
-      protocol: UDP
-    - port: 49160
-      name: udp-49160
-      targetPort: 49160
-      nodePort: 30160
-      protocol: UDP
-    - port: 49161
-      name: udp-49161
-      targetPort: 49161
-      nodePort: 30161
-      protocol: UDP
-    - port: 49162
-      name: udp-49162
-      targetPort: 49162
-      nodePort: 30162
-      protocol: UDP
+    - port: 5551
+      name: signal-grpc
+      nodePort: 30551
+      targetPort: 5551
 ---
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: Service
+apiVersion: v1
+metadata:
+  name: nats
+  namespace: app
+spec:
+  selector:
+    app: web-rtc-server
+  ports:
+    - port: 4222
+      name: nats
+      targetPort: 4222
+    - port: 8222
+      name: web
+      targetPort: 8222
+
+---
+apiVersion: v1
+kind: ConfigMap
 metadata:
   namespace: app
-  name: coturn-admin
+  name: web-rtc-cfg
+data:
+  islb.toml: |
+    [global]
+    # data center id
+    dc = "dc1"
+
+    [log]
+    level = "info"
+
+    [nats]
+    url = "nats://nats:4222"
+    [redis]
+    addrs = ["redis.db:6379"]
+    password = ""
+    db = 0
+  
+
+  sfu.toml: |
+    [global]
+    # data center id
+    dc = "dc1"
+
+    [nats]
+    url = "nats://nats:4222"
+
+    [sfu]
+    # Ballast size in MiB, will allocate memory to reduce the GC trigger upto 2x the
+    # size of ballast. Be aware that the ballast should be less than the half of memory
+    # available.
+    ballast = 0
+    # enable prometheus sfu statistics
+    withstats = false
+
+    [router]
+    # Limit the remb bandwidth in kbps
+    # zero means no limits
+    maxbandwidth = 1500
+    # max number of video tracks packets the SFU will keep track
+    maxpackettrack = 500
+    # Sets the audio level volume threshold.
+    # Values from [0-127] where 0 is the loudest.
+    # Audio levels are read from rtp extension header according to:
+    # https://tools.ietf.org/html/rfc6464
+    audiolevelthreshold = 40
+    # Sets the interval in which the SFU will check the audio level
+    # in [ms]. If the active speaker has changed, the sfu will
+    # emit an event to clients.
+    audiolevelinterval = 1000
+    # Sets minimum percentage of events required to fire an audio level
+    # according to the expected events from the audiolevelinterval,
+    # calculated as audiolevelinterval/packetization time (20ms for 8kHz)
+    # Values from [0-100]
+    audiolevelfilter = 20
+
+    [router.simulcast]
+    # Prefer best quality initially
+    bestqualityfirst = true
+    # EXPERIMENTAL enable temporal layer change is currently an experimental feature,
+    # enable only for testing.
+    enabletemporallayer = false
+
+    [webrtc]
+    # Single port, portrange will not work if you enable this
+    singleport = 5000
+
+    # Range of ports that ion accepts WebRTC traffic on
+    # Format: [min, max]   and max - min >= 100
+    # portrange = [5000, 5200]
+    # if sfu behind nat, set iceserver
+    # [[webrtc.iceserver]]
+    # urls = ["stun:stun.stunprotocol.org:3478"]
+    # [[webrtc.iceserver]]
+    # urls = ["turn:turn.awsome.org:3478"]
+    # username = "awsome"
+    # credential = "awsome"
+
+    # sdp semantics:
+    # "unified-plan"
+    # "plan-b"
+    # "unified-plan-with-fallback"
+    sdpsemantics = "unified-plan"
+    # toggle multicast dns support: https://tools.ietf.org/html/draft-mdns-ice-candidates-00
+    mdns = true
+
+    [webrtc.candidates]
+    # In case you're deploying ion-sfu on a server which is configured with
+    # a 1:1 NAT (e.g., Amazon EC2), you might want to also specify the public
+    # address of the machine using the setting below. This will result in
+    # all host candidates (which normally have a private IP address) to
+    # be rewritten with the public address provided in the settings. As
+    # such, use the option with caution and only if you know what you're doing.
+    # Multiple public IP addresses can be specified as a comma separated list
+    # if the sfu is deployed in a DMZ between two 1-1 NAT for internal and
+    # external users.
+    nat1to1 = ["webrtc.mouse.center"]
+    icelite = true
+
+    [webrtc.timeouts]
+    # The duration in [sec] without network activity before a ICE Agent is considered disconnected
+    disconnected = 5
+    # The duration in [sec] without network activity before a ICE Agent is considered failed after disconnected
+    failed = 25
+    # How often in [sec] the ICE Agent sends extra traffic if there is no activity, if media is flowing no traffic will be sent
+    keepalive = 2
+
+    [turn]
+    # Enables embeded turn server
+    enabled = false
+    # Sets the realm for turn server
+    realm = "ion"
+    # The address the TURN server will listen on.
+    address = "0.0.0.0:3478"
+    # Certs path to config tls/dtls
+    # cert="path/to/cert.pem"
+    # key="path/to/key.pem"
+    # Port range that turn relays to SFU
+    # WARNING: It shouldn't overlap webrtc.portrange
+    # Format: [min, max]
+    # portrange = [5201, 5400]
+    [turn.auth]
+    # Use an auth secret to generate long-term credentials defined in RFC5389-10.2
+    # NOTE: This takes precedence over `credentials` if defined.
+    # secret = "secret"
+    # Sets the credentials pairs
+    credentials = "pion=ion,pion2=ion2"
+
+    [log]
+    # 0 - INFO 1 - DEBUG 2 - TRACE
+    v = 1
+
+  signal.toml: |
+    [global]
+    # data center id
+    dc = "dc1"
+
+    [log]
+    level = "info"
+    # level = "debug"
+
+    [nats]
+    url = "nats://nats:4222"
+
+    [signal.grpc]
+    #listen ip port
+    host = "0.0.0.0"
+    port = "5551"
+    allow_all_origins = true
+    # cert= "configs/certs/cert.pem"
+    # key= "configs/certs/key.pem"
+
+    [signal.jwt]
+    enabled = false
+    key_type = "HMAC"  # this selects the Signing method https://godoc.org/github.com/dgrijalva/jwt-go#SigningMethod
+    key = "1q2dGu5pzikcrECJgW3ADfXX3EsmoD99SYvSVCpDsJrAqxou5tUNbHPvkEFI4bTS"
+
+    [signal.svc]
+    services = ["rtc", "room"]
+
+  app-room.toml: |
+    [global]
+    # data center id
+    dc = "dc1"
+
+    [log]
+    level = "info"
+    # level = "debug"
+
+    [nats]
+    url = "nats://nats:4222"
+
+    [redis]
+    addrs = ["redis.db:6379"]
+    password = ""
+    db = 0
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-rtc-server
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: web-rtc-server
+  template:
+    metadata:
+      namespace: app
+      name: web-rtc-server
+      labels:
+        app: web-rtc-server
+    spec:
+      containers:
+        - name: nats
+          image: nats
+          ports:
+            - containerPort: 4222
+              name: nats
+            - containerPort: 8222
+              name: web-management
+        - name: islb
+          image: pionwebrtc/ion:latest-islb
+          volumeMounts:
+            - mountPath: /configs/islb.toml
+              name: web-rtc-cfg
+              subPath: islb.toml
+        - name: sfu
+          image: pionwebrtc/ion:latest-sfu
+          ports:
+            - containerPort: 5000
+              protocol: UDP
+              name: webrtc
+            - containerPort: 3478
+              name: turn
+          volumeMounts:
+            - mountPath: /configs/sfu.toml
+              name: web-rtc-cfg
+              subPath: sfu.toml
+        - name: app-room
+          image: pionwebrtc/ion:latest-app-room
+          volumeMounts:
+            - mountPath: /configs/app-room.toml
+              name: web-rtc-cfg
+              subPath: app-room.toml
+        - name: signal
+          image: pionwebrtc/ion:latest-signal
+          ports:
+            - containerPort: 5551
+              name: signal-grpc
+          volumeMounts:
+            - mountPath: /configs/signal.toml
+              name: web-rtc-cfg
+              subPath: signal.toml
+      volumes:
+        - name: web-rtc-cfg
+          configMap:
+            name: web-rtc-cfg
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: web-rtc-server-nats-ingress
+  namespace: app
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    nginx.ingress.kubernetes.io/auth-type: basic
-    nginx.ingress.kubernetes.io/auth-secret: downloader-web-auth
-    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   ingressClassName: "nginx"
   rules:
-    - host: coturn.mouse.center
+    - host: nats.mouse.center
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: web-rtc-server
+                name: nats
                 port:
                   name: web
+---
