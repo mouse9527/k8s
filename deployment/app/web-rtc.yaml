@@ -19,12 +19,7 @@ spec:
         - name: coturn
           image: registry.mouse.center:1443/coturn/coturn
           args:
-            - -n
-            - --log-file=stdout
-            - --min-port=49152
-            - --max-port=49162
-            - --web-admin-port=8080
-            - --web-admin-ip=127.0.0.1
+            - -c /etc/coturn/turnserver.conf
           ports:
             - containerPort: 8080
               name: web
@@ -63,6 +58,9 @@ spec:
             - containerPort: 49162
               protocol: UDP
           volumeMounts:
+            - mountPath: /etc/coturn/turnserver.conf
+              name: coturn
+              subPath: coturn/config/turnserver.conf
             - mountPath: /var/lib/coturn/
               name: coturn
               subPath: coturn/data
