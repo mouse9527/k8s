@@ -354,3 +354,10 @@ spec:
                 name: web-rtc-server
                 port:
                   name: ion-web-app
+          - path: /biz.Biz/Signal
+            pathType: Prefix
+            backend:
+              service:
+                name: web-rtc-server
+                port:
+                  name: signal-grpc
