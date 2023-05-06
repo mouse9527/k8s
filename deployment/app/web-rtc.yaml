@@ -361,3 +361,10 @@ spec:
                 name: web-rtc-server
                 port:
                   name: signal-grpc
+          - path: /sfu.SFU/Signal
+            pathType: Prefix
+            backend:
+              service:
+                name: web-rtc-server
+                port:
+                  name: signal-grpc
