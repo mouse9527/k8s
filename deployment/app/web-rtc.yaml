@@ -222,6 +222,7 @@ data:
     addrs = ["redis.db:6379"]
     password = ""
     db = 0
+
   Caddyfile: |
     ion.mouse.center:80 {
       root * /app/dist
