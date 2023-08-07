@@ -30,8 +30,8 @@ data:
   # - READER_APP_REMOTEWEBVIEWAPI=http://remote-webview:8050 #开启远程webview
   # 下面都是多用户模式配置
   READER_APP_SECURE: "true" #开启登录鉴权，开启后将支持多用户模式
-  READER_APP_SECUREKEY: "adminpwd"  #管理员密码  建议修改
-  READER_APP_INVITECODE: "registercode" #注册邀请码 建议修改,如不需要可注释或删除
+  READER_APP_SECUREKEY: "Mouse"  #管理员密码  建议修改
+  READER_APP_INVITECODE: "970210" #注册邀请码 建议修改,如不需要可注释或删除
 
 ---
 kind: Deployment
