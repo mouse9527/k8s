@@ -57,7 +57,7 @@ spec:
           image: registry.mouse.center:1443/hectorqin/reader
           imagePullPolicy: Always
           ports:
-            - containerPort: 4396
+            - containerPort: 8080
               name: web
               protocol: TCP
           volumeMounts:
