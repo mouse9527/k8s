@@ -1,0 +1,102 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: reader
+  namespace: app
+  labels:
+    app: reader
+spec:
+  selector:
+    app: reader
+  ports:
+    - port: 80
+      name: web
+      targetPort: web
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: reader-cfg
+  namespace: app
+  labels:
+    app: reader
+data:
+  SPRING_PROFILES_ACTIVE: "prod"
+  READER_APP_USERLIMIT: "50" #用户上限,默认50
+  READER_APP_USERBOOKLIMIT: "200" #用户书籍上限,默认200
+  READER_APP_CACHECHAPTERCONTENT: "true" #开启缓存章节内容 V2.0
+  # 如果启用远程webview，需要取消注释下面的 remote-webview 服务
+  # - READER_APP_REMOTEWEBVIEWAPI=http://remote-webview:8050 #开启远程webview
+  # 下面都是多用户模式配置
+  READER_APP_SECURE: "true" #开启登录鉴权，开启后将支持多用户模式
+  READER_APP_SECUREKEY: "adminpwd"  #管理员密码  建议修改
+  READER_APP_INVITECODE: "registercode" #注册邀请码 建议修改,如不需要可注释或删除
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: reader
+  namespace: app
+  labels:
+    app: reader
+spec:
+  selector:
+    matchLabels:
+      app: reader
+  template:
+    metadata:
+      name: reader
+      namespace: app
+      labels:
+        app: reader
+    spec:
+      containers:
+        - name: reader
+          image: registry.mouse.center:1443/hectorqin/reader
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4396
+              name: web
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /storage
+              name: storage
+            - mountPath: /logs
+              name: logs
+          envFrom:
+            - configMapRef:
+                name: reader-cfg
+      volumes:
+        - name: storage
+          nfs:
+            path: /volume2/k8s/reader/storage
+            server: nas
+        - name: logs
+          nfs:
+            path: /volume2/k8s/reader/logs
+            server: nas
+        - name: reader-config
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reader-ingress
+  namespace: app
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: reader.mouse.center
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: reader
+                port:
+                  name: web
