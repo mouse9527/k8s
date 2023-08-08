@@ -23,16 +23,21 @@ metadata:
     app: reader
 data:
   SPRING_PROFILES_ACTIVE: "prod"
-  READER_APP_USERLIMIT: "50" #用户上限,默认50
-  READER_APP_USERBOOKLIMIT: "200000" #用户书籍上限,默认200
-  READER_APP_CACHECHAPTERCONTENT: "true" #开启缓存章节内容 V2.0
+  READER_APP_USERLIMIT: "50" #用户上限,默认且最大值为50
+  READER_APP_USERBOOKLIMIT: "20000" #用户书籍上限,默认200
+  READER_APP_CACHECHAPTERCONTENT: "true" #开启缓存章节内容
   # 如果启用远程webview，需要取消注释下面的 remote-webview 服务
   # - READER_APP_REMOTEWEBVIEWAPI=http://remote-webview:8050 #开启远程webview
-  # 下面都是多用户模式配置
+  # ↓多用户模式配置↓
   READER_APP_SECURE: "true" #开启登录鉴权，开启后将支持多用户模式
   READER_APP_SECUREKEY: "970210"  #管理员密码  建议修改
   READER_APP_INVITECODE: "Mouse" #注册邀请码 建议修改,如不需要可注释或删除
-
+  READER_APP_DEFAULTUSERENABLEWEBDAV: "true"  # 用户是否默认启用webdav
+  READER_APP_DEFAULTUSERENABLELOCALSTORE: "true" # 用户是否默认启用localStore
+  READER_APP_DEFAULTUSERENABLEBOOKSOURCE: "true"  # 用户是否默认启用书源编辑
+  READER_APP_DEFAULTUSERENABLERSSSOURCE: "true"   # 用户是否默认启用RSS源编辑
+  READER_APP_DEFAULTUSERBOOKSOURCELIMIT: "1000000"  # 用户默认书源上限
+  READER_APP_DEFAULTUSERBOOKLIMIT: "20000"    # 用户默认书籍上限
 ---
 kind: Deployment
 apiVersion: apps/v1
