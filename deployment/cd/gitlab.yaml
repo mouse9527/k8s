@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: gitlab
-          image: registry.mouse.center:1443/gitlab/gitlab-ce:16.2.4-ce.0
+          image: registry.mouse.center:1443/gitlab/gitlab-ce:16.0.0-ce.0
           ports:
             - containerPort: 1443
               name: web
