@@ -65,6 +65,12 @@ spec:
             - containerPort: 8080
               name: web
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            failureThreshold: 60
           volumeMounts:
             - mountPath: /storage
               name: storage
