@@ -89,7 +89,44 @@ spec:
             path: /volume2/k8s/reader/logs
             server: nas
         - name: reader-config
-
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  namespace: app
+  name: auto-upgrade-reader
+spec:
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          namespace: app
+          name: auto-upgrade-reader
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: kubectl
+              image: registry.mouse.center:1443/kubectl
+              imagePullPolicy: Always
+              command:
+                - kubectl
+                - rollout
+                - -n
+                - app
+                - restart
+                - deployment/reader
+              volumeMounts:
+                - mountPath: /root/.kube/config
+                  name: kube
+                  subPath: config
+          volumes:
+            - name: kube
+              secret:
+                secretName: kubectl-secret
+  schedule: "0 5 * * *"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
