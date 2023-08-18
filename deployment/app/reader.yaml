@@ -47,6 +47,8 @@ metadata:
   labels:
     app: reader
 spec:
+  strategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: reader
