@@ -7,16 +7,19 @@ ENV URL_PREFIX=https://registry.mouse.center:1443/repository/raw-group
 RUN curl -LO  "$URL_PREFIX/openjdk/openjdk-17.0.1_linux-x64_bin.tar.gz"
 RUN tar -zxvf openjdk-17.0.1_linux-x64_bin.tar.gz
 
+RUN curl -LO "https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz"
+RUN tar -zxvf apache-maven-3.9.4-bin.tar.gz
 
 FROM gocd/gocd-agent-centos-7:v21.3.0
 USER root
 
 RUN yum install epel-release -y && yum install -y docker-client
 ENV JAVA_HOME=/opt/java/jdk-17.0.1
+ENV MAVEN_HOME/opt/maven/maven-3.9.4
 ENV TZ=Asia/Shanghai
 
 COPY --from=build /home/curl_user/jdk-17.0.1 $JAVA_HOME
+COPY --from=build /home/curl_user/apache-maven-3.9.4 $MAVEN_HOME
 
 RUN ln --symbolic "${JAVA_HOME}/bin/java" /usr/bin/java && java --version
-
-RUN yum install -y maven
+RUN ln --symbolic "${MAVEN_HOME}/bin/mvn" /usr/bin/mvn && mvn --version
