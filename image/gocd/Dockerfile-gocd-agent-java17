@@ -15,7 +15,7 @@ USER root
 
 RUN yum install epel-release -y && yum install -y docker-client
 ENV JAVA_HOME=/opt/java/jdk-17.0.1
-ENV MAVEN_HOME/opt/maven/maven-3.9.4
+ENV MAVEN_HOME=/opt/maven/maven-3.9.4
 ENV TZ=Asia/Shanghai
 
 COPY --from=build /home/curl_user/jdk-17.0.1 $JAVA_HOME
