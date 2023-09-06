@@ -4,7 +4,7 @@ metadata:
   namespace: cd
   name: go-server-url
 data:
-  GO_EA_SERVER_URL: http://gocd/go
+  GO_EA_SERVER_URL: "http://gocd/go"
 ---
 kind: ConfigMap
 apiVersion: v1
