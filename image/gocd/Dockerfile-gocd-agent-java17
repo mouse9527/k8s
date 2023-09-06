@@ -11,7 +11,7 @@ RUN tar -zxvf openjdk-17.0.1_linux-x64_bin.tar.gz
 FROM gocd/gocd-agent-centos-7:v21.3.0
 USER root
 
-RUN yum install epel-release -y && yum install -y docker-client
+RUN yum install epel-release -y && yum install -y docker-client maven
 ENV JAVA_HOME=/opt/java/jdk-17.0.1
 ENV TZ=Asia/Shanghai
 

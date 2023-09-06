@@ -15,7 +15,7 @@ data:
   "autoregister.properties": |
     agent.auto.register.key=7cfc9db5-0925-4cab-a111-9ea52b9fdd83
     agent.auto.register.environments=k8s
-    agent.auto.register.resources=java17,centos7
+    agent.auto.register.resources=java17,centos7,maven
 
 ---
 kind: ConfigMap
