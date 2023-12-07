@@ -137,6 +137,7 @@ metadata:
   namespace: app
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
 spec:
   ingressClassName: "nginx"
   rules:
