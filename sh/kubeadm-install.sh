@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-yum remove kubelet kubeadm kubectl
+yum remove kubelet kubeadm kubectl -y
 
 cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
 net.bridge.bridge-nf-call-ip6tables = 1
