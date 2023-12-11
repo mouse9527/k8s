@@ -17,7 +17,7 @@ gpgkey=https://pkgs.k8s.io/yum/doc/rpm-package-key.gpg
 exclude=kubelet kubeadm kubectl
 EOF
 
-yum install -y kubelet-1.28 kubeadm-1.28 kubectl-1.28 --disableexcludes=kubernetes
+yum install -y kubelet-1.23.17-0 kubeadm-1.23.17-0 kubectl-1.23.17-0 --disableexcludes=kubernetes
 
 systemctl enable --now kubelet
 
