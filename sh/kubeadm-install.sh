@@ -7,19 +7,20 @@ net.bridge.bridge-nf-call-iptables = 1
 EOF
 sysctl --system
 
-cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://pkgs.k8s.io/yum/repos/kubernetes-el7-\$basearch
+baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
 enabled=1
 gpgcheck=1
-gpgkey=https://pkgs.k8s.io/yum/doc/rpm-package-key.gpg
-exclude=kubelet kubeadm kubectl
+repo_gpgcheck=0
+gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+        http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 
-yum install -y kubelet-1.23.17-0 kubeadm-1.23.17-0 kubectl-1.23.17-0 --disableexcludes=kubernetes
+sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
 
-systemctl enable --now kubelet
+sudo systemctl enable --now kubelet
 
 systemctl daemon-reload
 systemctl restart kubelet
