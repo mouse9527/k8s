@@ -12,3 +12,8 @@ systemctl restart containerd
 ```shell
 sh kubeadm-install.sh
 ```
+
+3.cni
+```shell
+cilium install
+```
