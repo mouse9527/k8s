@@ -8,6 +8,7 @@ yum remove docker \
   docker-latest-logrotate \
   docker-logrotate \
   docker-engine \
+  containerd.io \
   cri-docker.socket
 
 sudo rm -rf /var/lib/docker
