@@ -34,6 +34,9 @@ spec:
               name: gitlab-config
             - mountPath: /var/opt/gitlab
               name: gitlab-data
+          env:
+            - name: GITLAB_SKIP_UNMIGRATED_DATA_CHECK
+              value: "true"
       volumes:
         - name: gitlab-config
           nfs:
